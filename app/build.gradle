@@ -24,10 +24,10 @@ android {
         }
     }
 
-// To inline the bytecode built with JVM target 1.8 into
-// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
 
 
+    // To inline the bytecode built with JVM target 1.8 into
+    // bytecode that is being built with JVM target 1.6. (e.g. navArgs)
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -35,7 +35,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
 }
 
 dependencies {
@@ -62,3 +61,5 @@ dependencies {
 
     implementation 'com.github.jaqxues:Akrolyb:master-SNAPSHOT'
 }
+
+apply from: 'https://raw.githubusercontent.com/jaqxues/Akrolyb/master/app/packconfig.gradle'

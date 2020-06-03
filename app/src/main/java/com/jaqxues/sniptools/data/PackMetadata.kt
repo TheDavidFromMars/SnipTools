@@ -17,20 +17,21 @@ interface PackMetadata : IPackMetadata {
 }
 
 data class ServerPackMetadata(
-    override val devPack: Boolean,
-    override val packVersion: String,
-    override val packVersionCode: Int,
-    override val packImplClass: String,
-    override val minApkVersionCode: Int,
+    val description: String,
+    val isInstalled: Boolean,
+    val hasUpdate: Boolean,
+
     override val isTutorial: Boolean,
     override val latest: Boolean,
     override val flavour: String,
     override val scVersion: String,
     override val name: String,
 
-    val description: String,
-    val isInstalled: Boolean,
-    val hasUpdate: Boolean
+    override val devPack: Boolean,
+    override val packVersion: String,
+    override val packVersionCode: Int,
+    override val packImplClass: String,
+    override val minApkVersionCode: Int
 ) : PackMetadata
 
 data class LocalPackMetadata(
@@ -39,6 +40,7 @@ data class LocalPackMetadata(
     override val flavour: String,
     override val scVersion: String,
     override val name: String,
+
     override val devPack: Boolean,
     override val packVersion: String,
     override val packVersionCode: Int,
