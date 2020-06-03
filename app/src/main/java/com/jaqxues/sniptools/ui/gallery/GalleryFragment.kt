@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.ui.views.ui.gallery
+package com.jaqxues.sniptools.ui.gallery
 
 import android.os.Bundle
 import android.view.LayoutInflater

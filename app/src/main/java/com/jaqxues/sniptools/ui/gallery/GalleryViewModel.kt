@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.ui.views.ui.gallery
+package com.jaqxues.sniptools.ui.gallery
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

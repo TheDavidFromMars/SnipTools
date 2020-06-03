@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.ui.views.fragments
+package com.jaqxues.sniptools.fragments
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment

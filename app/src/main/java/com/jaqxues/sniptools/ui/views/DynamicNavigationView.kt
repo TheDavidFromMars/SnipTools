@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.ui.views.ui.views
+package com.jaqxues.sniptools.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,7 @@ import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.core.view.isNotEmpty
 import com.google.android.material.navigation.NavigationView
-import com.jaqxues.sniptools.ui.views.fragments.BaseFragment
+import com.jaqxues.sniptools.fragments.BaseFragment
 import timber.log.Timber
 
 

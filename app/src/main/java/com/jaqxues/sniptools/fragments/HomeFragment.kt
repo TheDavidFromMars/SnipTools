@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.ui.views.fragments
+package com.jaqxues.sniptools.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,14 +1,14 @@
-package com.jaqxues.sniptools.ui.views
+package com.jaqxues.sniptools
 
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.ui.views.fragments.BaseFragment
-import com.jaqxues.sniptools.ui.views.fragments.HomeFragment
-import com.jaqxues.sniptools.ui.views.fragments.PackManagerFragment
-import com.jaqxues.sniptools.ui.views.ui.views.DynamicNavigationView
+import com.jaqxues.sniptools.fragments.BaseFragment
+import com.jaqxues.sniptools.fragments.HomeFragment
+import com.jaqxues.sniptools.fragments.PackManagerFragment
+import com.jaqxues.sniptools.ui.views.DynamicNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 

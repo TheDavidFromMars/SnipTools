@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.ui.views.ui.slideshow
+package com.jaqxues.sniptools.ui.slideshow
 
 import android.os.Bundle
 import android.view.LayoutInflater

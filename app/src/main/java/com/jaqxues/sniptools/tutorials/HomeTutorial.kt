@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.ui.views.tutorials
+package com.jaqxues.sniptools.tutorials
 
 
 /**
