@@ -13,7 +13,6 @@
         \n\nWe use a cloud based download system to allow for straightforward updates as well as support for hotswapping
         of supported Snapchat versions without the need of a system reboot.</string>
     <string name="home_authors">jaqxues (Jacques)</string>
-    <string name="home_app_version">App Version:</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_packs">Pack Manager</string>
@@ -25,9 +24,14 @@
     <string name="menu_features">Features</string>
     <string name="menu_legal">Legal</string>
 
-    <string name="placeholder">Placeholder</string>
+    <string name="tab_pack_selector_title">Pack Selector</string>
+    <string name="tab_pack_downloader_title">Pack Downloader</string>
+    <string name="footer_app_version">App Version:</string>
+    <string name="footer_snapchat_version">Snapchat Version:</string>
 
+    <string name="placeholder">Placeholder</string>
 
     <!-- Content Descriptions -->
     <string name="cdesc_sniptools_logo">SnapTools Logo</string>
+
 </resources>
