@@ -7,7 +7,7 @@ import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.core.view.isNotEmpty
 import com.google.android.material.navigation.NavigationView
-import com.jaqxues.sniptools.ui.views.fragments.NavFragment
+import com.jaqxues.sniptools.ui.views.fragments.BaseFragment
 import timber.log.Timber
 
 
@@ -18,8 +18,8 @@ import timber.log.Timber
 
 class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSelectedListener {
     private var currentMenuItem: MenuItem? = null
-    private val fragments = SparseArray<NavFragment>()
-    private lateinit var activeFragment: NavFragment
+    private val fragments = SparseArray<BaseFragment>()
+    private lateinit var activeFragment: BaseFragment
     private lateinit var listener: NavigationFragmentListener
 
     constructor(context: Context) : super(context)
@@ -31,7 +31,7 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
     /**
      * @param action: Adds Fragments and returns the currently active Fragment
      */
-    fun initialize(listener: NavigationFragmentListener, action: DynamicNavigationView.() -> NavFragment?) {
+    fun initialize(listener: NavigationFragmentListener, action: DynamicNavigationView.() -> BaseFragment?) {
         this.listener = listener
         setNavigationItemSelectedListener(this)
 
@@ -50,7 +50,7 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
         currentMenuItem = item
     }
 
-    fun addFragment(fragment: NavFragment) {
+    fun addFragment(fragment: BaseFragment) {
         fragments.append(fragment.menuId, fragment)
     }
 
@@ -70,7 +70,10 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val selected = fragments.get(item.itemId) ?: return false
-        if (selected == activeFragment) return true
+        if (selected == activeFragment) {
+            Timber.d("Selected MenuItem of current Fragment")
+            return true
+        }
 
         checkMenuItem(item)
         listener.selectedFragment(selected)
@@ -79,11 +82,11 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
         return true
     }
 
-    operator fun NavFragment.unaryPlus() {
+    operator fun BaseFragment.unaryPlus() {
         addFragment(this)
     }
 
     interface NavigationFragmentListener {
-        fun selectedFragment(fragment: NavFragment)
+        fun selectedFragment(fragment: BaseFragment)
     }
 }
