@@ -17,5 +17,7 @@ class CustomApplication: Application() {
 
     companion object {
         const val MODULE_TAG = "SnipTools"
+
+        const val PACKAGE_NAME = BuildConfig.APPLICATION_ID
     }
 }

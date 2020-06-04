@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.fragments.HomeFragment
 import com.jaqxues.sniptools.fragments.PackManagerFragment

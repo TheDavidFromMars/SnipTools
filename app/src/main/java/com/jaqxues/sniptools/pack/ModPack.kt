@@ -7,6 +7,7 @@ import com.jaqxues.akrolyb.pack.AppData
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.pack.PackFactoryBase
 import com.jaqxues.sniptools.BuildConfig
+import com.jaqxues.sniptools.CustomApplication
 import com.jaqxues.sniptools.data.LocalPackMetadata
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.utils.installedScVersion
@@ -18,7 +19,7 @@ import java.util.jar.Attributes
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 03.06.20 - Time 23:58.
  */
-abstract class IModPack(localPackMetadata: LocalPackMetadata) : ModPackBase<LocalPackMetadata>(localPackMetadata) {
+abstract class ModPack(localPackMetadata: LocalPackMetadata) : ModPackBase<LocalPackMetadata>(localPackMetadata) {
     abstract fun getStaticFragments(): List<BaseFragment>
 
     abstract fun loadFeatureManager(): FeatureManager<out IFeature>
@@ -29,7 +30,7 @@ abstract class IFeature: FeatureHelper() {
 }
 
 open class PackFactory: PackFactoryBase<LocalPackMetadata>() {
-    override val appData = AppData(BuildConfig.VERSION_CODE, BuildConfig.DEBUG, BuildConfig.APPLICATION_ID, BuildConfig.FLAVOR)
+    override val appData = AppData(BuildConfig.VERSION_CODE, BuildConfig.DEBUG, CustomApplication.PACKAGE_NAME, BuildConfig.FLAVOR)
 
     override fun buildMeta(attributes: Attributes, context: Context, file: File): LocalPackMetadata {
         fun getValue(name: String) =
@@ -50,7 +51,7 @@ open class PackFactory: PackFactoryBase<LocalPackMetadata>() {
     }
 }
 
-class SafePackFactory(): PackFactory() {
+class SafePackFactory: PackFactory() {
     override fun performChecks(packMetadata: LocalPackMetadata, context: Context, file: File) {
         super.performChecks(packMetadata, context, file)
 
