@@ -1,9 +1,9 @@
 package com.jaqxues.sniptools
 
 import android.app.Application
-import com.jaqxues.sniptools.di.repositories
-import com.jaqxues.sniptools.di.services
-import com.jaqxues.sniptools.di.viewModels
+import com.jaqxues.sniptools.di.KoinModules.repositories
+import com.jaqxues.sniptools.di.KoinModules.services
+import com.jaqxues.sniptools.di.KoinModules.viewModels
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
