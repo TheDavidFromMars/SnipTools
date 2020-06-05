@@ -8,9 +8,7 @@ import com.jaqxues.akrolyb.pack.IPackMetadata
  * Date: 27.05.20 - Time 08:54.
  * Moved to SnipTools on Date: 03.06.20 - Time 17:45.
  */
-interface PackMetadata : IPackMetadata {
-    val isTutorial: Boolean
-    val latest: Boolean
+interface BasePackMetadata: IPackMetadata {
     val flavour: String
     val scVersion: String
     val name: String
@@ -20,9 +18,8 @@ data class ServerPackMetadata(
     val description: String,
     val isInstalled: Boolean,
     val hasUpdate: Boolean,
+    val latest: Boolean,
 
-    override val isTutorial: Boolean,
-    override val latest: Boolean,
     override val flavour: String,
     override val scVersion: String,
     override val name: String,
@@ -32,11 +29,9 @@ data class ServerPackMetadata(
     override val packVersionCode: Int,
     override val packImplClass: String,
     override val minApkVersionCode: Int
-) : PackMetadata
+) : BasePackMetadata
 
-data class LocalPackMetadata(
-    override val isTutorial: Boolean,
-    override val latest: Boolean,
+data class PackMetadata(
     override val flavour: String,
     override val scVersion: String,
     override val name: String,
@@ -46,16 +41,10 @@ data class LocalPackMetadata(
     override val packVersionCode: Int,
     override val packImplClass: String,
     override val minApkVersionCode: Int
-) : PackMetadata
+) : BasePackMetadata
 
-data class ActivePackMetadata(
-    val flavour: String,
-    val scVersion: String,
+data class PackLoadingError(
     val name: String,
-
-    override val devPack: Boolean,
-    override val packVersion: String,
-    override val packVersionCode: Int,
-    override val packImplClass: String,
-    override val minApkVersionCode: Int
-): IPackMetadata
+    val reason: String,
+    val exception: Exception
+)
