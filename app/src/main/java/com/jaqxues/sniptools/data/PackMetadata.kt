@@ -47,3 +47,15 @@ data class LocalPackMetadata(
     override val packImplClass: String,
     override val minApkVersionCode: Int
 ) : PackMetadata
+
+data class ActivePackMetadata(
+    val flavour: String,
+    val scVersion: String,
+    val name: String,
+
+    override val devPack: Boolean,
+    override val packVersion: String,
+    override val packVersionCode: Int,
+    override val packImplClass: String,
+    override val minApkVersionCode: Int
+): IPackMetadata

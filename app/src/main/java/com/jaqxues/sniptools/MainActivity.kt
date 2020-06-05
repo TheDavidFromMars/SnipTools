@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
         supportFragmentManager.beginTransaction()
             .replace(R.id.frag_container_main, fragment)
             .commit()
+        toolbar.subtitle = nav_view.menu.findItem(fragment.menuId).title
         drawer_layout.closeDrawers()
     }
 }

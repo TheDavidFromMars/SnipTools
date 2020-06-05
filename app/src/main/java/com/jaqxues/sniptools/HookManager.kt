@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.utils.Security
-import com.jaqxues.sniptools.data.LocalPackMetadata
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.SafePackFactory
 import com.jaqxues.sniptools.utils.XposedChecks
@@ -49,7 +48,7 @@ class HookManager : IXposedHookLoadPackage {
                 val snapContext = param.args[0] as Context
                 val snapApp = param.thisObject as Application
 
-                val pack = ModPackBase.buildPack<LocalPackMetadata, ModPack>(
+                val pack: ModPack = ModPackBase.buildPack(
                     snapContext,
                     File(""),
                     Security.certificateFromApk(snapContext, CustomApplication.PACKAGE_NAME),
