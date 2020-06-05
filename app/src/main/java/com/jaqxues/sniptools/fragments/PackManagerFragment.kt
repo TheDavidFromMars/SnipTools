@@ -50,11 +50,10 @@ class PackManagerPagerAdapter(frag: Fragment): FragmentStateAdapter(frag) {
 
     override fun createFragment(position: Int) =
         when (position) {
-            0 -> PackSelectorFrag(0)
+            0 -> PackSelectorFragment()
             1 -> PackDownloaderFrag(0)
             else -> throw IllegalArgumentException("Unknown item for position $position")
         }
 }
 
-class PackSelectorFrag(override val menuId: Int) : BaseFragment()
 class PackDownloaderFrag(override val menuId: Int) : BaseFragment()

@@ -1,6 +1,12 @@
 package com.jaqxues.sniptools
 
 import android.app.Application
+import com.jaqxues.sniptools.di.repositories
+import com.jaqxues.sniptools.di.services
+import com.jaqxues.sniptools.di.viewModels
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 
@@ -13,6 +19,12 @@ class CustomApplication: Application() {
         super.onCreate()
 
         Timber.d("Initializing Application")
+
+        startKoin {
+            androidLogger()
+            androidContext(this@CustomApplication)
+            modules(viewModels, repositories, services)
+        }
     }
 
     companion object {
