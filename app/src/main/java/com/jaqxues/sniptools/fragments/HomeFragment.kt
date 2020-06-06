@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.R
+import com.jaqxues.sniptools.utils.installedScVersion
 import kotlinx.android.synthetic.main.frag_home.*
+import kotlinx.android.synthetic.main.frag_home.txt_app_version
+import kotlinx.android.synthetic.main.frag_home.txt_sc_version
+import kotlinx.android.synthetic.main.frag_pack_manager.*
 
 class HomeFragment : BaseFragment() {
     override val menuId get() = R.id.nav_home
@@ -22,6 +27,12 @@ class HomeFragment : BaseFragment() {
             append(getString(R.string.footer_app_version))
             append(": ")
             color(requireContext().getColor(R.color.colorPrimaryLight)) {append(BuildConfig.VERSION_NAME) }
+        }
+
+        txt_sc_version.text = buildSpannedString {
+            append(getString(R.string.footer_snapchat_version))
+            append(": ")
+            color(requireContext().getColor(R.color.colorPrimaryLight)) { append(requireContext().installedScVersion ?: "Unknown") }
         }
     }
 }
