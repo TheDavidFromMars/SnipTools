@@ -24,8 +24,9 @@
 
     <string name="tab_pack_selector_title">Pack Selector</string>
     <string name="tab_pack_downloader_title">Pack Downloader</string>
-    <string name="footer_app_version">App Version:</string>
-    <string name="footer_snapchat_version">Snapchat Version:</string>
+    <string name="footer_app_version">App Version</string>
+    <string name="footer_snapchat_version">Snapchat Version</string>
+    <string name="footer_last_checked">Last Checked</string>
 
     <string name="placeholder">Placeholder</string>
 

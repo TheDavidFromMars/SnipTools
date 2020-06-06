@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.R
 import kotlinx.android.synthetic.main.frag_home.*
@@ -16,6 +18,10 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        txt_app_version.text = BuildConfig.VERSION_NAME
+        txt_app_version.text = buildSpannedString {
+            append(getString(R.string.footer_app_version))
+            append(": ")
+            color(requireContext().getColor(R.color.colorPrimaryLight)) {append(BuildConfig.VERSION_NAME) }
+        }
     }
 }

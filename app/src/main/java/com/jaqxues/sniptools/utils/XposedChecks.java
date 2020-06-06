@@ -1,6 +1,10 @@
 package com.jaqxues.sniptools.utils;
 
 import androidx.annotation.Keep;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XposedBridge;
+
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
@@ -20,13 +24,11 @@ public class XposedChecks {
     }
 
     public static void applySelfHooks(ClassLoader classLoader) {
-        // Not importing Xposed Classes to allow having Xposed Code in the class and run code without crashing from a
-        // non-Xposed Context
-        de.robv.android.xposed.XposedHelpers.findAndHookMethod(
+        findAndHookMethod(
                 "com.jaqxues.sniptools.utils.XposedChecks",
                 classLoader,
                 "getXposedVersion",
-                de.robv.android.xposed.XC_MethodReplacement.returnConstant(de.robv.android.xposed.XposedBridge.getXposedVersion())
+                XC_MethodReplacement.returnConstant(XposedBridge.getXposedVersion())
         );
     }
 }

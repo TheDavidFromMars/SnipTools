@@ -33,6 +33,7 @@ class HookManager : IXposedHookLoadPackage {
         if (packageName != "com.snapchat.android") return
         if (hasHooked.getAndSet(true)) {
             Timber.d("Hooks already injected")
+            return
         }
 
         Timber.d("Loading Preferences")
