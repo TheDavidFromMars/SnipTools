@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.viewmodel.PackViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -14,7 +14,7 @@ import org.koin.android.ext.android.inject
  * Date: 05.06.20 - Time 18:57.
  */
 class PackSelectorFragment: BaseFragment() {
-    private val packViewModel by inject<PackViewModel>()
+    private val packViewModel by viewModel<PackViewModel>()
     override val menuId = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
