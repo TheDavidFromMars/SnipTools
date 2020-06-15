@@ -27,7 +27,7 @@ abstract class ModPack(localPackMetadata: PackMetadata) : ModPackBase<PackMetada
 }
 
 abstract class IFeature: FeatureHelper() {
-    abstract fun getFragment(): BaseFragment?
+    abstract fun getFragments(): Array<BaseFragment>
 }
 
 open class PackFactory: PackFactoryBase<PackMetadata>() {
@@ -41,9 +41,12 @@ class SafePackFactory: PackFactory() {
     override fun performChecks(packMetadata: PackMetadata, context: Context, file: File) {
         super.performChecks(packMetadata, context, file)
 
-        if (packMetadata.scVersion != context.installedScVersion)
-            throw UnsupportedScVersion()
+        val scVersion = context.installedScVersion
+        val supportedScVersion = packMetadata.scVersion
+        if (scVersion != supportedScVersion)
+            throw UnsupportedScVersion(scVersion, supportedScVersion)
     }
 }
 
-class UnsupportedScVersion: Exception("Current Snapchat Version not supported")
+class UnsupportedScVersion(scVersion: String?, supportedScVersion: String):
+    Exception("Current Snapchat Version not supported ('$scVersion' - '$supportedScVersion')")

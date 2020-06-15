@@ -10,7 +10,7 @@ import com.jaqxues.sniptools.pack.IFeature
  * Date: 04.06.20 - Time 00:19.
  */
 class MiscFeatures : IFeature() {
-    override fun getFragment(): BaseFragment? {
+    override fun getFragments(): Array<BaseFragment> {
         TODO("Not yet implemented")
     }
 

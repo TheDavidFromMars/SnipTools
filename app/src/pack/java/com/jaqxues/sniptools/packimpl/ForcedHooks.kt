@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.packimpl
 
 import android.content.Context
+import com.jaqxues.akrolyb.prefs.PrefManager
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
 
@@ -10,7 +11,7 @@ import com.jaqxues.sniptools.pack.IFeature
  * Date: 04.06.20 - Time 00:17.
  */
 class ForcedHooks : IFeature() {
-    override fun getFragment(): BaseFragment? {
+    override fun getFragments(): Array<BaseFragment> {
         TODO("Not yet implemented")
     }
 
@@ -20,5 +21,4 @@ class ForcedHooks : IFeature() {
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
         TODO("Not yet implemented")
     }
-
 }
