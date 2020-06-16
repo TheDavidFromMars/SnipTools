@@ -11,8 +11,7 @@ import com.jaqxues.sniptools.pack.ModPack
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 04.06.20 - Time 00:13.
  */
-class PackImpl @Suppress("unused") constructor(metadata: PackMetadata) : ModPack(metadata) {
-
+class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
     init {
         PrefManager.addPreferences(PackPreferences::class)
     }

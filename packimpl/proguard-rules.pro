@@ -20,6 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Save Mappings to specified path and reuse mapping so APK -  Pack Compatibility won't break
--printmapping build/proguard_mappings/current.txt
--applymapping build/proguard_mappings/current.txt
+# Keep the PackImpl Class (instantiated by reflection)
+-keep public class com.jaqxues.sniptools.packimpl.PackImpl
+# Keep everything in the PackImpl Class (but allow obfuscation and optimization). These are all the entry points of a
+# Pack and hence keeping all the Members and Fields of this class makes it safe to allow minifying the pack.
+-keep ,allowobfuscation, allowoptimization, public class com.jaqxues.sniptools.packimpl.PackImpl { *; }
