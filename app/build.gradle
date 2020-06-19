@@ -3,6 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
 
+def keystoreProperties = new Properties()
+def shouldSign = file("../Secrets/KeyStore/keystore.properties").exists()
+if (shouldSign) {
+    keystoreProperties.load(new FileInputStream(file("../Secrets/KeyStore/keystore.properties")))
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -17,10 +23,24 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (shouldSign) {
+            release {
+                keyAlias = keystoreProperties['keyAlias']
+                keyPassword = keystoreProperties['keyPassword']
+                storeFile = file(keystoreProperties['keyStorePath'])
+                storePassword = keystoreProperties['keyStorePassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (shouldSign) {
+                signingConfig = signingConfigs.release
+            }
         }
     }
 
@@ -50,9 +70,9 @@ dependencies {
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'com.google.android.material:material:1.1.0'
     api 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testApi 'junit:junit:4.13'
-    androidTestApi 'androidx.test.ext:junit:1.1.1'
-    androidTestApi 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7'
 
