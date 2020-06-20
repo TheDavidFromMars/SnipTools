@@ -1,9 +1,10 @@
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
+apply plugin: "com.jaqxues.pack-compiler"
 
 android {
     compileSdkVersion 29
-    
+
 
     defaultConfig {
         minSdkVersion 21
@@ -31,4 +32,28 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app')
+}
+
+packCompiler {
+    attributes = [
+            Flavor         : "prod",
+            Development    : true,
+            PackVersion    : "1.0.0",
+            PackVersionCode: 1,
+            MinApkVersion  : 1,
+            PackImplClass  : "com.jaqxues.sniptools.packimpl.PackImpl",
+            ScVersion      : "10.41.6.0",
+    ]
+    getJarName = { attributes ->
+        return new StringBuilder("Pack_")
+                .append(attributes["PackVersion"])
+                .append("_")
+                .append(attributes["ScVersion"])
+                .toString()
+    }
+    adbPush = {
+        defaultPath = "/storage/emulated/0/"
+        directory = "SnipTools/Packs"
+        deviceConfigFile = file("../Secrets/AdbPushConfig.json")
+    }
 }
