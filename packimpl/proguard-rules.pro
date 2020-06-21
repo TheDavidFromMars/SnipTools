@@ -19,9 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-# Keep the PackImpl Class (instantiated by reflection)
--keep public class com.jaqxues.sniptools.packimpl.PackImpl
-# Keep everything in the PackImpl Class (but allow obfuscation and optimization). These are all the entry points of a
-# Pack and hence keeping all the Members and Fields of this class makes it safe to allow minifying the pack.
--keep ,allowobfuscation, allowoptimization, public class com.jaqxues.sniptools.packimpl.PackImpl { *; }

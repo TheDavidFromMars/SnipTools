@@ -97,9 +97,3 @@ dependencies {
 
     api 'com.github.jaqxues:Akrolyb:master-SNAPSHOT'
 }
-
-if (!file("build/proguard_mappings/current.txt").exists()) {
-    def f = file("build/proguard_mappings/current.txt")
-    f.parentFile.mkdirs()
-    f.createNewFile()
-}
