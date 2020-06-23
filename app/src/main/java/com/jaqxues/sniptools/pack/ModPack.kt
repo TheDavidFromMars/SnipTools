@@ -21,9 +21,8 @@ import java.util.jar.Attributes
  * Date: 03.06.20 - Time 23:58.
  */
 abstract class ModPack(localPackMetadata: PackMetadata) : ModPackBase<PackMetadata>(localPackMetadata) {
-    abstract fun getStaticFragments(): List<BaseFragment>
-
-    abstract fun loadFeatureManager(): FeatureManager<out IFeature>
+    abstract val featureManager: FeatureManager<out IFeature>
+    abstract val staticFragments: List<BaseFragment>
 }
 
 abstract class IFeature: FeatureHelper() {

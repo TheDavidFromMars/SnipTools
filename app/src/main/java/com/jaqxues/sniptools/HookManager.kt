@@ -1,14 +1,18 @@
 package com.jaqxues.sniptools
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.Bundle
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.utils.Security
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.SafePackFactory
+import com.jaqxues.sniptools.utils.ContextContainer
 import com.jaqxues.sniptools.utils.XposedChecks
 import com.jaqxues.sniptools.utils.after
 import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import timber.log.Timber
@@ -38,7 +42,8 @@ class HookManager : IXposedHookLoadPackage {
 
         Timber.d("Loading Preferences")
 
-        findAndHookMethod(
+        val unhookContainer = arrayOfNulls<XC_MethodHook.Unhook>(2)
+        unhookContainer[0] = findAndHookMethod(
             "android.app.Application",
             lpparam.classLoader,
             "attach",
@@ -48,13 +53,26 @@ class HookManager : IXposedHookLoadPackage {
 
                 val snapContext = param.args[0] as Context
                 val snapApp = param.thisObject as Application
+                val moduleContext = ContextContainer.createModuleContext(snapApp)
+                ContextContainer.setModuleContext(moduleContext)
 
                 val pack: ModPack = ModPackBase.buildPack(
-                    snapContext,
+                    moduleContext,
                     File(""),
-                    Security.certificateFromApk(snapContext, CustomApplication.PACKAGE_NAME),
+                    Security.certificateFromApk(moduleContext, CustomApplication.PACKAGE_NAME),
                     SafePackFactory()
                 )
+                val featureManager = pack.featureManager
+
+                unhookContainer[1] = findAndHookMethod("com.snapchat.android.LandingPageActivity", lpparam.classLoader, "onCreate", Bundle::class.java, after { param ->
+                    Timber.d("Invoked LandingPageActivity#onCreate(Bundle), invoking lateInit")
+                    featureManager.lateInitAll(lpparam.classLoader, param.thisObject as Activity)
+
+                    unhookContainer[1]!!.unhook()
+                })
+
+                featureManager.loadAll(lpparam.classLoader, snapContext)
+                unhookContainer[0]!!.unhook()
             })
     }
 

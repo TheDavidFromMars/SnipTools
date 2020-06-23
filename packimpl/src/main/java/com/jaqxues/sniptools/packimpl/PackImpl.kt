@@ -11,12 +11,13 @@ import com.jaqxues.sniptools.pack.ModPack
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 04.06.20 - Time 00:13.
  */
+@Suppress("unused")
 class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
     init {
         PrefManager.addPreferences(PackPreferences::class)
     }
 
-    override fun getStaticFragments() = emptyList<BaseFragment>()
+    override val featureManager by lazy { FeatureManager(FeatureSet) }
 
-    override fun loadFeatureManager() = FeatureManager(FeatureSet)
+    override val staticFragments = emptyList<BaseFragment>()
 }
