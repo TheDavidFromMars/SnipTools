@@ -17,7 +17,7 @@ import timber.log.Timber
 class CustomApplication: Application() {
     override fun onCreate() {
         super.onCreate()
-
+        Timber.plant(Timber.DebugTree())
         Timber.d("Initializing Application")
 
         startKoin {

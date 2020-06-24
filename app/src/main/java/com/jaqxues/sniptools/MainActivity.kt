@@ -10,11 +10,20 @@ import com.jaqxues.sniptools.fragments.PackManagerFragment
 import com.jaqxues.sniptools.ui.views.DynamicNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent.hasExtra("select_new_pack")) {
+            val extra = intent.getStringExtra("select_new_pack")
+            Timber.i("SnipTools was started with Intent Extra 'select_new_pack' - '$extra'. Selecting new Pack and Starting Snapchat")
+            // Preferences
+            finish()
+            return
+        }
         setContentView(R.layout.activity_main)
 
 

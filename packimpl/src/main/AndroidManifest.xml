@@ -4,7 +4,7 @@
 
     <dist:module
         dist:instant="false"
-        dist:title="Pack Implementation">
+        dist:title="@string/app_name">
         <dist:delivery>
             <dist:on-demand />
         </dist:delivery>
