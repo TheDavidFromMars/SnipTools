@@ -27,6 +27,8 @@ object PathProvider {
     val backupPath get() = contentPath + "Backups/"
     val translationsPath get() = contentPath + "Translations/"
 
+    const val PREF_FILE_NAME = "Preferences.json"
+
     private fun getExternalPath(): String {
         cachedExternalDir?.let { return it }
         cachedExternalDir = useExternalPathFallback()

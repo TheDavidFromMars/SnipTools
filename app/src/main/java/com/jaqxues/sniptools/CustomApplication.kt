@@ -4,6 +4,7 @@ import android.app.Application
 import com.jaqxues.sniptools.di.KoinModules.repositories
 import com.jaqxues.sniptools.di.KoinModules.services
 import com.jaqxues.sniptools.di.KoinModules.viewModels
+import com.jaqxues.sniptools.utils.CommonSetup
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +18,7 @@ import timber.log.Timber
 class CustomApplication: Application() {
     override fun onCreate() {
         super.onCreate()
-        Timber.plant(Timber.DebugTree())
+        CommonSetup.initTimber()
         Timber.d("Initializing Application")
 
         startKoin {

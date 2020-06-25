@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import com.jaqxues.akrolyb.prefs.putPref
+import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.fragments.HomeFragment
 import com.jaqxues.sniptools.fragments.PackManagerFragment
 import com.jaqxues.sniptools.ui.views.DynamicNavigationView
+import com.jaqxues.sniptools.utils.CommonSetup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import timber.log.Timber
@@ -17,15 +20,16 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        CommonSetup.initPrefs()
         if (intent.hasExtra("select_new_pack")) {
-            val extra = intent.getStringExtra("select_new_pack")
+            val extra = intent.getStringExtra("select_new_pack") ?: throw IllegalStateException("Extra cannot be null")
             Timber.i("SnipTools was started with Intent Extra 'select_new_pack' - '$extra'. Selecting new Pack and Starting Snapchat")
-            // Preferences
+            SELECTED_PACKS.putPref(listOf(extra))
             finish()
             return
         }
-        setContentView(R.layout.activity_main)
 
+        setContentView(R.layout.activity_main)
 
         val toolbar = toolbar
         setSupportActionBar(toolbar)
@@ -42,8 +46,10 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
         }
         navView.initialize(this) {
             val homeFragment = HomeFragment()
+
             +homeFragment
             +PackManagerFragment()
+            
             homeFragment
         }
     }

@@ -5,12 +5,11 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import com.jaqxues.akrolyb.pack.ModPackBase
-import com.jaqxues.akrolyb.utils.Security
+import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.SafePackFactory
-import com.jaqxues.sniptools.utils.ContextContainer
-import com.jaqxues.sniptools.utils.XposedChecks
-import com.jaqxues.sniptools.utils.after
+import com.jaqxues.sniptools.utils.*
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
@@ -35,12 +34,14 @@ class HookManager : IXposedHookLoadPackage {
         }
 
         if (packageName != "com.snapchat.android") return
+        CommonSetup.initTimber()
         if (hasHooked.getAndSet(true)) {
             Timber.d("Hooks already injected")
             return
         }
 
         Timber.d("Loading Preferences")
+        CommonSetup.initPrefs()
 
         val unhookContainer = arrayOfNulls<XC_MethodHook.Unhook>(2)
         unhookContainer[0] = findAndHookMethod(
@@ -56,23 +57,30 @@ class HookManager : IXposedHookLoadPackage {
                 val moduleContext = ContextContainer.createModuleContext(snapApp)
                 ContextContainer.setModuleContext(moduleContext)
 
-                val pack: ModPack = ModPackBase.buildPack(
-                    moduleContext,
-                    File(""),
-                    Security.certificateFromApk(moduleContext, CustomApplication.PACKAGE_NAME),
-                    SafePackFactory()
-                )
-                val featureManager = pack.featureManager
+                for (selectedPack in SELECTED_PACKS.getPref()) {
+                    val pack: ModPack = ModPackBase.buildPack(
+                        moduleContext,
+                        File(PathProvider.modulesPath, selectedPack),
+//                        Security.certificateFromApk(moduleContext, CustomApplication.PACKAGE_NAME),
+                        packBuilder = SafePackFactory()
+                    )
+                    val featureManager = pack.featureManager
 
-                unhookContainer[1] = findAndHookMethod("com.snapchat.android.LandingPageActivity", lpparam.classLoader, "onCreate", Bundle::class.java, after { param ->
-                    Timber.d("Invoked LandingPageActivity#onCreate(Bundle), invoking lateInit")
-                    featureManager.lateInitAll(lpparam.classLoader, param.thisObject as Activity)
+                    unhookContainer[1] = findAndHookMethod(
+                        "com.snapchat.android.LandingPageActivity",
+                        lpparam.classLoader,
+                        "onCreate",
+                        Bundle::class.java,
+                        after { param ->
+                            Timber.d("Invoked LandingPageActivity#onCreate(Bundle), invoking lateInit")
+                            featureManager.lateInitAll(lpparam.classLoader, param.thisObject as Activity)
 
-                    unhookContainer[1]!!.unhook()
-                })
+                            unhookContainer[1]!!.unhook()
+                        })
 
-                featureManager.loadAll(lpparam.classLoader, snapContext)
-                unhookContainer[0]!!.unhook()
+                    featureManager.loadAll(lpparam.classLoader, snapContext)
+                    unhookContainer[0]!!.unhook()
+                }
             })
     }
 

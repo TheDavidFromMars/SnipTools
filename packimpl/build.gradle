@@ -70,7 +70,7 @@ android.buildTypes.forEach { buildType ->
                 commandLine android.adbExecutable, 'shell', 'am', 'force-stop', 'com.snapchat.android'
             }
             exec {
-                commandLine android.adbExecutable, 'shell', 'am', 'start', '-n', 'com.jaqxues.sniptools/.MainActivity', '--esa', 'select_new_pack', tasks.getByName("adbPushPack$buildTypeCap").outputs.files.singleFile
+                commandLine android.adbExecutable, 'shell', 'am', 'start', '-n', 'com.jaqxues.sniptools/.MainActivity', '--es', 'select_new_pack', tasks.getByName("adbPushPack$buildTypeCap").outputs.files.singleFile.name
             }
             sleep(200)
             exec {
