@@ -29,21 +29,21 @@ abstract class IFeature: FeatureHelper() {
     abstract fun getFragments(): Array<BaseFragment>
 }
 
-open class PackFactory: PackFactoryBase<PackMetadata>() {
+class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMetadata>() {
     override val appData = AppData(BuildConfig.VERSION_CODE, BuildConfig.DEBUG, CustomApplication.PACKAGE_NAME, BuildConfig.FLAVOR)
 
     override fun buildMeta(attributes: Attributes, context: Context, file: File) =
         attributes.buildMetadata(file)
-}
 
-class SafePackFactory: PackFactory() {
     override fun performChecks(packMetadata: PackMetadata, context: Context, file: File) {
         super.performChecks(packMetadata, context, file)
 
-        val scVersion = context.installedScVersion
-        val supportedScVersion = packMetadata.scVersion
-        if (scVersion != supportedScVersion)
-            throw UnsupportedScVersion(scVersion, supportedScVersion)
+        if (checkScVersion) {
+            val scVersion = context.installedScVersion
+            val supportedScVersion = packMetadata.scVersion
+            if (scVersion != supportedScVersion)
+                throw UnsupportedScVersion(scVersion, supportedScVersion)
+        }
     }
 }
 
