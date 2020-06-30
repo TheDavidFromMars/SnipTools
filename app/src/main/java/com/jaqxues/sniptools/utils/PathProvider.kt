@@ -20,7 +20,7 @@ object PathProvider {
 
     val contentPath get() = getExternalPath() + "/" + CustomApplication.MODULE_TAG + "/"
     val databasesPath get() = contentPath + "Databases/"
-    val modulesPath get() = contentPath + "ModulePack/"
+    val modulesPath get() = contentPath + "Packs/"
     val sharedImagePath get() = contentPath + "SharedImages/"
     val tempPath get() = contentPath + "Temp/"
     val logsPath get() = contentPath + "ErrorLogs/"

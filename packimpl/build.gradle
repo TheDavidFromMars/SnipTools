@@ -36,13 +36,13 @@ dependencies {
 
 packCompiler {
     attributes = [
-            Flavor         : "prod",
-            Development    : true,
-            PackVersion    : "1.0.0",
-            PackVersionCode: 1,
-            MinApkVersion  : 1,
-            PackImplClass  : "com.jaqxues.sniptools.packimpl.PackImpl",
-            ScVersion      : "10.41.6.0",
+            Flavor           : "prod",
+            Development      : true,
+            PackVersion      : "1.0.0",
+            PackVersionCode  : 1,
+            MinApkVersionCode: 1,
+            PackImplClass    : "com.jaqxues.sniptools.packimpl.PackImpl",
+            ScVersion        : "10.41.6.0",
     ]
     getJarName = { attributes ->
         return new StringBuilder("Pack_")

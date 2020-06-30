@@ -13,6 +13,7 @@ import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.utils.*
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import timber.log.Timber
@@ -34,6 +35,7 @@ class HookManager : IXposedHookLoadPackage {
             return
         }
 
+        XposedBridge.log("Initializing Timber Trees")
         if (packageName != "com.snapchat.android") return
         CommonSetup.initTimber()
         if (hasHooked.getAndSet(true)) {
@@ -60,7 +62,7 @@ class HookManager : IXposedHookLoadPackage {
 
                 for (selectedPack in SELECTED_PACKS.getPref()) {
                     val pack: ModPack = ModPackBase.buildPack(
-                        moduleContext,
+                        snapContext,
                         File(PathProvider.modulesPath, selectedPack),
                         if (BuildConfig.DEBUG) null else Security.certificateFromApk(moduleContext, CustomApplication.PACKAGE_NAME),
                         packBuilder = PackFactory(true)
@@ -68,7 +70,7 @@ class HookManager : IXposedHookLoadPackage {
                     val featureManager = pack.featureManager
 
                     unhookContainer[1] = findAndHookMethod(
-                        "com.snapchat.android.LandingPageActivity",
+                        "com.snap.mushroom.MainActivity",
                         lpparam.classLoader,
                         "onCreate",
                         Bundle::class.java,

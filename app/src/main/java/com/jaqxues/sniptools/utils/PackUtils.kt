@@ -22,13 +22,13 @@ fun Attributes.buildMetadata(file: File): PackMetadata {
         getValue(name) ?: throw IllegalStateException("Pack did not include \"$name\" Attribute")
 
     return PackMetadata(
-        flavour = getOrThrow("Flavour"),
+        flavour = getOrThrow("Flavor"),
         scVersion = getOrThrow("ScVersion"),
         name = file.name.dropLast(4),
         devPack = getOrThrow("Development").equals("true", false),
         packVersion = getOrThrow("PackVersion"),
         packVersionCode = getOrThrow("PackVersionCode").toInt(),
-        packImplClass = getOrThrow("PackImpl"),
+        packImplClass = getOrThrow("PackImplClass"),
         minApkVersionCode = getOrThrow("MinApkVersionCode").toInt()
     )
 }
