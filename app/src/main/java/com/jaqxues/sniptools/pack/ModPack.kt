@@ -30,7 +30,7 @@ abstract class IFeature: FeatureHelper() {
 }
 
 class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMetadata>() {
-    override val appData = AppData(BuildConfig.VERSION_CODE, BuildConfig.DEBUG, CustomApplication.PACKAGE_NAME, BuildConfig.FLAVOR)
+    override val appData = AppData(BuildConfig.VERSION_CODE, BuildConfig.DEBUG)
 
     override fun buildMeta(attributes: Attributes, context: Context, file: File) =
         attributes.buildMetadata(file)
