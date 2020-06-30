@@ -42,7 +42,7 @@ packCompiler {
             PackVersionCode  : 1,
             MinApkVersionCode: 1,
             PackImplClass    : "com.jaqxues.sniptools.packimpl.PackImpl",
-            ScVersion        : "10.41.6.0",
+            ScVersion        : "10.85.0.63",
     ]
     getJarName = { attributes ->
         return new StringBuilder("Pack_")
@@ -66,15 +66,16 @@ android.buildTypes.forEach { buildType ->
         group "install"
 
         doLast {
+            def snapPkg = 'com.snapchat.android'
             exec {
-                commandLine android.adbExecutable, 'shell', 'am', 'force-stop', 'com.snapchat.android'
+                commandLine android.adbExecutable, 'shell', 'am', 'force-stop', snapPkg
             }
             exec {
                 commandLine android.adbExecutable, 'shell', 'am', 'start', '-n', 'com.jaqxues.sniptools/.MainActivity', '--es', 'select_new_pack', tasks.getByName("adbPushPack$buildTypeCap").outputs.files.singleFile.name
             }
             sleep(200)
             exec {
-                commandLine android.adbExecutable, 'shell', 'am', 'start', '-n', 'com.snapchat.android/.LandingPageActivity'
+                commandLine android.adbExecutable, 'shell', 'am', 'start', '-n', "$snapPkg/.LandingPageActivity"
             }
         }
     }

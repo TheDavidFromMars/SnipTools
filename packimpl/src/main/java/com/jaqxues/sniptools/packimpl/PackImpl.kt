@@ -5,6 +5,7 @@ import com.jaqxues.akrolyb.prefs.PrefManager
 import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.ModPack
+import timber.log.Timber
 
 
 /**
@@ -14,6 +15,7 @@ import com.jaqxues.sniptools.pack.ModPack
 @Suppress("unused")
 class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
     init {
+        Timber.d("Pack Constructor was Invoked!")
         PrefManager.addPreferences(PackPreferences::class)
     }
 
