@@ -23,6 +23,7 @@ import java.util.jar.Attributes
 abstract class ModPack(localPackMetadata: PackMetadata) : ModPackBase<PackMetadata>(localPackMetadata) {
     abstract val featureManager: FeatureManager<out IFeature>
     abstract val staticFragments: List<BaseFragment>
+    abstract val lateInitActivity: String
 }
 
 abstract class IFeature: FeatureHelper() {

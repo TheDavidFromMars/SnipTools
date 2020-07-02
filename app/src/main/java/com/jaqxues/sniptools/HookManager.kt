@@ -35,7 +35,6 @@ class HookManager : IXposedHookLoadPackage {
             return
         }
 
-        XposedBridge.log("Initializing Timber Trees")
         if (packageName != "com.snapchat.android") return
         CommonSetup.initTimber()
         if (hasHooked.getAndSet(true)) {
@@ -70,7 +69,7 @@ class HookManager : IXposedHookLoadPackage {
                     val featureManager = pack.featureManager
 
                     unhookContainer[1] = findAndHookMethod(
-                        "com.snap.mushroom.MainActivity",
+                        pack.lateInitActivity,
                         lpparam.classLoader,
                         "onCreate",
                         Bundle::class.java,

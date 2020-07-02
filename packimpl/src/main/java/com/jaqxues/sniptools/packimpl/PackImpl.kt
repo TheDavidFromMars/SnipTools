@@ -22,4 +22,5 @@ class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
     override val featureManager by lazy { FeatureManager(FeatureSet) }
 
     override val staticFragments = emptyList<BaseFragment>()
+    override val lateInitActivity = "com.snap.mushroom.MainActivity"
 }
