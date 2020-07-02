@@ -12,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.R
+import com.jaqxues.sniptools.utils.getColorCompat
 import com.jaqxues.sniptools.utils.installedScVersion
 import kotlinx.android.synthetic.main.frag_pack_manager.*
 
@@ -42,12 +43,12 @@ class PackManagerFragment: BaseFragment() {
         txt_app_version.text = buildSpannedString {
             append(getString(R.string.footer_app_version))
             append(": ")
-            bold { color(requireContext().getColor(R.color.colorPrimaryLight)) { append(BuildConfig.VERSION_NAME) } }
+            bold { color(requireContext().getColorCompat(R.color.colorPrimaryLight)) { append(BuildConfig.VERSION_NAME) } }
         }
         txt_sc_version.text = buildSpannedString {
             append(getString(R.string.footer_snapchat_version))
             append(": ")
-            bold { color(requireContext().getColor(R.color.colorPrimaryLight)) { append(requireContext().installedScVersion ?: "Unknown") } }
+            bold { color(requireContext().getColorCompat(R.color.colorPrimaryLight)) { append(requireContext().installedScVersion ?: "Unknown") } }
         }
     }
 }
