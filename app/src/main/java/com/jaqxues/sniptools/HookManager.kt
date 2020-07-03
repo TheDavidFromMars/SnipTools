@@ -52,36 +52,46 @@ class HookManager : IXposedHookLoadPackage {
             "attach",
             Context::class.java,
             after { param ->
-                Timber.d("Invoked Application#attach(Context), preparing Hook Stage")
+                try {
+                    Timber.d("Invoked Application#attach(Context), preparing Hook Stage")
 
-                val snapContext = param.args[0] as Context
-                val snapApp = param.thisObject as Application
-                val moduleContext = ContextContainer.createModuleContext(snapApp)
-                ContextContainer.setModuleContext(moduleContext)
+                    val snapContext = param.args[0] as Context
+                    val snapApp = param.thisObject as Application
+                    val moduleContext = ContextContainer.createModuleContext(snapApp)
+                    ContextContainer.setModuleContext(moduleContext)
 
-                for (selectedPack in SELECTED_PACKS.getPref()) {
-                    val pack: ModPack = ModPackBase.buildPack(
-                        snapContext,
-                        File(PathProvider.modulesPath, selectedPack),
-                        if (BuildConfig.DEBUG) null else Security.certificateFromApk(moduleContext, CustomApplication.PACKAGE_NAME),
-                        packBuilder = PackFactory(true)
-                    )
-                    val featureManager = pack.featureManager
+                    for (selectedPack in SELECTED_PACKS.getPref()) {
+                        val pack: ModPack = ModPackBase.buildPack(
+                            snapContext,
+                            File(PathProvider.modulesPath, selectedPack),
+                            if (BuildConfig.DEBUG) null else Security.certificateFromApk(
+                                moduleContext,
+                                CustomApplication.PACKAGE_NAME
+                            ),
+                            packBuilder = PackFactory(true)
+                        )
+                        val featureManager = pack.featureManager
 
-                    unhookContainer[1] = findAndHookMethod(
-                        pack.lateInitActivity,
-                        lpparam.classLoader,
-                        "onCreate",
-                        Bundle::class.java,
-                        after { param ->
-                            Timber.d("Invoked LandingPageActivity#onCreate(Bundle), invoking lateInit")
-                            featureManager.lateInitAll(lpparam.classLoader, param.thisObject as Activity)
+                        unhookContainer[1] = findAndHookMethod(
+                            pack.lateInitActivity,
+                            lpparam.classLoader,
+                            "onCreate",
+                            Bundle::class.java,
+                            after { param ->
+                                Timber.d("Invoked LandingPageActivity#onCreate(Bundle), invoking lateInit")
+                                featureManager.lateInitAll(
+                                    lpparam.classLoader,
+                                    param.thisObject as Activity
+                                )
 
-                            unhookContainer[1]!!.unhook()
-                        })
+                                unhookContainer[1]!!.unhook()
+                            })
 
-                    featureManager.loadAll(lpparam.classLoader, snapContext)
-                    unhookContainer[0]!!.unhook()
+                        featureManager.loadAll(lpparam.classLoader, snapContext)
+                        unhookContainer[0]!!.unhook()
+                    }
+                } catch (t: Throwable) {
+                    Timber.e(t)
                 }
             })
     }

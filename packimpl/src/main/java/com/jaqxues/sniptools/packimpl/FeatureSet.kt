@@ -12,7 +12,8 @@ object FeatureSet: FeatureProvider<IFeature> {
     override val disabledFeatures = emptyList<String>()
 
     override val optionalFeatures = mapOf(
-        "misc" to MiscFeatures::class
+        "misc" to MiscFeatures::class,
+        "chat" to ChatSaving::class
     )
     override val forcedFeatures = mapOf(
         "forced" to ForcedHooks::class

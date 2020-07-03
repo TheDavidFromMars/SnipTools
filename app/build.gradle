@@ -95,6 +95,12 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
 
+    // api 'com.amitshekhar.android:debug-db:1.0.6'
+    // Files built by fork to allow for 2 different Contexts
+    // https://github.com/jaqxues/Android-Debug-Database
+    api files('libs/debug-db-debug.aar')
+    api files('libs/debug-db-base-debug.aar')
+
     api('com.github.jaqxues:Akrolyb:master-SNAPSHOT') {
         changing = true
     }

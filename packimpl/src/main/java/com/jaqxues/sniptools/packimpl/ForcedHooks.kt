@@ -1,9 +1,13 @@
 package com.jaqxues.sniptools.packimpl
 
 import android.content.Context
-import com.jaqxues.akrolyb.prefs.PrefManager
+import com.amitshekhar.DebugDB
+import com.amitshekhar.debug.sqlite.DebugDBFactory
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.utils.ContextContainer
+import com.jaqxues.sniptools.utils.after
+import de.robv.android.xposed.XposedHelpers
 
 
 /**
@@ -19,6 +23,16 @@ class ForcedHooks : IFeature() {
         get() = TODO("Not yet implemented")
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
-        TODO("Not yet implemented")
+
+
+        XposedHelpers.findAndHookMethod("com.snap.media.provider.MediaPackageFileProvider", classLoader, "onCreate", after {
+            if (BuildConfig.DEBUG) {
+                DebugDB.initialize(
+                    ContextContainer.getModuleContextNotNull(context),
+                    context,
+                    DebugDBFactory()
+                )
+            }
+        })
     }
 }

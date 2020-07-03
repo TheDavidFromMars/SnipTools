@@ -8,5 +8,4 @@ import com.jaqxues.akrolyb.prefs.Preference
  * Date: 14.06.20 - Time 20:28.
  */
 object PackPreferences {
-    val test = Preference("X", true, Boolean::class)
 }

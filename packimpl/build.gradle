@@ -27,11 +27,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app')
+
+    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'de.robv.android.xposed:api:82:sources'
 }
 
 packCompiler {
@@ -42,7 +48,7 @@ packCompiler {
             PackVersionCode  : 1,
             MinApkVersionCode: 1,
             PackImplClass    : "com.jaqxues.sniptools.packimpl.PackImpl",
-            ScVersion        : "10.85.0.63",
+            ScVersion        : "10.85.5.74",
     ]
     getJarName = { attributes ->
         return new StringBuilder("Pack_")
