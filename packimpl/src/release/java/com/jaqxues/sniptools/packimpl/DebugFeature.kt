@@ -12,4 +12,5 @@ import kotlin.reflect.KClass
 object DebugCompat : IDebugCompat {
     override val debugFeature: KClass<out IFeature>? = null
     override val debugPrefsClass: KClass<*>? get() = null
+    override val debugHookDecs: Any? get() = null
 }
