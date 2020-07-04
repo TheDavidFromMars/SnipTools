@@ -5,6 +5,8 @@ import com.jaqxues.akrolyb.prefs.PrefManager
 import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.ModPack
+import com.jaqxues.sniptools.packimpl.utils.FeatureSet
+import com.jaqxues.sniptools.packimpl.utils.PackPreferences
 import timber.log.Timber
 import com.jaqxues.sniptools.BuildConfig as AppBuildConfig
 

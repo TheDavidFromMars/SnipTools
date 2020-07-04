@@ -5,6 +5,7 @@ import com.amitshekhar.DebugDB
 import com.amitshekhar.debug.sqlite.DebugDBFactory
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.utils.CheckDebugFeature
 import com.jaqxues.sniptools.utils.ContextContainer
 import com.jaqxues.sniptools.utils.after
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod

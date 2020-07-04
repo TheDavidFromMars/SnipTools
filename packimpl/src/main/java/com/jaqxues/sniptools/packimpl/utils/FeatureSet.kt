@@ -1,7 +1,8 @@
-package com.jaqxues.sniptools.packimpl
+package com.jaqxues.sniptools.packimpl.utils
 
 import com.jaqxues.akrolyb.genhook.FeatureProvider
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.*
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations
 import kotlin.reflect.KClass
 
