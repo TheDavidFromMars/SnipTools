@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import com.jaqxues.sniptools.CustomApplication
@@ -13,6 +14,7 @@ import java.lang.ref.WeakReference
  */
 object ContextContainer {
     private var moduleContextRef: WeakReference<Context>? = null
+    private var activityRef: WeakReference<Activity>? = null
 
     fun setModuleContext(moduleContext: Context) {
         moduleContextRef = WeakReference(moduleContext)
@@ -42,4 +44,7 @@ object ContextContainer {
             throw i
         }
     }
+
+    fun setActivity(activity: Activity) { activityRef = WeakReference(activity) }
+    fun getActivity() = activityRef?.get()
 }

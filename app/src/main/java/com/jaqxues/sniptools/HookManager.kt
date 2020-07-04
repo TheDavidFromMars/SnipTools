@@ -78,7 +78,9 @@ class HookManager : IXposedHookLoadPackage {
                             "onCreate",
                             Bundle::class.java,
                             after { param ->
+                                ContextContainer.setActivity(param.thisObject as Activity)
                                 Timber.d("Invoked LandingPageActivity#onCreate(Bundle), invoking lateInit")
+
                                 featureManager.lateInitAll(
                                     lpparam.classLoader,
                                     param.thisObject as Activity

@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.utils
 
 import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XC_MethodReplacement
 
 
 /**
@@ -20,3 +21,18 @@ inline fun after(crossinline hook: (XC_MethodHook.MethodHookParam) -> Unit) =
                 hook(param)
             }
         }
+
+inline fun replaceReturn(crossinline hook: (XC_MethodHook.MethodHookParam) -> Any?) =
+    object : XC_MethodReplacement() {
+        override fun replaceHookedMethod(param: MethodHookParam): Any? {
+            return hook(param)
+        }
+    }
+
+inline fun replace(crossinline hook: (XC_MethodHook.MethodHookParam) -> Unit) =
+    object : XC_MethodReplacement() {
+        override fun replaceHookedMethod(param: MethodHookParam): Any? {
+            hook(param)
+            return null
+        }
+    }
