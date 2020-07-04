@@ -19,9 +19,19 @@ import com.jaqxues.sniptools.BuildConfig as AppBuildConfig
 class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
     init {
         Timber.d("Pack Constructor was Invoked!")
-        PrefManager.addPreferences(PackPreferences::class)
 
+        // Assert that this Pack is running with a compatible BuildType combination
         performAdditionalChecks(metadata)
+
+        // Loading Pack Preferences (with Debug Preferences if they exist)
+        Timber.d("Loading Pack Preferences")
+        PrefManager.addPreferences(
+            *arrayOf(
+                PackPreferences::class,
+                DebugCompat.debugPrefsClass
+            ).filterNotNull().toTypedArray()
+        )
+        Timber.d("Fully Initialized Pack")
     }
 
     override val featureManager by lazy { FeatureManager(FeatureSet) }
@@ -30,7 +40,9 @@ class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
     override val lateInitActivity = "com.snap.mushroom.MainActivity"
 
     private fun performAdditionalChecks(metadata: PackMetadata) {
-        check(BuildConfig.DEBUG == metadata.devPack
-                && BuildConfig.DEBUG == AppBuildConfig.DEBUG) { "Incompatible DevPack - Debug Combination" }
+        check(
+            BuildConfig.DEBUG == metadata.devPack
+                    && BuildConfig.DEBUG == AppBuildConfig.DEBUG
+        ) { "Incompatible DevPack - Debug Combination" }
     }
 }

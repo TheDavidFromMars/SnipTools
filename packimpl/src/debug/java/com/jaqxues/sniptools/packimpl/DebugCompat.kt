@@ -7,9 +7,9 @@ import kotlin.reflect.KClass
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
- * Date: 03.07.20 - Time 23:03.
+ * Date: 04.07.20 - Time 17:08.
  */
 object DebugCompat : IDebugCompat {
-    override val debugFeature: KClass<out IFeature>? = null
-    override val debugPrefsClass: KClass<*>? get() = null
+    override val debugFeature: KClass<out IFeature>? get() = DebugFeature::class
+    override val debugPrefsClass: KClass<*>? get() = DebugPreferences::class
 }
