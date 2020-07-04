@@ -98,4 +98,11 @@ dependencies {
     api('com.github.jaqxues:Akrolyb:master-SNAPSHOT') {
         changing = true
     }
+
+
+    // debugApi 'com.amitshekhar.android:debug-db:1.0.6'
+    // Files built by fork to allow for 2 different Contexts (+ AndroidX support)
+    // https://github.com/jaqxues/Android-Debug-Database
+    debugApi files('libs/debug-db-debug.aar')
+    debugApi files('libs/debug-db-base-debug.aar')
 }

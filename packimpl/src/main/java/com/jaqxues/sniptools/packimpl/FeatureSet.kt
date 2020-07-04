@@ -2,6 +2,7 @@ package com.jaqxues.sniptools.packimpl
 
 import com.jaqxues.akrolyb.genhook.FeatureProvider
 import com.jaqxues.sniptools.pack.IFeature
+import kotlin.reflect.KClass
 
 
 /**
@@ -15,8 +16,15 @@ object FeatureSet: FeatureProvider<IFeature> {
         "misc" to MiscFeatures::class,
         "chat" to ChatSaving::class
     )
-    override val forcedFeatures = mapOf(
-        "forced" to ForcedHooks::class
-    )
+    override val forcedFeatures = arrayOf(
+        "forced" to ForcedHooks::class,
+        DebugFeature.debugFeature?.let { "debug" to it }
+    ).filterNotNull().toMap()
+
     override val hookDefs = emptyArray<Any>()
+}
+
+// Allow DebugFeature to be included only for debug builds: 2 different implementations
+interface CheckDebugFeature {
+    val debugFeature: KClass<out IFeature>?
 }
