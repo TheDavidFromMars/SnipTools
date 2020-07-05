@@ -51,11 +51,7 @@ packCompiler {
             ScVersion        : "10.85.5.74",
     ]
     getJarName = { attributes ->
-        return new StringBuilder("Pack_")
-                .append(attributes["PackVersion"])
-                .append("_")
-                .append(attributes["ScVersion"])
-                .toString()
+        return "Pack_${attributes["PackVersion"]}_${attributes["ScVersion"]}".toString()
     }
     adbPush = {
         defaultPath = "/storage/emulated/0/"
