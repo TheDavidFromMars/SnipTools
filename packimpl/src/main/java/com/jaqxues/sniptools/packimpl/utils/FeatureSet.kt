@@ -19,7 +19,8 @@ object FeatureSet : FeatureProvider<IFeature> {
     override val optionalFeatures = mapOf(
         "misc" to MiscFeatures::class,
         "chat" to ChatSaving::class,
-        "screenshot" to ScreenshotBypass::class
+        "screenshot" to ScreenshotBypass::class,
+        "stealth" to StealthViewing::class
     )
 
     override val forcedFeatures = arrayOf(
