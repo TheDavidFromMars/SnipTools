@@ -17,10 +17,11 @@ object FeatureSet : FeatureProvider<IFeature> {
     override val disabledFeatures = DISABLED_FEATURES.getPref()
 
     override val optionalFeatures = mapOf(
-        "misc" to MiscFeatures::class,
         "chat" to ChatSaving::class,
+        "misc" to MiscFeatures::class,
         "screenshot" to ScreenshotBypass::class,
-        "stealth" to StealthViewing::class
+        "stealth" to StealthViewing::class,
+        "unlimited" to UnlimitedViewing::class
     )
 
     override val forcedFeatures = arrayOf(
