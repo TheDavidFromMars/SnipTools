@@ -16,4 +16,12 @@ object PackPreferences {
     val DISABLED_FEATURES = Preference(
         "disabled_features", emptyList<String>(), genericType<List<String>>()
     )
+
+    val STORY_STEALTH_ENABLED = Preference(
+        "story_stealth_enabled", false, Boolean::class
+    )
+
+    val FORCE_SC_APP_DECK_MODE = Preference(
+        "force_sc_app_deck_mode", "DISABLED", String::class
+    )
 }

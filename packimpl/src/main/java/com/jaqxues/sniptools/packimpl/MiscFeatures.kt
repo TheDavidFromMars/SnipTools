@@ -1,8 +1,12 @@
 package com.jaqxues.sniptools.packimpl
 
 import android.content.Context
+import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.utils.PackPreferences
+import de.robv.android.xposed.XC_MethodReplacement
+import de.robv.android.xposed.XposedHelpers
 
 
 /**
@@ -18,6 +22,15 @@ class MiscFeatures : IFeature() {
         get() = TODO("Not yet implemented")
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
-        TODO("Not yet implemented")
+
+        /*
+        Disables or activates the new App Deck in Snapchat. Possible values: DISABLED | THREE | FIVE
+        */
+        XposedHelpers.findAndHookMethod(
+            "x45", classLoader, "h", XC_MethodReplacement.returnConstant(
+                XposedHelpers.findClass("K45", classLoader)
+                    .getDeclaredField(PackPreferences.FORCE_SC_APP_DECK_MODE.getPref()).get(null)
+            )
+        )
     }
 }

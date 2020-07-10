@@ -1,9 +1,11 @@
 package com.jaqxues.sniptools.packimpl
 
 import android.content.Context
+import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.MARK_STORY_AS_VIEWED
+import com.jaqxues.sniptools.packimpl.utils.PackPreferences.STORY_STEALTH_ENABLED
 import de.robv.android.xposed.XC_MethodReplacement
 
 
@@ -22,6 +24,7 @@ class StealthViewing : IFeature() {
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 
         // Stories (Non-Friends and Friends)
-        hookMethod(MARK_STORY_AS_VIEWED, XC_MethodReplacement.DO_NOTHING)
+        if (STORY_STEALTH_ENABLED.getPref())
+            hookMethod(MARK_STORY_AS_VIEWED, XC_MethodReplacement.DO_NOTHING)
     }
 }
