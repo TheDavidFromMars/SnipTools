@@ -27,8 +27,8 @@ class MiscFeatures : IFeature() {
         Disables or activates the new App Deck in Snapchat. Possible values: DISABLED | THREE | FIVE
         */
         XposedHelpers.findAndHookMethod(
-            "x45", classLoader, "h", XC_MethodReplacement.returnConstant(
-                XposedHelpers.findClass("K45", classLoader)
+            "c65", classLoader, "i", XC_MethodReplacement.returnConstant(
+                XposedHelpers.findClass("l65", classLoader)
                     .getDeclaredField(PackPreferences.FORCE_SC_APP_DECK_MODE.getPref()).get(null)
             )
         )
