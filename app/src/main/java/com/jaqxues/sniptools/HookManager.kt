@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import com.jaqxues.akrolyb.genhook.FeatureManager
+import com.jaqxues.akrolyb.genhook.states.State
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.utils.Security
@@ -13,7 +15,6 @@ import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.utils.*
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import timber.log.Timber
@@ -85,11 +86,13 @@ class HookManager : IXposedHookLoadPackage {
                                     lpparam.classLoader,
                                     param.thisObject as Activity
                                 )
+                                featureManager.printState()
 
                                 unhookContainer[1]!!.unhook()
                             })
 
                         featureManager.loadAll(lpparam.classLoader, snapContext)
+                        featureManager.printState()
                         unhookContainer[0]!!.unhook()
                     }
                 } catch (t: Throwable) {
@@ -100,5 +103,13 @@ class HookManager : IXposedHookLoadPackage {
 
     companion object {
         val hasHooked = AtomicBoolean()
+    }
+
+    private fun FeatureManager<*>.printState() {
+        when (val state = stateManager.getGlobalState()) {
+            is State.Success -> Timber.d("Successfully loaded all Hooks")
+            is State.Warning -> Timber.w("Hooked applied with warnings: %s", state.signals)
+            is State.Aborted -> Timber.e("Hooking aborted with errors: %s", state.signals)
+        }
     }
 }
