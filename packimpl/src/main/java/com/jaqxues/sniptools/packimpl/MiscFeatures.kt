@@ -1,12 +1,10 @@
 package com.jaqxues.sniptools.packimpl
 
 import android.content.Context
-import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
-import com.jaqxues.sniptools.packimpl.utils.PackPreferences
-import de.robv.android.xposed.XC_MethodReplacement
-import de.robv.android.xposed.XposedHelpers
+import com.jaqxues.sniptools.utils.before
+import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 
 
 /**
@@ -24,13 +22,11 @@ class MiscFeatures : IFeature() {
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 
         /*
-        Disables or activates the new App Deck in Snapchat. Possible values: DISABLED | THREE | FIVE
+        Disables or activates the new App Deck in Snapchat.
         */
-        XposedHelpers.findAndHookMethod(
-            "c65", classLoader, "i", XC_MethodReplacement.returnConstant(
-                XposedHelpers.findClass("l65", classLoader)
-                    .getDeclaredField(PackPreferences.FORCE_SC_APP_DECK_MODE.getPref()).get(null)
-            )
-        )
+        findAndHookMethod("vre", classLoader, "g", "pX4", before {
+            if (it.args[0].toString() == "NV_GROWTH_MODE")
+                it.result = 0
+        })
     }
 }
