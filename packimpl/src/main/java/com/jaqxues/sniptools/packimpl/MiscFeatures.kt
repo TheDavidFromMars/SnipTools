@@ -2,13 +2,11 @@ package com.jaqxues.sniptools.packimpl
 
 import android.content.Context
 import com.jaqxues.akrolyb.prefs.getPref
-import com.jaqxues.akrolyb.prefs.removePref
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE
 import com.jaqxues.sniptools.utils.before
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
-import timber.log.Timber
 
 
 /**
