@@ -22,6 +22,6 @@ object PackPreferences {
     )
 
     val FORCE_SC_APP_DECK_MODE = Preference(
-        "force_sc_app_deck_mode", "DISABLED", String::class
+        "force_sc_app_deck_mode", -1, Int::class
     )
 }

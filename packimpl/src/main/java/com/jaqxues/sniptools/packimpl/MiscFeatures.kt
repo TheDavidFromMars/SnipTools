@@ -1,10 +1,14 @@
 package com.jaqxues.sniptools.packimpl
 
 import android.content.Context
+import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.akrolyb.prefs.removePref
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE
 import com.jaqxues.sniptools.utils.before
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
+import timber.log.Timber
 
 
 /**
@@ -24,9 +28,11 @@ class MiscFeatures : IFeature() {
         /*
         Disables or activates the new App Deck in Snapchat.
         */
-        findAndHookMethod("vre", classLoader, "g", "pX4", before {
-            if (it.args[0].toString() == "NV_GROWTH_MODE")
-                it.result = 0
-        })
+        val appDeckMode = FORCE_SC_APP_DECK_MODE.getPref()
+        if (appDeckMode >= 0)
+            findAndHookMethod("vre", classLoader, "g", "pX4", before {
+                if (it.args[0].toString() == "NV_GROWTH_MODE")
+                    it.result = appDeckMode
+            })
     }
 }
