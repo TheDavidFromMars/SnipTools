@@ -4,9 +4,9 @@ import android.content.Context
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.FORCE_APP_DECK
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE
 import com.jaqxues.sniptools.utils.before
-import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 
 
 /**
@@ -28,7 +28,7 @@ class MiscFeatures : IFeature() {
         */
         val appDeckMode = FORCE_SC_APP_DECK_MODE.getPref()
         if (appDeckMode >= 0)
-            findAndHookMethod("vre", classLoader, "g", "pX4", before {
+        hookMethod(FORCE_APP_DECK, before {
                 if (it.args[0].toString() == "NV_GROWTH_MODE")
                     it.result = appDeckMode
             })
