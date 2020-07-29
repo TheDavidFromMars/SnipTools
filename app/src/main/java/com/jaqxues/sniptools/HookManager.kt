@@ -4,8 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import com.jaqxues.akrolyb.genhook.FeatureManager
-import com.jaqxues.akrolyb.genhook.states.State
+import com.jaqxues.akrolyb.genhook.states.StateLogger
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.utils.Security
@@ -72,6 +71,9 @@ class HookManager : IXposedHookLoadPackage {
                             packBuilder = PackFactory(true)
                         )
                         val featureManager = pack.featureManager
+                        featureManager.stateDispatcher.apply {
+                            addStateListener(StateLogger())
+                        }
 
                         unhookContainer[1] = findAndHookMethod(
                             pack.lateInitActivity,
@@ -86,13 +88,11 @@ class HookManager : IXposedHookLoadPackage {
                                     lpparam.classLoader,
                                     param.thisObject as Activity
                                 )
-                                featureManager.printState()
 
                                 unhookContainer[1]!!.unhook()
                             })
 
                         featureManager.loadAll(lpparam.classLoader, snapContext)
-                        featureManager.printState()
                         unhookContainer[0]!!.unhook()
                     }
                 } catch (t: Throwable) {
@@ -103,13 +103,5 @@ class HookManager : IXposedHookLoadPackage {
 
     companion object {
         val hasHooked = AtomicBoolean()
-    }
-
-    private fun FeatureManager<*>.printState() {
-        when (val state = stateManager.getGlobalState()) {
-            is State.Success -> Timber.d("Successfully loaded all Hooks")
-            is State.Warning -> Timber.w("Hooked applied with warnings: %s", state.signals)
-            is State.Aborted -> Timber.e("Hooking aborted with errors: %s", state.signals)
-        }
     }
 }
