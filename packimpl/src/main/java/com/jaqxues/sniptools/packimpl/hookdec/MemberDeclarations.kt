@@ -17,15 +17,15 @@ object MemberDeclarations {
         "a",
         arrayOf(ScreenshotBypass::class.java),
 
-        SCREENSHOT_DETECTOR, "dG5"
+        SCREENSHOT_DETECTOR, "QJ5"
     )
 
     val MARK_STORY_AS_VIEWED = MethodDec(
         STORY_VIEWED_PLUGIN,
-        "j0",
+        "X",
         arrayOf(StealthViewing::class.java),
 
-        "KTd"
+        "iSd", "XHd"
     )
 
     val SNAP_MODEL_CONSTRUCTOR = ConstructorDec(
@@ -33,15 +33,15 @@ object MemberDeclarations {
         arrayOf(UnlimitedViewing::class.java),
 
         String::class.java, Boolean::class.java, String::class.java, String::class.java,
-        String::class.java, Long::class.javaObjectType, "jv5", Long::class.java,
+        String::class.java, Long::class.javaObjectType, "By5", Long::class.java,
         Boolean::class.java, Long::class.javaObjectType, Long::class.java
     )
 
     val FORCE_APP_DECK = MethodDec(
         APP_START_EXPERIMENT_MANAGER,
-        "g",
+        "f",
         arrayOf(MiscFeatures::class.java),
 
-        "iY4"
+        "V15"
     )
 }
