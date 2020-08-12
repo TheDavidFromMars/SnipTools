@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.packimpl
+package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
 import com.jaqxues.akrolyb.prefs.getPref

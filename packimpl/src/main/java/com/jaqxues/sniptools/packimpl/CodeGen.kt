@@ -1,6 +1,6 @@
 package com.jaqxues.sniptools.packimpl
 
-import com.jaqxues.akrolyb.graphguard.GenerateGraphGuardDecs
+import com.jaqxues.akrolyb.graphguard.GraphGuard
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations
 
@@ -9,7 +9,7 @@ import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations
  * Date: 12.08.20 - Time 16:29.
  */
 fun main() {
-    GenerateGraphGuardDecs.printGeneratedDecs(
+    GraphGuard.printGeneratedDecs(
         ClassDeclarations, MemberDeclarations, object {}
     )
 }

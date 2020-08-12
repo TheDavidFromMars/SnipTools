@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.packimpl
+package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
 import com.jaqxues.akrolyb.prefs.getPref
@@ -28,9 +28,9 @@ class MiscFeatures : IFeature() {
         */
         val appDeckMode = FORCE_SC_APP_DECK_MODE.getPref()
         if (appDeckMode >= 0)
-        hookMethod(FORCE_APP_DECK, before {
-                if (it.args[0].toString() == "NV_GROWTH_MODE")
-                    it.result = appDeckMode
-            })
+            hookMethod(FORCE_APP_DECK, before {
+                    if (it.args[0].toString() == "NV_GROWTH_MODE")
+                        it.result = appDeckMode
+                })
     }
 }

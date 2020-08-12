@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.packimpl
+package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
 import com.jaqxues.sniptools.fragments.BaseFragment
@@ -7,9 +7,9 @@ import com.jaqxues.sniptools.pack.IFeature
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
- * Date: 04.06.20 - Time 00:17.
+ * Date: 02.07.20 - Time 19:42.
  */
-class ForcedHooks : IFeature() {
+class ChatSaving : IFeature() {
     override fun getFragments(): Array<BaseFragment> {
         TODO("Not yet implemented")
     }
