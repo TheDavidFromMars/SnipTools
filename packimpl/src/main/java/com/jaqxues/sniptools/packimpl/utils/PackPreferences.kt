@@ -24,4 +24,12 @@ object PackPreferences {
     val FORCE_SC_APP_DECK_MODE = Preference(
         "force_sc_app_deck_mode", -1, Int::class
     )
+
+    val SNAP_VIDEO_LOOPING = Preference(
+        "snap_video_looping", true, Boolean::class.java
+    )
+
+    val SNAP_IMAGE_UNLIMITED = Preference(
+        "snap_image_unlimited", true, Boolean::class.java
+    )
 }
