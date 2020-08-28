@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.fragments.BaseFragment
@@ -11,8 +13,6 @@ import com.jaqxues.sniptools.fragments.HomeFragment
 import com.jaqxues.sniptools.fragments.PackManagerFragment
 import com.jaqxues.sniptools.ui.views.DynamicNavigationView
 import com.jaqxues.sniptools.utils.CommonSetup
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragmentListener {
@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
 
         setContentView(R.layout.activity_main)
 
-        val toolbar = toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val drawerLayout = drawer_layout
-        val navView = nav_view
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val navView = findViewById<DynamicNavigationView>(R.id.nav_view)
 
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar!!
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
         supportFragmentManager.beginTransaction()
             .replace(R.id.frag_container_main, fragment)
             .commit()
-        toolbar.subtitle = nav_view.menu.findItem(fragment.menuId).title
-        drawer_layout.closeDrawers()
+        findViewById<Toolbar>(R.id.toolbar).subtitle = findViewById<DynamicNavigationView>(R.id.nav_view).menu.findItem(fragment.menuId).title
+        findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawers()
     }
 }

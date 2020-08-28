@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.text.underline
 import com.jaqxues.sniptools.R
-import kotlinx.android.synthetic.main.frag_pack_downloader.*
 
 
 /**
@@ -23,7 +23,7 @@ class PackDownloaderFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        txt_last_checked.text = buildSpannedString {
+        view.findViewById<TextView>(R.id.txt_last_checked).text = buildSpannedString {
             append(getString(R.string.footer_last_checked))
             append(": ")
             bold { underline { append("14 min ago") } }

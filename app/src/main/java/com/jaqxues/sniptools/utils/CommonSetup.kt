@@ -32,7 +32,7 @@ object CommonSetup {
                 }
             })
             // External File Logging
-//            ileLogger(FileLogger.getLogFile(File(PathProvider.logsPath))).run {
+//            FileLogger(FileLogger.getLogFile(File(PathProvider.logsPath))).run {
 //                startLogger()
 //                Timber.plant(this)
 //            }

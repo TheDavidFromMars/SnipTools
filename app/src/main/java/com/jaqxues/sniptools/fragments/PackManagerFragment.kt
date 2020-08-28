@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.utils.getColorCompat
 import com.jaqxues.sniptools.utils.installedScVersion
-import kotlinx.android.synthetic.main.frag_pack_manager.*
 
 
 /**
@@ -29,9 +30,10 @@ class PackManagerFragment: BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view_pager.isSaveEnabled = false
-        view_pager.adapter = PackManagerPagerAdapter(this)
-        TabLayoutMediator(tab_layout, view_pager) { tab, position ->
+        val viewPager = view.findViewById<ViewPager2>(R.id.view_pager)
+        viewPager.isSaveEnabled = false
+        viewPager.adapter = PackManagerPagerAdapter(this)
+        TabLayoutMediator(view.findViewById(R.id.tab_layout), viewPager) { tab, position ->
             val id = when (position) {
                 0 -> R.string.tab_pack_selector_title
                 1 -> R.string.tab_pack_downloader_title
@@ -40,12 +42,12 @@ class PackManagerFragment: BaseFragment() {
             tab.setText(id)
         }.attach()
 
-        txt_app_version.text = buildSpannedString {
+        view.findViewById<TextView>(R.id.txt_app_version).text = buildSpannedString {
             append(getString(R.string.footer_app_version))
             append(": ")
             bold { color(requireContext().getColorCompat(R.color.colorPrimaryLight)) { append(BuildConfig.VERSION_NAME) } }
         }
-        txt_sc_version.text = buildSpannedString {
+        view.findViewById<TextView>(R.id.txt_sc_version).text = buildSpannedString {
             append(getString(R.string.footer_snapchat_version))
             append(": ")
             bold { color(requireContext().getColorCompat(R.color.colorPrimaryLight)) { append(requireContext().installedScVersion ?: "Unknown") } }
