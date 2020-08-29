@@ -1,3 +1,11 @@
 rootProject.name='SnipTools'
 include ':app'
 include ':packimpl'
+
+// Locally Testing PackCompiler Plugin
+//includeBuild('../PackCompiler') {
+//    dependencySubstitution {
+//        substitute module("gradle.plugin.com.jaqxues:PackCompiler") with project(":")
+//    }
+//
+//}
