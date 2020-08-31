@@ -7,7 +7,6 @@ import com.jaqxues.akrolyb.pack.AppData
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.pack.PackFactoryBase
 import com.jaqxues.sniptools.BuildConfig
-import com.jaqxues.sniptools.CustomApplication
 import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.utils.buildMetadata
