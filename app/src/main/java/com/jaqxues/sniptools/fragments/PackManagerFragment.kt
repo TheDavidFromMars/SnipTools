@@ -4,64 +4,105 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.text.bold
-import androidx.core.text.buildSpannedString
-import androidx.core.text.color
-import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
-import com.jaqxues.sniptools.BuildConfig
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.TabConstants.defaultTabIndicatorOffset
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.utils.getColorCompat
-import com.jaqxues.sniptools.utils.installedScVersion
+import com.jaqxues.sniptools.ui.AppScreen
 
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 03.06.20 - Time 10:56.
  */
-class PackManagerFragment: BaseFragment() {
+class PackManagerFragment : BaseFragment() {
     override val menuId get() = R.id.nav_pack_manager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.frag_pack_manager, container, false)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
+                AppScreen {
+                    Column {
+                        TabRow(
+                            selectedTabIndex = currentTab.ordinal,
+                            indicator = {
+                                TabConstants.DefaultIndicator(
+                                    modifier = Modifier.defaultTabIndicatorOffset(
+                                        it[currentTab.ordinal]
+                                    ), color = MaterialTheme.colors.primary
+                                )
+                            }
+                        ) {
+                            for (tab in PackManagerTabs.values())
+                                Tab(
+                                    selected = currentTab == tab,
+                                    onClick = { currentTab = tab },
+                                    text = { Text(tab.tabName) })
+                        }
+                        Spacer(Modifier.padding(8.dp))
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val viewPager = view.findViewById<ViewPager2>(R.id.view_pager)
-        viewPager.isSaveEnabled = false
-        viewPager.adapter = PackManagerPagerAdapter(this)
-        TabLayoutMediator(view.findViewById(R.id.tab_layout), viewPager) { tab, position ->
-            val id = when (position) {
-                0 -> R.string.tab_pack_selector_title
-                1 -> R.string.tab_pack_downloader_title
-                else -> throw IllegalStateException("Position $position not registered")
+                        val packs =
+                            if (currentTab == PackManagerTabs.PACK_SELECTOR)
+                                arrayOf("10.41.6.0", "10.89.7.72", "10.23.62.24")
+                            else
+                                arrayOf("11.0.0.0", "11.23.0.3", "12.32.3.23")
+
+                        Crossfade(current = currentTab) {
+                            Column {
+                                packs.forEach {
+                                    Card(
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                            .clip(RoundedCornerShape(4.dp))
+                                            .fillMaxWidth(),
+                                        elevation = 4.dp
+                                    ) {
+                                        Row(
+                                            Modifier
+                                                .clickable(onClick = {})
+                                                .padding(16.dp)
+                                        ) {
+                                            Icon(
+                                                vectorResource(id = R.drawable.ic_pack),
+                                                Modifier.padding(horizontal = 16.dp)
+                                                    .preferredHeight(24.dp)
+                                            )
+                                            Text(
+                                                text = "Pack v$it",
+                                                color = Color.LightGray,
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            tab.setText(id)
-        }.attach()
-
-        view.findViewById<TextView>(R.id.txt_app_version).text = buildSpannedString {
-            append(getString(R.string.footer_app_version))
-            append(": ")
-            bold { color(requireContext().getColorCompat(R.color.colorPrimaryLight)) { append(BuildConfig.VERSION_NAME) } }
-        }
-        view.findViewById<TextView>(R.id.txt_sc_version).text = buildSpannedString {
-            append(getString(R.string.footer_snapchat_version))
-            append(": ")
-            bold { color(requireContext().getColorCompat(R.color.colorPrimaryLight)) { append(requireContext().installedScVersion ?: "Unknown") } }
         }
     }
 }
 
-class PackManagerPagerAdapter(frag: Fragment): FragmentStateAdapter(frag) {
-    override fun getItemCount() = 2
-
-    override fun createFragment(position: Int) =
-        when (position) {
-            0 -> PackSelectorFragment()
-            1 -> PackDownloaderFragment()
-            else -> throw IllegalArgumentException("Unknown item for position $position")
-        }
+enum class PackManagerTabs(val tabName: String) {
+    PACK_SELECTOR("Pack Selector"), PACK_DOWNLOADER("Pack Downloader")
 }
