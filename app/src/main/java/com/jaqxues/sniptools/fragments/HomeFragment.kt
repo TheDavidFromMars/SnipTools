@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.ColumnScope.gravity
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -62,7 +61,10 @@ fun HomeDivider() {
 
 @Composable
 fun HomeContent() {
-    Column(Modifier.fillMaxHeight()) {
+    Column(
+        Modifier.fillMaxHeight(),
+        horizontalGravity = CenterHorizontally
+    ) {
         Column(
             Modifier.padding(16.dp).weight(1f),
             horizontalGravity = CenterHorizontally
@@ -82,6 +84,15 @@ fun HomeContent() {
 
         HomeDivider()
         Spacer(Modifier.height(16.dp))
+
+        FooterText(
+            annotatedString {
+                append("Author: ")
+                withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) {
+                    append("jaqxues")
+                }
+            }
+        )
         FooterText(
             annotatedString {
                 append(ContextAmbient.current.getString(R.string.footer_app_version))
@@ -106,11 +117,6 @@ fun HomeContent() {
 }
 
 @Composable
-fun FooterText(string: AnnotatedString) {
-    Text(
-        text = string,
-        modifier = Modifier.gravity(CenterHorizontally),
-        color = Color.LightGray,
-        fontSize = 12.sp
-    )
+fun FooterText(text: AnnotatedString, color: Color = Color.LightGray) {
+    Text(text = text, color = color, fontSize = 12.sp)
 }
