@@ -18,7 +18,7 @@ val Context.installedScVersion
                 .getPackageInfo("com.snapchat.android", 0)
                 .versionName
         } catch (e: PackageManager.NameNotFoundException) {
-            Timber.e(e, "Unable to locate Snapchat on this device")
+            Timber.v("Unable to locate Snapchat on this device")
             null
         }
 
