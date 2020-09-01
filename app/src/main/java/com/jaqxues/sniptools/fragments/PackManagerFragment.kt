@@ -169,21 +169,15 @@ fun ExtendedPackLayout(packData: PackData) {
     Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
         Divider(Modifier.padding(horizontal = 20.dp))
         Row(Modifier.gravity(Alignment.CenterHorizontally)) {
-            Image(
-                vectorResource(id = R.drawable.ic_pack),
-                colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier.preferredHeight(40.dp).padding(8.dp)
-            )
-            Image(
-                vectorResource(id = R.drawable.ic_pack),
-                colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier.preferredHeight(40.dp).padding(8.dp)
-            )
-            Image(
-                vectorResource(id = R.drawable.ic_pack),
-                colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier.preferredHeight(40.dp).padding(8.dp)
-            )
+            repeat(3) {
+                IconButton(onClick = {}) {
+                    Image(
+                        vectorResource(id = R.drawable.ic_pack),
+                        colorFilter = ColorFilter.tint(Color.White),
+                        modifier = Modifier.preferredHeight(40.dp).padding(8.dp)
+                    )
+                }
+            }
         }
         Divider(Modifier.padding(horizontal = 80.dp))
         Spacer(Modifier.padding(8.dp))
