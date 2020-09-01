@@ -25,7 +25,7 @@ class SavingFeature : IFeature() {
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 
-        findAndHookMethod("vV6", classLoader, "u0", InputStream ::class.java, after {
+        findAndHookMethod("S07", classLoader, "y0", InputStream ::class.java, after {
             Timber.e(Throwable(), "[STLog] Saving Hook invoked")
             val result = it.result as InputStream
             val bytes = result.use(InputStream::readBytes)
@@ -34,7 +34,7 @@ class SavingFeature : IFeature() {
                 if (!exists()) mkdirs()
             }
 
-            File(folder, System.nanoTime().toString() + ".jpg").apply {
+            File(folder, "Auto_Save_${System.currentTimeMillis()}_${System.nanoTime()}.jpg").apply {
                 createNewFile()
                 writeBytes(bytes)
             }

@@ -7,6 +7,7 @@ import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.FORCE_APP_DECK
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE
 import com.jaqxues.sniptools.utils.before
+import timber.log.Timber
 
 
 /**
@@ -29,7 +30,7 @@ class MiscFeatures : IFeature() {
         val appDeckMode = FORCE_SC_APP_DECK_MODE.getPref()
         if (appDeckMode >= 0)
             hookMethod(FORCE_APP_DECK, before {
-                    if (it.args[0].toString() == "NV_GROWTH_MODE")
+                    if (it.args[0].toString() in setOf("NGS_GROWTH_MODE", "NGS_MODE"))
                         it.result = appDeckMode
                 })
     }
