@@ -1,19 +1,25 @@
 package com.jaqxues.sniptools.fragments
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animate
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.TabConstants.defaultTabIndicatorOffset
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,13 +28,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.annotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.ui.AppScreen
-
+import com.jaqxues.sniptools.utils.viewModel
+import com.jaqxues.sniptools.viewmodel.PackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
@@ -54,9 +66,9 @@ class PackManagerFragment : BaseFragment() {
 @Preview
 @Composable
 fun PackManagerScreen() {
-    var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
     AppScreen {
         Column {
+            var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
             TabRow(
                 selectedTabIndex = currentTab.ordinal,
                 indicator = {
@@ -75,19 +87,46 @@ fun PackManagerScreen() {
             }
             Spacer(Modifier.padding(8.dp))
 
-            val packs =
-                if (currentTab == PackManagerTabs.PACK_SELECTOR)
-                    arrayOf("10.41.6.0", "10.89.7.72", "10.23.62.24")
-                else
-                    arrayOf("11.0.0.0", "11.23.0.3", "12.32.3.23")
+            val packViewModel by viewModel<PackViewModel>()
             Crossfade(current = currentTab) {
-                Column {
-                    packs.forEach {
-                        PackElement(it)
-                    }
+                when (it) {
+                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(packViewModel)
+                    PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(packViewModel)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun PackSelectorTab(packViewModel: PackViewModel) {
+    val localPacks by packViewModel.localPacks.observeAsState()
+    LazyColumnFor(items = localPacks!!) {
+        PackElement(it)
+    }
+}
+
+@Composable
+fun PackDownloaderTab(packViewModel: PackViewModel) {
+    val serverPacks by packViewModel.serverPacks.observeAsState()
+    val lastChecked by packViewModel.lastChecked.observeAsState()
+
+    Column(Modifier.fillMaxHeight(), horizontalGravity = Alignment.CenterHorizontally) {
+        LazyColumnFor(items = serverPacks!!, modifier = Modifier.weight(1f)) {
+            PackElement(it)
+        }
+
+        Divider(Modifier.padding(48.dp, 8.dp, 48.dp), color = colorResource(id = R.color.colorPrimary))
+        Text(annotatedString {
+            append("Last Checked: ")
+            withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) {
+                append(DateUtils.getRelativeDateTimeString(
+                    ContextAmbient.current, lastChecked!!,
+                    DateUtils.SECOND_IN_MILLIS, DateUtils.WEEK_IN_MILLIS,
+                    DateUtils.FORMAT_ABBREV_RELATIVE
+                ).toString())
+            }
+        }, modifier = Modifier.padding(8.dp), color = Color.LightGray, fontSize = 12.sp)
     }
 }
 
