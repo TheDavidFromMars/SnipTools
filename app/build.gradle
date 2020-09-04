@@ -10,7 +10,6 @@ if (shouldSign) {
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.jaqxues.sniptools"
@@ -61,7 +60,7 @@ android {
     dynamicFeatures = [":packimpl"]
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.0.0-alpha01"
+        kotlinCompilerExtensionVersion "1.0.0-alpha02"
     }
 }
 
