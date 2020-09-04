@@ -1,10 +1,15 @@
 package com.jaqxues.sniptools
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
@@ -20,9 +25,29 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            init()
+        } else {
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+                if (granted) {
+                    init()
+                } else {
+                    Timber.e("Storage Permission Denied")
+                    Toast.makeText(this, "Storage Permission Denied", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+            }.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+    }
+
+    private fun init() {
         CommonSetup.initPrefs()
+
         if (intent.hasExtra("select_new_pack")) {
-            val extra = intent.getStringExtra("select_new_pack") ?: throw IllegalStateException("Extra cannot be null")
+            val extra = intent.getStringExtra("select_new_pack")
+                ?: throw IllegalStateException("Extra cannot be null")
             Timber.i("SnipTools was started with Intent Extra 'select_new_pack' - '$extra'. Selecting new Pack and Starting Snapchat")
             SELECTED_PACKS.putPref(listOf(extra))
             finish()
@@ -40,16 +65,24 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
-        ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name).let {
+        ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.app_name,
+            R.string.app_name
+        ).let {
             drawerLayout.addDrawerListener(it)
             it.syncState()
         }
+
+
         navView.initialize(this) {
             val homeFragment = HomeFragment()
 
             +homeFragment
             +PackManagerFragment()
-            
+
             homeFragment
         }
     }
@@ -70,7 +103,8 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
         supportFragmentManager.beginTransaction()
             .replace(R.id.frag_container_main, fragment)
             .commit()
-        findViewById<Toolbar>(R.id.toolbar).subtitle = findViewById<DynamicNavigationView>(R.id.nav_view).menu.findItem(fragment.menuId).title
+        findViewById<Toolbar>(R.id.toolbar).subtitle =
+            findViewById<DynamicNavigationView>(R.id.nav_view).menu.findItem(fragment.menuId).title
         findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawers()
     }
 }
