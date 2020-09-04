@@ -42,9 +42,3 @@ data class PackMetadata(
     override val packImplClass: String,
     override val minApkVersionCode: Int
 ) : BasePackMetadata
-
-data class PackLoadingError(
-    val name: String,
-    val reason: String,
-    val exception: Exception
-)
