@@ -102,7 +102,7 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
 
-    api('com.github.jaqxues:Akrolyb:master-SNAPSHOT') {
+    api('com.github.jaqxues:Akrolyb:1.0.8') {
         changing = true
     }
 
