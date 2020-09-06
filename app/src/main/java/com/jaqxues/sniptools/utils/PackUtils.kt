@@ -10,13 +10,6 @@ import java.util.jar.JarFile
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 05.06.20 - Time 13:04.
  */
-object PackUtils {
-    fun getPackMetadata(file: File) =
-        JarFile(file).use {
-            it.manifest.mainAttributes.buildMetadata(file)
-        }
-}
-
 fun Attributes.buildMetadata(file: File): PackMetadata {
     fun getOrThrow(name: String) =
         getValue(name) ?: throw IllegalStateException("Pack did not include \"$name\" Attribute")

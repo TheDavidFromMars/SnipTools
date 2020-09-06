@@ -19,7 +19,7 @@ import java.util.jar.Attributes
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 03.06.20 - Time 23:58.
  */
-abstract class ModPack(localPackMetadata: PackMetadata) : ModPackBase<PackMetadata>(localPackMetadata) {
+abstract class ModPack(metadata: PackMetadata) : ModPackBase<PackMetadata>(metadata) {
     abstract val featureManager: FeatureManager<out IFeature>
     abstract val staticFragments: List<BaseFragment>
     abstract val lateInitActivity: String

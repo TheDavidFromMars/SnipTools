@@ -15,28 +15,36 @@ import java.util.concurrent.ConcurrentHashMap
  */
 object PackLoadManager {
     private val packLoadStates = ConcurrentHashMap<String, StatefulPackData>()
+    private val listeners = mutableListOf<(String, StatefulPackData) -> Unit>()
+    private inline fun putState(packFileName: String, getState: () -> StatefulPackData) {
+        val state = getState()
+        packLoadStates[packFileName] = state
+        listeners.forEach { it(packFileName, state) }
+    }
 
-    private fun getMetadata(
+    suspend fun loadState(
         context: Context,
         packFile: File,
-        certificate: X509Certificate?,
+        certificate: X509Certificate? = null,
         packBuilder: PackFactory
-    ) = ModPackBase.extractMetadata(context, packFile, certificate, packBuilder)
+    ) {
+        if (!packLoadStates.containsKey(packFile.name)) {
+            getInitialState(context, packFile, certificate, packBuilder)
+        }
+    }
 
-    suspend fun requestPackMetadata(
+    suspend fun getInitialState(
         context: Context,
         packFile: File,
         certificate: X509Certificate? = null,
         packBuilder: PackFactory = PackFactory(false)
     ): PackMetadata {
-        if (packLoadStates.containsKey(packFile.name)) return packLoadStates.getValue(packFile.name).packMetadata
-
         try {
             val metadata = getMetadata(context, packFile, certificate, packBuilder)
-            packLoadStates[packFile.name] = StatefulPackData.AvailablePack(packFile, metadata)
+            putState(packFile.name) { StatefulPackData.AvailablePack(packFile, metadata) }
             return metadata
         } catch (t: Throwable) {
-            packLoadStates[packFile.name] = StatefulPackData.CorruptedPack(packFile, t.message!!)
+            putState(packFile.name) { StatefulPackData.CorruptedPack(packFile, t.message!!) }
             throw t
         }
     }
@@ -50,17 +58,51 @@ object PackLoadManager {
         val metadata = try {
             getMetadata(context, packFile, certificate, packBuilder)
         } catch (t: Throwable) {
-            packLoadStates[packFile.name] = StatefulPackData.CorruptedPack(packFile, t.message!!)
+            putState(packFile.name) { StatefulPackData.CorruptedPack(packFile, t.message!!) }
             throw t
         }
 
         try {
-            val pack: ModPack = ModPackBase.buildPack(context, packFile, certificate, packBuilder)
-            packLoadStates[packFile.name] = StatefulPackData.LoadedPack(packFile, pack.metadata)
+            val pack: ModPack =
+                ModPackBase.buildPack(context, packFile, certificate, packBuilder, metadata)
+            putState(packFile.name) { StatefulPackData.LoadedPack(packFile, metadata) }
             return pack
         } catch (t: Throwable) {
-            packLoadStates[packFile.name] = StatefulPackData.PackLoadError(packFile, metadata, t.message!!)
+            putState(packFile.name) {
+                StatefulPackData.PackLoadError(
+                    packFile,
+                    metadata,
+                    t.message!!
+                )
+            }
             throw t
         }
     }
+
+    suspend fun requestUnloadPack(
+        context: Context,
+        packFile: File,
+        certificate: X509Certificate?,
+        packBuilder: PackFactory
+    ) {
+        getInitialState(context, packFile, certificate, packBuilder)
+    }
+
+    fun deletePackState(packFileName: String) = packLoadStates.remove(packFileName)
+
+    fun registerListener(listener: (String, StatefulPackData) -> Unit) {
+        listeners.add(listener)
+    }
+
+    fun unregisterListener(listener: (String, StatefulPackData) -> Unit) =
+        listeners.remove(listener)
+
+    fun getStateFor(packName: String) = packLoadStates.getValue(packName)
+
+    private fun getMetadata(
+        context: Context,
+        packFile: File,
+        certificate: X509Certificate?,
+        packBuilder: PackFactory
+    ) = ModPackBase.extractMetadata(context, packFile, certificate, packBuilder)
 }
