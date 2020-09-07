@@ -1,7 +1,8 @@
 package com.jaqxues.sniptools.utils
 
+import com.jaqxues.akrolyb.genhook.decs.HookWrapper
+import com.jaqxues.akrolyb.genhook.decs.ReplaceWrapper
 import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XC_MethodReplacement
 
 
 /**
@@ -9,29 +10,29 @@ import de.robv.android.xposed.XC_MethodReplacement
  * Date: 04.06.20 - Time 11:03.
  */
 inline fun before(crossinline hook: (XC_MethodHook.MethodHookParam) -> Unit) =
-    object : XC_MethodHook() {
-        override fun beforeHookedMethod(param: MethodHookParam) {
+    object : HookWrapper() {
+        override fun before(param: MethodHookParam) {
             hook(param)
         }
     }
 
 inline fun after(crossinline hook: (XC_MethodHook.MethodHookParam) -> Unit) =
-        object : XC_MethodHook() {
-            override fun afterHookedMethod(param: MethodHookParam) {
-                hook(param)
-            }
+    object : HookWrapper() {
+        override fun after(param: MethodHookParam) {
+            hook(param)
         }
+    }
 
 inline fun replaceReturn(crossinline hook: (XC_MethodHook.MethodHookParam) -> Any?) =
-    object : XC_MethodReplacement() {
-        override fun replaceHookedMethod(param: MethodHookParam): Any? {
+    object : ReplaceWrapper() {
+        override fun replace(param: MethodHookParam): Any? {
             return hook(param)
         }
     }
 
 inline fun replace(crossinline hook: (XC_MethodHook.MethodHookParam) -> Unit) =
-    object : XC_MethodReplacement() {
-        override fun replaceHookedMethod(param: MethodHookParam): Any? {
+    object : ReplaceWrapper() {
+        override fun replace(param: MethodHookParam): Any? {
             hook(param)
             return null
         }
