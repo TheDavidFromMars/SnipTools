@@ -25,7 +25,7 @@ object MemberDeclarations {
         "W",
         arrayOf(StealthViewing::class.java),
 
-        "Woe", "Fee"
+        "Xoe", "Gee"
     )
 
     val SNAP_MODEL_CONSTRUCTOR = ConstructorDec(
