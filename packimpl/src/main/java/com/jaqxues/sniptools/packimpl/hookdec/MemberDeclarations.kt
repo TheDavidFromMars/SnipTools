@@ -2,14 +2,13 @@ package com.jaqxues.sniptools.packimpl.hookdec
 
 import com.jaqxues.akrolyb.genhook.decs.MemberDec.ConstructorDec
 import com.jaqxues.akrolyb.genhook.decs.MemberDec.MethodDec
-import com.jaqxues.sniptools.packimpl.features.MiscFeatures
-import com.jaqxues.sniptools.packimpl.features.ScreenshotBypass
-import com.jaqxues.sniptools.packimpl.features.StealthViewing
-import com.jaqxues.sniptools.packimpl.features.UnlimitedViewing
+import com.jaqxues.sniptools.packimpl.features.*
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.APP_START_EXPERIMENT_MANAGER
+import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.CBC_ENCRYPTION_ALGORITHM
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.SCREENSHOT_DETECTOR
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.SNAP_MODEL
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.STORY_VIEWED_PLUGIN
+import java.io.InputStream
 
 object MemberDeclarations {
     val SCREENSHOT_DETECTED = MethodDec(
@@ -43,5 +42,13 @@ object MemberDeclarations {
         arrayOf(MiscFeatures::class.java),
 
         "U95"
+    )
+
+    val DECRYPT_MEDIA_STREAM = MethodDec(
+        CBC_ENCRYPTION_ALGORITHM,
+        "y0",
+        arrayOf(SavingFeature::class.java),
+
+        InputStream::class.java
     )
 }

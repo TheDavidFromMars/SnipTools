@@ -3,9 +3,8 @@ package com.jaqxues.sniptools.packimpl.features
 import android.content.Context
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.DECRYPT_MEDIA_STREAM
 import com.jaqxues.sniptools.utils.after
-import de.robv.android.xposed.XposedHelpers.findAndHookMethod
-import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
@@ -24,9 +23,7 @@ class SavingFeature : IFeature() {
         get() = TODO("Not yet implemented")
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
-
-        findAndHookMethod("S07", classLoader, "y0", InputStream ::class.java, after {
-            Timber.e(Throwable(), "[STLog] Saving Hook invoked")
+        hookMethod(DECRYPT_MEDIA_STREAM, after {
             val result = it.result as InputStream
             val bytes = result.use(InputStream::readBytes)
 

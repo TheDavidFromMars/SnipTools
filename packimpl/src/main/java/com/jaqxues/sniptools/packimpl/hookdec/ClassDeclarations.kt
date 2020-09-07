@@ -7,4 +7,5 @@ object ClassDeclarations {
     val STORY_VIEWED_PLUGIN = ClassDec("aLh")
     val SNAP_MODEL = ClassDec("Fmc")
     val APP_START_EXPERIMENT_MANAGER = ClassDec("l7f")
+    val CBC_ENCRYPTION_ALGORITHM = ClassDec("S07")
 }
