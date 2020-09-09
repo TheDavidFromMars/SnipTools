@@ -12,12 +12,18 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.jaqxues.akrolyb.prefs.putPref
+import com.jaqxues.akrolyb.utils.Security
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.fragments.HomeFragment
 import com.jaqxues.sniptools.fragments.PackManagerFragment
+import com.jaqxues.sniptools.pack.PackFactory
+import com.jaqxues.sniptools.pack.PackLoadManager
 import com.jaqxues.sniptools.ui.views.DynamicNavigationView
 import com.jaqxues.sniptools.utils.CommonSetup
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragmentListener {
@@ -44,6 +50,11 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
 
     private fun init() {
         CommonSetup.initPrefs()
+        GlobalScope.launch(Dispatchers.IO) {
+            PackLoadManager.loadActivatedPacks(this@MainActivity,
+                if (BuildConfig.DEBUG) null else Security.certificateFromApk(this@MainActivity, BuildConfig.APPLICATION_ID),
+                PackFactory(false))
+        }
 
         if (intent.hasExtra("select_new_pack")) {
             val extra = intent.getStringExtra("select_new_pack")

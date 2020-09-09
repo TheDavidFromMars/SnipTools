@@ -2,8 +2,12 @@ package com.jaqxues.sniptools.pack
 
 import android.content.Context
 import com.jaqxues.akrolyb.pack.ModPackBase
+import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.data.PackMetadata
+import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.data.StatefulPackData
+import com.jaqxues.sniptools.utils.PathProvider
+import timber.log.Timber
 import java.io.File
 import java.security.cert.X509Certificate
 import java.util.concurrent.ConcurrentHashMap
@@ -46,6 +50,21 @@ object PackLoadManager {
         } catch (t: Throwable) {
             putState(packFile.name) { StatefulPackData.CorruptedPack(packFile, t.message!!) }
             throw t
+        }
+    }
+
+    suspend fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
+        SELECTED_PACKS.getPref().forEach {
+            try {
+                requestLoadPack(
+                    context,
+                    File(PathProvider.modulesPath, it),
+                    certificate,
+                    packBuilder
+                )
+            } catch (t: Throwable) {
+                Timber.e(t, "Failed to load Pack")
+            }
         }
     }
 
