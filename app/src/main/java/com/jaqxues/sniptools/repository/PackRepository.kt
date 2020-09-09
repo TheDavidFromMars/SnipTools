@@ -85,6 +85,7 @@ class PackRepository(private val retrofit: GitHubApiService) {
     }
 
     fun deletePack(packFile: File) {
+        SELECTED_PACKS.remove(packFile.name)
         packFile.delete()
         PackLoadManager.deletePackState(packFile.name)
         loadablePackStates.remove(packFile.name)
