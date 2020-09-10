@@ -55,7 +55,7 @@ class ScreenshotBypass : IFeature() {
                             dialog.dismiss()
                         }
 
-                        setNegativeButton("No") { dialog, _ ->
+                        setNeutralButton("No") { dialog, _ ->
                             dialog.dismiss()
                         }
 
