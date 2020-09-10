@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.jaqxues.sniptools.R
@@ -123,7 +124,9 @@ fun ExpandablePackLayout(
                     tint = color
                 )
                 Text(
-                    text = packName
+                    text = packName,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
             }
 
