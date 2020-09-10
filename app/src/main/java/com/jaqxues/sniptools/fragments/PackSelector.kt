@@ -75,17 +75,11 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
-
                     val context = ContextAmbient.current
 
-                    var invoked by remember { mutableStateOf(false) }
                     IconButtonRow(packData, onChangelog = {
 
                     }, onChangeActive = {
-                        if (!invoked) {
-                            invoked = true
-                            return@IconButtonRow
-                        }
                         if (it) {
                             packViewModel.activatePack(
                                 context,
@@ -94,14 +88,12 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
                                 PackFactory(false)
                             )
                         } else {
-                            if (packData.isActive) {
-                                packViewModel.deactivatePack(
-                                    context,
-                                    packData.packFile,
-                                    null,
-                                    PackFactory(false)
-                                )
-                            }
+                            packViewModel.deactivatePack(
+                                context,
+                                packData.packFile,
+                                null,
+                                PackFactory(false)
+                            )
                         }
                     }, onDelete = {
                         packViewModel.deletePack(packData.packFile)
