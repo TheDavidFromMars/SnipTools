@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.ColumnScope.gravity
 import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
 import androidx.compose.material.Switch
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -78,9 +77,15 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
 
 
                     val context = ContextAmbient.current
+
+                    var invoked by remember { mutableStateOf(false) }
                     IconButtonRow(packData, onChangelog = {
 
                     }, onChangeActive = {
+                        if (!invoked) {
+                            invoked = true
+                            return@IconButtonRow
+                        }
                         if (it) {
                             packViewModel.activatePack(
                                 context,
