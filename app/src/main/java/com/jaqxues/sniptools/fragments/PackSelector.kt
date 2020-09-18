@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ColumnScope.align
 import androidx.compose.foundation.layout.ColumnScope.gravity
 import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
@@ -123,8 +124,8 @@ fun IconButtonRow(
     onDelete: () -> Unit
 ) {
     Row(
-        modifier.gravity(Alignment.CenterHorizontally),
-        verticalGravity = Alignment.CenterVertically
+        modifier.align(Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = onChangelog) {
             Image(

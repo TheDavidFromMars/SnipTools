@@ -54,7 +54,7 @@ class PackRepository(private val retrofit: GitHubApiService) {
             try {
                 PackLoadManager.loadState(context, packFile, certificate, packBuilder)
             } catch (t: Throwable) {
-                Timber.e(t, "Could not load Metadata from Pack Attributes")
+                Timber.e(t, "Could not load PackState correctly")
             }
         }
     }

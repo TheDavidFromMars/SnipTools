@@ -63,11 +63,11 @@ fun HomeDivider() {
 fun HomeContent() {
     Column(
         Modifier.fillMaxHeight(),
-        horizontalGravity = CenterHorizontally
+        horizontalAlignment= CenterHorizontally
     ) {
         Column(
             Modifier.padding(16.dp).weight(1f),
-            horizontalGravity = CenterHorizontally
+            horizontalAlignment = CenterHorizontally
         ) {
             Image(
                 imageResource(R.drawable.sniptools_logo),
