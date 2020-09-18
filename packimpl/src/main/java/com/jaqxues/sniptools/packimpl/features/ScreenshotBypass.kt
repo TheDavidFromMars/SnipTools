@@ -7,6 +7,7 @@ import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.SCREENSHOT_DETECTED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.ASK_SCREENSHOT_CONFIRMATION
 import com.jaqxues.sniptools.packimpl.utils.tryCreateDialog
+import com.jaqxues.sniptools.utils.invokeOriginalMethod
 import com.jaqxues.sniptools.utils.replace
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
@@ -48,6 +49,7 @@ class ScreenshotBypass : IFeature() {
                         setPositiveButton("Yes") { dialog, _ ->
                             // Cannot be called from Main Thread
                             GlobalScope.launch(Dispatchers.Default) {
+                                param.invokeOriginalMethod()
                                 XposedBridge.invokeOriginalMethod(
                                     param.method, param.thisObject, param.args
                                 )

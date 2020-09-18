@@ -3,6 +3,7 @@ package com.jaqxues.sniptools.utils
 import com.jaqxues.akrolyb.genhook.decs.HookWrapper
 import com.jaqxues.akrolyb.genhook.decs.ReplaceWrapper
 import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XposedBridge
 
 
 /**
@@ -37,3 +38,6 @@ inline fun replace(crossinline hook: (XC_MethodHook.MethodHookParam) -> Unit) =
             return null
         }
     }
+
+fun XC_MethodHook.MethodHookParam.invokeOriginalMethod(): Any? =
+    XposedBridge.invokeOriginalMethod(method, thisObject, args)
