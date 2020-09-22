@@ -6,17 +6,18 @@ import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.ColumnScope.align
-import androidx.compose.foundation.layout.ColumnScope.gravity
 import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
 import androidx.compose.material.Switch
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,12 +37,22 @@ fun PackSelectorTab(packViewModel: PackViewModel) {
     packViewModel.refreshLocalPacks(ContextAmbient.current, null, PackFactory(false))
     val localPacks by packViewModel.localPacks.observeAsState()
 
-    ScrollableColumn {
-        localPacks!!.forEach {
-            val packData by packViewModel.getStateDataForPack(it).run {
-                observeAsState(value!!)
+    @Suppress("NAME_SHADOWING")
+    localPacks!!.let { localPacks ->
+        if (localPacks.isEmpty()) {
+            Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(asset = imageResource(id = R.drawable.sniptools_logo), Modifier.preferredSize(50.dp))
+                Text("No Packs Found", Modifier.padding(16.dp), color = Color.LightGray)
             }
-            PackElementLayout(packData, packViewModel)
+        } else {
+            ScrollableColumn {
+                localPacks.forEach {
+                    val packData by packViewModel.getStateDataForPack(it).run {
+                        observeAsState(value!!)
+                    }
+                    PackElementLayout(packData, packViewModel)
+                }
+            }
         }
     }
 }

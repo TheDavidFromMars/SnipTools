@@ -145,7 +145,7 @@ fun ListCardElement(onClick: (() -> Unit)? = null, content: @Composable () -> Un
             .padding(4.dp)
             .clip(RoundedCornerShape(8.dp))
             .run { onClick?.let { clickable(onClick = it) } ?: this }
-            .fillMaxWidth(), elevation = 4.dp) {
+            .fillMaxWidth(), elevation = 2.dp) {
         content()
     }
 }
