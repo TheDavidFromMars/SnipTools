@@ -22,7 +22,7 @@ object PackPreferences {
     )
 
     val FORCE_SC_APP_DECK_MODE = Preference(
-        "force_sc_app_deck_mode", -1, Int::class
+        "force_sc_app_deck_mode", 0, Int::class
     )
 
     val SNAP_VIDEO_LOOPING = Preference(
