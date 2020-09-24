@@ -8,4 +8,5 @@ object ClassDeclarations {
     val SNAP_MODEL = ClassDec("kmc")
     val APP_START_EXPERIMENT_MANAGER = ClassDec("B3f")
     val CBC_ENCRYPTION_ALGORITHM = ClassDec("q47")
+    val CAPTION_EDIT_TEXT_VIEW = ClassDec("com.snap.previewtools.caption.ui.CaptionEditTextView")
 }

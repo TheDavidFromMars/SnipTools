@@ -1,13 +1,18 @@
 package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
+import android.text.InputFilter
+import android.widget.EditText
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.CAPTION_EDIT_TEXT_VIEW
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.FORCE_APP_DECK
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE
+import com.jaqxues.sniptools.utils.after
 import com.jaqxues.sniptools.utils.before
-import timber.log.Timber
+import de.robv.android.xposed.XposedBridge.hookAllConstructors
+import de.robv.android.xposed.XposedHelpers.findClass
 
 
 /**
@@ -33,5 +38,11 @@ class MiscFeatures : IFeature() {
                     if (it.args[0].toString() in setOf("NGS_GROWTH_MODE", "NGS_MODE"))
                         it.result = appDeckMode
                 })
+
+        hookAllConstructors(findClass(CAPTION_EDIT_TEXT_VIEW.className, classLoader), after {
+            (it.thisObject as EditText).apply {
+                filters = filters.filter { it !is InputFilter.LengthFilter }.toTypedArray()
+            }
+        })
     }
 }
