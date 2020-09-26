@@ -26,7 +26,7 @@ abstract class ModPack(metadata: PackMetadata) : ModPackBase<PackMetadata>(metad
 }
 
 abstract class IFeature: FeatureHelper() {
-    abstract fun getFragments(): Array<BaseFragment>
+    abstract fun getFragments(): Array<out BaseFragment>
 }
 
 class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMetadata>() {
