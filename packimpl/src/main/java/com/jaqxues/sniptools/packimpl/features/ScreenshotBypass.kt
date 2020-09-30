@@ -1,14 +1,14 @@
 package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
+import com.jaqxues.akrolyb.genhook.decs.replace
 import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.akrolyb.utils.invokeOriginalMethod
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.SCREENSHOT_DETECTED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.ASK_SCREENSHOT_CONFIRMATION
 import com.jaqxues.sniptools.packimpl.utils.tryCreateDialog
-import com.jaqxues.sniptools.utils.invokeOriginalMethod
-import com.jaqxues.sniptools.utils.replace
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
 import kotlinx.coroutines.Dispatchers

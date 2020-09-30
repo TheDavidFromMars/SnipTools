@@ -1,10 +1,10 @@
 package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
+import com.jaqxues.akrolyb.genhook.decs.after
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.DECRYPT_MEDIA_STREAM
-import com.jaqxues.sniptools.utils.after
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream

@@ -4,10 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import com.jaqxues.akrolyb.genhook.decs.after
 import com.jaqxues.akrolyb.genhook.states.StateLogger
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.utils.Security
+import com.jaqxues.akrolyb.utils.XposedChecks
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.PackFactory
