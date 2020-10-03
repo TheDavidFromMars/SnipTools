@@ -108,7 +108,7 @@ fun ExpandablePackLayout(
                 Icon(
                     vectorResource(id = R.drawable.ic_pack),
                     Modifier.padding(horizontal = 4.dp)
-                        .gravity(Alignment.CenterVertically)
+                        .align(Alignment.CenterVertically)
                         .preferredHeight(8.dp)
                         .drawWithContent {
                             rotate(rotation) {

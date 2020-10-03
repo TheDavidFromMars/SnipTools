@@ -6,8 +6,8 @@ import android.widget.EditText
 import com.jaqxues.akrolyb.genhook.decs.after
 import com.jaqxues.akrolyb.genhook.decs.before
 import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.pack.IFeature
-import com.jaqxues.sniptools.packimpl.fragment.MiscFragment
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.CAPTION_EDIT_TEXT_VIEW
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.FORCE_APP_DECK
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE

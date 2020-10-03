@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.ColumnScope.align
 import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
 import androidx.compose.material.Switch
@@ -135,8 +134,9 @@ fun IconButtonRow(
     onDelete: () -> Unit
 ) {
     Row(
-        modifier.align(Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically
+        modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         IconButton(onClick = onChangelog) {
             Image(
@@ -150,7 +150,7 @@ fun IconButtonRow(
             packData.isActive,
             onCheckedChange = onChangeActive,
             color = if (packData !is StatefulPackData.PackLoadError) Color(0xFF00AA00) else Color.Red,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp).size(50.dp)
         )
 
         IconButton(onClick = onDelete) {
