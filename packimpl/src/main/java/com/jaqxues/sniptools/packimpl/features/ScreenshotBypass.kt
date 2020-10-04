@@ -26,9 +26,6 @@ class ScreenshotBypass : IFeature() {
         TODO("Not yet implemented")
     }
 
-    override val name: Int
-        get() = TODO("Not yet implemented")
-
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 
         val screenshotHook = if (ASK_SCREENSHOT_CONFIRMATION.getPref()) {

@@ -20,9 +20,6 @@ class DebugFeature : IFeature() {
 
     override fun getFragments(): Array<BaseFragment> = emptyArray()
 
-    override val name: Int
-        get() = TODO("Not yet implemented")
-
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
         if (DB_DEBUG_SERVER.getPref()) {
 

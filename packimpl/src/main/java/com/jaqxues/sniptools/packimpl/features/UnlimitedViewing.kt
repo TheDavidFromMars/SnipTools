@@ -19,9 +19,6 @@ class UnlimitedViewing : IFeature() {
         TODO("Not yet implemented")
     }
 
-    override val name: Int
-        get() = TODO("Not yet implemented")
-
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 
         if (SNAP_VIDEO_LOOPING.getPref() || SNAP_IMAGE_UNLIMITED.getPref())

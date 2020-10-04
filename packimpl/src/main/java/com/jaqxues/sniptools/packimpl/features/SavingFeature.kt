@@ -19,9 +19,6 @@ class SavingFeature : IFeature() {
         TODO("Not yet implemented")
     }
 
-    override val name: Int
-        get() = TODO("Not yet implemented")
-
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
         hookMethod(DECRYPT_MEDIA_STREAM, after {
             val result = it.result as InputStream

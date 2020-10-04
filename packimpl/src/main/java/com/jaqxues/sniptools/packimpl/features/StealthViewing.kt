@@ -18,9 +18,6 @@ class StealthViewing : IFeature() {
         TODO("Not yet implemented")
     }
 
-    override val name: Int
-        get() = TODO("Not yet implemented")
-
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 
         // Stories (Non-Friends and Friends)
