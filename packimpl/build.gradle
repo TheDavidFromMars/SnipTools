@@ -31,6 +31,14 @@ android {
         jvmTarget = "1.8"
         useIR = true
     }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.0.0-alpha04"
+    }
 }
 
 dependencies {
@@ -62,24 +70,56 @@ packCompiler {
 }
 
 
-android.buildTypes.forEach { buildType ->
-    def buildTypeCap = buildType.name.capitalize()
-    task("applyPackChanges$buildTypeCap") {
-        dependsOn "adbPushPack$buildTypeCap"
-        group "install"
+afterEvaluate {
+    android.applicationVariants.forEach { aV ->
+        def aVNameCap = aV.name.capitalize()
+        def appPkg = "com.jaqxues.sniptools"
+        def snapPkg = 'com.snapchat.android'
 
-        doLast {
-            def snapPkg = 'com.snapchat.android'
-            exec {
-                commandLine android.adbExecutable, 'shell', 'am', 'force-stop', snapPkg
+        /**
+         * Task to activate the Pack and apply Changes in Snapchat (Testing Xposed Code)
+         */
+        task("applyPackChanges$aVNameCap") {
+            dependsOn "adbPushPack$aVNameCap"
+            group "install"
+
+            doLast {
+                exec { commandLine android.adbExecutable, 'shell', 'am', 'force-stop', snapPkg }
+                exec {
+                    commandLine android.adbExecutable, 'shell', 'am', 'start', '-n',
+                            "$appPkg/.MainActivity", '--es', 'select_new_pack',
+                            tasks.getByName("adbPushPack$aVNameCap").outputs.files.singleFile.name
+                }
+                sleep(200)
+                exec {
+                    commandLine android.adbExecutable, 'shell', 'am', 'start', '-n',
+                            "$snapPkg/.LandingPageActivity"
+                }
             }
-            exec {
-                commandLine android.adbExecutable, 'shell', 'am', 'start', '-n', 'com.jaqxues.sniptools/.MainActivity', '--es', 'select_new_pack', tasks.getByName("adbPushPack$buildTypeCap").outputs.files.singleFile.name
-            }
-            sleep(200)
-            exec {
-                commandLine android.adbExecutable, 'shell', 'am', 'start', '-n', "$snapPkg/.LandingPageActivity"
+        }
+
+        /**
+         * Task to activate the Pack and apply Changes in the App itself (Testing Pack UI Code)
+         */
+        task("openPackChanges$aVNameCap") {
+            dependsOn "adbPushPack$aVNameCap"
+            group "install"
+
+            doLast {
+                exec { commandLine android.adbExecutable, 'shell', 'am', 'force-stop', appPkg }
+                exec {
+                    commandLine android.adbExecutable, 'shell', 'am', 'start', '-n',
+                            "$appPkg/.MainActivity", '--es', 'select_new_pack',
+                            tasks.getByName("adbPushPack$aVNameCap").outputs.files.singleFile.name
+                }
+                sleep(200)
+                exec { commandLine android.adbExecutable, 'shell', 'am', 'force-stop', appPkg }
+                exec {
+                    commandLine android.adbExecutable, 'shell', 'am', 'start', '-n',
+                            "$appPkg/.MainActivity"
+                }
             }
         }
     }
+
 }
