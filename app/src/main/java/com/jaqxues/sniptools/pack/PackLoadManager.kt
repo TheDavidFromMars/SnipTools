@@ -7,6 +7,9 @@ import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.data.StatefulPackData
 import com.jaqxues.sniptools.utils.PathProvider
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 import java.io.File
 import java.security.cert.X509Certificate
@@ -19,11 +22,13 @@ import java.util.concurrent.ConcurrentHashMap
  */
 object PackLoadManager {
     private val packLoadStates = ConcurrentHashMap<String, StatefulPackData>()
-    private val listeners = mutableListOf<(String, StatefulPackData) -> Unit>()
-    private inline fun putState(packFileName: String, getState: () -> StatefulPackData) {
+    private val channel = BroadcastChannel<Pair<String, StatefulPackData>>(Channel.CONFLATED)
+    val packLoadChanges = channel.asFlow()
+
+    private suspend inline fun putState(packFileName: String, getState: () -> StatefulPackData) {
         val state = getState()
         packLoadStates[packFileName] = state
-        listeners.forEach { it(packFileName, state) }
+        channel.send(packFileName to state)
     }
 
     suspend fun loadState(
@@ -84,7 +89,7 @@ object PackLoadManager {
         try {
             val pack: ModPack =
                 ModPackBase.buildPack(context, packFile, certificate, packBuilder, metadata)
-            putState(packFile.name) { StatefulPackData.LoadedPack(packFile, metadata) }
+            putState(packFile.name) { StatefulPackData.LoadedPack(packFile, metadata, pack) }
             return pack
         } catch (t: Throwable) {
             putState(packFile.name) {
@@ -108,13 +113,6 @@ object PackLoadManager {
     }
 
     fun deletePackState(packFileName: String) = packLoadStates.remove(packFileName)
-
-    fun registerListener(listener: (String, StatefulPackData) -> Unit) {
-        listeners.add(listener)
-    }
-
-    fun unregisterListener(listener: (String, StatefulPackData) -> Unit) =
-        listeners.remove(listener)
 
     fun getStateFor(packName: String) = packLoadStates.getValue(packName)
 

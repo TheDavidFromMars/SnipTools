@@ -20,10 +20,17 @@ import kotlin.random.Random
  */
 class PackViewModel(private val packRepo: PackRepository) : ViewModel() {
 
+    init {
+        viewModelScope.launch {
+            packRepo.initLoadChanges()
+        }
+    }
+
     val lastChecked: LiveData<Long> =
         MutableLiveData(System.currentTimeMillis() - Random.nextLong(0, 1e8.toLong()))
 
     val localPacks: LiveData<List<String>> = packRepo.localPacks
+    val packLoadChanges = packRepo.packLoadChanges
 
     fun getStateDataForPack(packFileName: String): LiveData<StatefulPackData> =
         packRepo.getStateFor(packFileName)
@@ -47,4 +54,5 @@ class PackViewModel(private val packRepo: PackRepository) : ViewModel() {
     }
 
     fun deletePack(packFile: File) = packRepo.deletePack(packFile)
+
 }

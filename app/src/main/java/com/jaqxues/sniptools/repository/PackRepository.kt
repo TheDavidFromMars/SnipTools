@@ -12,6 +12,7 @@ import com.jaqxues.sniptools.networking.GitHubApiService
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackLoadManager
 import com.jaqxues.sniptools.utils.PathProvider
+import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.io.File
 import java.security.cert.X509Certificate
@@ -23,10 +24,6 @@ import java.security.cert.X509Certificate
  * Moved to SnipTools on Date: 03.06.20 - Time 17:42.
  */
 class PackRepository(private val retrofit: GitHubApiService) {
-    init {
-        PackLoadManager.registerListener(this::onPackStateChanged)
-    }
-
     private val packDirectory = File(PathProvider.modulesPath)
     private val loadablePackStates = mutableMapOf<String, MutableLiveData<StatefulPackData>>()
 
@@ -35,6 +32,8 @@ class PackRepository(private val retrofit: GitHubApiService) {
 
     // Exposed public LiveData
     val localPacks: LiveData<List<String>> = _localPacks
+
+    val packLoadChanges = PackLoadManager.packLoadChanges
 
     @WorkerThread
     suspend fun refreshLocalPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
@@ -96,7 +95,12 @@ class PackRepository(private val retrofit: GitHubApiService) {
         })
     }
 
-    private fun onPackStateChanged(packFileName: String, state: StatefulPackData) {
+    suspend fun initLoadChanges() {
+        PackLoadManager.packLoadChanges.collect(::onPackStateChanged)
+    }
+
+    private suspend fun onPackStateChanged(nameState: Pair<String, StatefulPackData>) {
+        val (packFileName, state) = nameState
         if (packFileName in loadablePackStates)
             loadablePackStates.getValue(packFileName).postValue(state)
     }
