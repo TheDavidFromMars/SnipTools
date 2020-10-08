@@ -12,3 +12,9 @@ abstract class BaseFragment : Fragment() {
     @get:IdRes
     abstract val menuId: Int
 }
+
+abstract class PackFragment: BaseFragment() {
+    override val menuId get() = name.hashCode()
+
+    abstract val name: String
+}

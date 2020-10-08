@@ -2,7 +2,7 @@ package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
 import com.jaqxues.akrolyb.genhook.decs.after
-import com.jaqxues.sniptools.fragments.BaseFragment
+import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.DECRYPT_MEDIA_STREAM
 import java.io.ByteArrayInputStream
@@ -15,9 +15,7 @@ import java.io.InputStream
  * Date: 24.08.20 - Time 13:12.
  */
 class SavingFeature : IFeature() {
-    override fun getFragments(): Array<BaseFragment> {
-        TODO("Not yet implemented")
-    }
+    override fun getFragments() = emptyArray<PackFragment>()
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
         hookMethod(DECRYPT_MEDIA_STREAM, after {

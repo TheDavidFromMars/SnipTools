@@ -8,7 +8,7 @@ import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.pack.PackFactoryBase
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.data.PackMetadata
-import com.jaqxues.sniptools.fragments.BaseFragment
+import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.utils.buildMetadata
 import com.jaqxues.sniptools.utils.installedScVersion
 import java.io.File
@@ -21,12 +21,12 @@ import java.util.jar.Attributes
  */
 abstract class ModPack(metadata: PackMetadata) : ModPackBase<PackMetadata>(metadata) {
     abstract val featureManager: FeatureManager<out IFeature>
-    abstract val staticFragments: List<BaseFragment>
+    abstract val staticFragments: List<PackFragment>
     abstract val lateInitActivity: String
 }
 
 abstract class IFeature: FeatureHelper() {
-    abstract fun getFragments(): Array<out BaseFragment>
+    abstract fun getFragments(): Array<out PackFragment>
 }
 
 class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMetadata>() {

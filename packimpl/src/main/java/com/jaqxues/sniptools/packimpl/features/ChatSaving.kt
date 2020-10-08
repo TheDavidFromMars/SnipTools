@@ -1,7 +1,8 @@
 package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
-import com.jaqxues.sniptools.fragments.BaseFragment
+import com.jaqxues.akrolyb.genhook.decs.after
+import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.pack.IFeature
 
 
@@ -10,9 +11,7 @@ import com.jaqxues.sniptools.pack.IFeature
  * Date: 02.07.20 - Time 19:42.
  */
 class ChatSaving : IFeature() {
-    override fun getFragments(): Array<BaseFragment> {
-        TODO("Not yet implemented")
-    }
+    override fun getFragments() = emptyArray<PackFragment>()
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
     }
