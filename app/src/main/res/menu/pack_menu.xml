@@ -6,4 +6,8 @@
         android:id="@+id/nav_misc_changes"
         android:icon="@android:drawable/ic_lock_lock"
         android:title="Misc Changes" />
+    <item
+        android:id="@+id/nav_saving"
+        android:icon="@android:drawable/ic_lock_lock"
+        android:title="Saving" />
 </menu>

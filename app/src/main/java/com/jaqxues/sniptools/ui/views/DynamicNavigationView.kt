@@ -87,7 +87,7 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
         val unused = subMenu.items.toMutableList()
 
         val fragmentIds = allFragments.map { frag ->
-            val found = subMenu.items.find {
+            val found = unused.find {
                 frag.name == it.title
             }
             if (found != null) {

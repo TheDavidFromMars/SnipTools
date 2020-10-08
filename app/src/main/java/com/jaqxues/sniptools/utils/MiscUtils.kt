@@ -3,6 +3,7 @@ package com.jaqxues.sniptools.utils
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isEmpty
+import androidx.core.view.size
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
@@ -15,7 +16,7 @@ val Menu.items: List<MenuItem>
         if (isEmpty())
             return emptyList()
         return buildList {
-            for (x in 0 until size)
+            for (x in 0 until this@items.size)
                 add(getItem(x))
         }
     }
