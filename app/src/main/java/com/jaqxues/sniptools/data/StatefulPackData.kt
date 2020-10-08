@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.data
 
+import com.jaqxues.sniptools.pack.ModPack
 import java.io.File
 
 /**
@@ -38,7 +39,7 @@ sealed class StatefulPackData {
     /**
      * Pack was loaded successfully
      */
-    data class LoadedPack(override val packFile: File, override val packMetadata: PackMetadata) :
+    data class LoadedPack(override val packFile: File, override val packMetadata: PackMetadata, val pack: ModPack) :
         StatefulPackData()
 
     val isActive: Boolean get() = this is LoadedPack || this is PackLoadError
