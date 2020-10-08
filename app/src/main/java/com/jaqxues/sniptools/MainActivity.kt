@@ -11,19 +11,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.akrolyb.utils.Security
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
+import com.jaqxues.sniptools.data.StatefulPackData
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.fragments.HomeFragment
+import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.fragments.PackManagerFragment
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackLoadManager
 import com.jaqxues.sniptools.ui.views.DynamicNavigationView
 import com.jaqxues.sniptools.utils.CommonSetup
+import com.jaqxues.sniptools.viewmodel.PackViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragmentListener {
@@ -96,6 +102,20 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
 
             homeFragment
         }
+        val packViewModel by viewModel<PackViewModel>()
+
+        lifecycleScope.launch {
+            packViewModel.packLoadChanges.collect { (packName, state) ->
+                    when (state) {
+                    is StatefulPackData.LoadedPack -> {
+                        navView.addPackFragments(menuInflater, packName, state.pack)
+                    }
+                    else -> {
+                        navView.removePackFragments(packName)
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -115,7 +135,8 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
             .replace(R.id.frag_container_main, fragment)
             .commit()
         findViewById<Toolbar>(R.id.toolbar).subtitle =
-            findViewById<DynamicNavigationView>(R.id.nav_view).menu.findItem(fragment.menuId).title
+            findViewById<DynamicNavigationView>(R.id.nav_view).menu.findItem(fragment.menuId)?.title
+                ?: (fragment as PackFragment).name
         findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawers()
     }
 }
