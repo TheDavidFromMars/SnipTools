@@ -1,10 +1,10 @@
 package com.jaqxues.sniptools.packimpl.utils
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Switch
@@ -23,18 +23,21 @@ import com.jaqxues.akrolyb.prefs.putPref
 
 @Composable
 fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
-    var active by remember { mutableStateOf(pref.getPref()) }
+    var toggled by remember {
+        mutableStateOf(pref.getPref())
+    }
+    fun onToggle(active: Boolean) {
+        toggled = active
+        pref.putPref(active)
+    }
     Card(
-        Modifier.fillMaxWidth().clickable(onClick = { active = !active}),
+        Modifier.fillMaxWidth().toggleable(toggled, onValueChange = ::onToggle),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(Modifier.padding(16.dp)) {
             text()
             Spacer(Modifier.weight(1f))
-            Switch(checked = active, onCheckedChange = {
-                pref.putPref(it)
-                active = it
-            })
+            Switch(checked = toggled, onCheckedChange = ::onToggle)
         }
     }
 }
