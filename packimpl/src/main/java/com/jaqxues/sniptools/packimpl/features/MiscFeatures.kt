@@ -27,11 +27,10 @@ class MiscFeatures : IFeature() {
         /*
         Disables or activates the new App Deck in Snapchat.
         */
-        val appDeckMode = FORCE_SC_APP_DECK_MODE.getPref()
-        if (appDeckMode >= 0)
+        if (FORCE_SC_APP_DECK_MODE.getPref())
             hookMethod(FORCE_APP_DECK, before {
                     if (it.args[0].toString() in setOf("NGS_GROWTH_MODE", "NGS_MODE"))
-                        it.result = appDeckMode
+                        it.result = 0
                 })
 
         hookAllConstructors(findClass(CAPTION_EDIT_TEXT_VIEW.className, classLoader), after { param ->
