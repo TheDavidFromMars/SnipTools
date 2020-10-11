@@ -32,4 +32,8 @@ object PackPreferences {
     val SNAP_IMAGE_UNLIMITED = Preference(
         "snap_image_unlimited", true, Boolean::class.java
     )
+
+    val DISABLE_CAPTION_LENGTH_LIMIT = Preference(
+        "disable_caption_length_limit", true, Boolean::class.java
+    )
 }
