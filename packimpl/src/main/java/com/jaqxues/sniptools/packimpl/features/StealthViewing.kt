@@ -2,8 +2,8 @@ package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
 import com.jaqxues.akrolyb.prefs.getPref
-import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.fragment.StealthFragment
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.MARK_STORY_AS_VIEWED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.STORY_STEALTH_ENABLED
 import de.robv.android.xposed.XC_MethodReplacement
@@ -14,7 +14,7 @@ import de.robv.android.xposed.XC_MethodReplacement
  * Date: 07.07.20 - Time 20:19.
  */
 class StealthViewing : IFeature() {
-    override fun getFragments() = emptyArray<PackFragment>()
+    override fun getFragments() = arrayOf(StealthFragment())
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 

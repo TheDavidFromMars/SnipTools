@@ -5,23 +5,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import com.jaqxues.sniptools.fragments.PackFragment
-import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_IMAGE_UNLIMITED
-import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_VIDEO_LOOPING
+import com.jaqxues.sniptools.packimpl.utils.PackPreferences.STORY_STEALTH_ENABLED
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
 import com.jaqxues.sniptools.ui.AppScreen
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
- * Date: 10.10.20 - Time 15:15.
+ * Date: 11.10.20 - Time 12:20.
  */
-class UnlimitedViewingFragment: PackFragment() {
-    override val name = "Unlimited Viewing"
+class StealthFragment: PackFragment() {
+    override val name = "Stealth Viewing"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,12 +29,8 @@ class UnlimitedViewingFragment: PackFragment() {
         setContent {
             AppScreen {
                 Column(Modifier.padding(16.dp)) {
-                    SwitchPreference(SNAP_VIDEO_LOOPING) {
-                        Text("Loop Videos")
-                    }
-                    Spacer(Modifier.padding(8.dp))
-                    SwitchPreference(SNAP_IMAGE_UNLIMITED) {
-                        Text("Disable Snap Timer")
+                    SwitchPreference(STORY_STEALTH_ENABLED) {
+                        Text("Enable Story Stealth")
                     }
                 }
             }

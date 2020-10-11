@@ -16,7 +16,7 @@ import com.jaqxues.sniptools.ui.AppScreen
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
- * Date: 10.10.20 - Time 12:13.
+ * Date: 11.10.20 - Time 12:13.
  */
 class SavingFragment: PackFragment() {
     override val name = "Saving"

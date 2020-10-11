@@ -18,7 +18,7 @@ object PackPreferences {
     )
 
     val STORY_STEALTH_ENABLED = Preference(
-        "story_stealth_enabled", false, Boolean::class
+        "story_stealth_enabled", true, Boolean::class
     )
 
     val FORCE_SC_APP_DECK_MODE = Preference(
@@ -35,5 +35,9 @@ object PackPreferences {
 
     val DISABLE_CAPTION_LENGTH_LIMIT = Preference(
         "disable_caption_length_limit", true, Boolean::class.java
+    )
+
+    val AUTO_SAVE_SNAPS = Preference(
+        "auto_save_snaps", true, Boolean::class.java
     )
 }
