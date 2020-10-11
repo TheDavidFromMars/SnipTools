@@ -4,8 +4,8 @@ import android.content.Context
 import com.jaqxues.akrolyb.genhook.decs.replace
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.utils.invokeOriginalMethod
-import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.pack.IFeature
+import com.jaqxues.sniptools.packimpl.fragment.ScreenshotFragment
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.SCREENSHOT_DETECTED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.ASK_SCREENSHOT_CONFIRMATION
 import com.jaqxues.sniptools.packimpl.utils.tryCreateDialog
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Date: 04.07.20 - Time 10:25.
  */
 class ScreenshotBypass : IFeature() {
-    override fun getFragments() = emptyArray<PackFragment>()
+    override fun getFragments() = arrayOf(ScreenshotFragment())
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 
