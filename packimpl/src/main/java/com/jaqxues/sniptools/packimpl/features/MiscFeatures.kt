@@ -10,6 +10,7 @@ import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.fragment.MiscFragment
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.CAPTION_EDIT_TEXT_VIEW
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.FORCE_APP_DECK
+import com.jaqxues.sniptools.packimpl.utils.PackPreferences.DISABLE_CAPTION_LENGTH_LIMIT
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE
 import de.robv.android.xposed.XposedBridge.hookAllConstructors
 import de.robv.android.xposed.XposedHelpers.findClass
@@ -33,10 +34,11 @@ class MiscFeatures : IFeature() {
                         it.result = 0
                 })
 
-        hookAllConstructors(findClass(CAPTION_EDIT_TEXT_VIEW.className, classLoader), after { param ->
-            (param.thisObject as EditText).apply {
-                filters = filters.filter { it !is InputFilter.LengthFilter }.toTypedArray()
-            }
-        })
+        if (DISABLE_CAPTION_LENGTH_LIMIT.getPref())
+            hookAllConstructors(findClass(CAPTION_EDIT_TEXT_VIEW.className, classLoader), after { param ->
+                (param.thisObject as EditText).apply {
+                    filters = filters.filter { it !is InputFilter.LengthFilter }.toTypedArray()
+                }
+            })
     }
 }
