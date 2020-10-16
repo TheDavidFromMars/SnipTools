@@ -22,6 +22,20 @@ import com.jaqxues.akrolyb.prefs.putPref
  */
 
 @Composable
+fun SwitchCard(toggled: Boolean, onToggle: (Boolean) -> Unit, text: @Composable () -> Unit) {
+    Card(
+        Modifier.fillMaxWidth().toggleable(toggled, onValueChange = onToggle),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(Modifier.padding(16.dp)) {
+            text()
+            Spacer(Modifier.weight(1f))
+            Switch(checked = toggled, onCheckedChange = onToggle)
+        }
+    }
+}
+
+@Composable
 fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
     var toggled by remember {
         mutableStateOf(pref.getPref())
@@ -30,14 +44,5 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         toggled = active
         pref.putPref(active)
     }
-    Card(
-        Modifier.fillMaxWidth().toggleable(toggled, onValueChange = ::onToggle),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Row(Modifier.padding(16.dp)) {
-            text()
-            Spacer(Modifier.weight(1f))
-            Switch(checked = toggled, onCheckedChange = ::onToggle)
-        }
-    }
+    SwitchCard(toggled = toggled, onToggle = ::onToggle, text)
 }
