@@ -38,7 +38,10 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
     /**
      * @param action: Adds Fragments and returns the currently active Fragment
      */
-    fun initialize(listener: NavigationFragmentListener, action: DynamicNavigationView.() -> BaseFragment?) {
+    fun initialize(
+        listener: NavigationFragmentListener,
+        action: DynamicNavigationView.() -> BaseFragment?
+    ) {
         this.listener = listener
         setNavigationItemSelectedListener(this)
 
@@ -65,7 +68,8 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
         fragments.remove(menuId)
 
     fun getFragmentById(@IdRes menuId: Int) =
-        fragments.get(menuId) ?: throw IllegalArgumentException("MenuId not associated with a fragment")
+        fragments.get(menuId)
+            ?: throw IllegalArgumentException("MenuId not associated with a fragment")
 
     fun navigate(@IdRes menuId: Int): Boolean {
         val item = menu.findItem(menuId)
@@ -80,9 +84,11 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
         val subMenu = menu.addSubMenu(Menu.NONE, packName.hashCode(), Menu.NONE, packName)
         menuInflater.inflate(R.menu.pack_menu, subMenu)
 
-        val allFragments = pack.featureManager.getActiveFeatures(true).flatMap {
-            it.getFragments().toList()
-        } + pack.staticFragments
+        val staticFragments = pack.staticFragments.toSet()
+        val allFragments = staticFragments +
+                pack.featureManager.getActiveFeatures(true).flatMap {
+                    it.getFragments().toList()
+                }
 
         val unused = subMenu.items.toMutableList()
 
@@ -95,7 +101,10 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
                 addFragment(frag, found.itemId)
                 found.itemId
             } else {
-                subMenu.add(Menu.NONE, frag.menuId, Menu.NONE, frag.name)
+                subMenu.add(
+                    if (frag in staticFragments) R.id.nav_group_static else Menu.NONE,
+                    frag.menuId, Menu.NONE, frag.name
+                )
                 addFragment(frag)
                 frag.menuId
             }
