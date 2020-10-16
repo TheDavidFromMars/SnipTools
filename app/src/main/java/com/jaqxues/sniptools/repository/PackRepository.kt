@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jaqxues.akrolyb.prefs.add
-import com.jaqxues.akrolyb.prefs.remove
+import com.jaqxues.akrolyb.prefs.edit
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.data.StatefulPackData
 import com.jaqxues.sniptools.networking.GitHubApiService
@@ -64,7 +63,7 @@ class PackRepository(private val retrofit: GitHubApiService) {
         certificate: X509Certificate? = null,
         packBuilder: PackFactory
     ) {
-        SELECTED_PACKS.add(packFile.name)
+        SELECTED_PACKS.edit { it + packFile.name }
         try {
             PackLoadManager.requestLoadPack(context, packFile, certificate, packBuilder)
         } catch (t: Throwable) {
@@ -73,7 +72,7 @@ class PackRepository(private val retrofit: GitHubApiService) {
     }
 
     suspend fun deactivatePack(context: Context, packFile: File, certificate: X509Certificate? = null, packBuilder: PackFactory) {
-        SELECTED_PACKS.remove(packFile.name)
+        SELECTED_PACKS.edit { it - packFile.name }
         PackLoadManager.requestUnloadPack(context, packFile, certificate, packBuilder)
     }
 
@@ -84,7 +83,7 @@ class PackRepository(private val retrofit: GitHubApiService) {
     }
 
     fun deletePack(packFile: File) {
-        SELECTED_PACKS.remove(packFile.name)
+        SELECTED_PACKS.edit { it - packFile.name }
         packFile.delete()
         PackLoadManager.deletePackState(packFile.name)
         loadablePackStates.remove(packFile.name)

@@ -11,7 +11,7 @@ import com.jaqxues.akrolyb.prefs.Types.Companion.genericType
 object PackPreferences {
     val ASK_SCREENSHOT_CONFIRMATION = Preference("ask_screenshot_confirmation", true)
 
-    val DISABLED_FEATURES = Preference("disabled_features", emptyList<String>())
+    val DISABLED_FEATURES = Preference("disabled_features", emptySet<String>())
 
     val STORY_STEALTH_ENABLED = Preference("story_stealth_enabled", true)
 

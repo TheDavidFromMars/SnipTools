@@ -2,28 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <item
-        android:id="@+id/nav_misc_changes"
-        android:icon="@drawable/ic_baseline_edit_48"
-        android:title="Misc Changes" />
-    <item
-        android:id="@+id/nav_saving"
-        android:icon="@drawable/ic_baseline_save_alt_48"
-        android:title="Saving" />
-    <item
-        android:id="@+id/nav_debug"
-        android:icon="@drawable/ic_debug_48"
-        android:title="Debug Tools" />
-    <item
-        android:id="@+id/nav_unlimited"
-        android:icon="@drawable/ic_baseline_timer_off_48"
-        android:title="Unlimited Viewing" />
-    <item
-        android:id="@+id/nav_stealth"
-        android:icon="@drawable/ic_baseline_visibility_off_48"
-        android:title="Stealth Viewing" />
-    <item
-        android:id="@+id/nav_screenshot"
-        android:icon="@drawable/ic_baseline_no_photography_48"
-        android:title="Screenshot Bypass" />
+
+    <group android:id="@+id/nav_group_static" android:menuCategory="container" />
+
+    <group android:id="@+id/nav_group_dynamic" android:menuCategory="container">
+        <item
+            android:id="@+id/nav_misc_changes"
+            android:icon="@drawable/ic_baseline_edit_48"
+            android:title="Misc Changes" />
+        <item
+            android:id="@+id/nav_saving"
+            android:icon="@drawable/ic_baseline_save_alt_48"
+            android:title="Saving" />
+        <item
+            android:id="@+id/nav_debug"
+            android:icon="@drawable/ic_debug_48"
+            android:title="Debug Tools" />
+        <item
+            android:id="@+id/nav_unlimited"
+            android:icon="@drawable/ic_baseline_timer_off_48"
+            android:title="Unlimited Viewing" />
+        <item
+            android:id="@+id/nav_stealth"
+            android:icon="@drawable/ic_baseline_visibility_off_48"
+            android:title="Stealth Viewing" />
+        <item
+            android:id="@+id/nav_screenshot"
+            android:icon="@drawable/ic_baseline_no_photography_48"
+            android:title="Screenshot Bypass" />
+    </group>
 </menu>
