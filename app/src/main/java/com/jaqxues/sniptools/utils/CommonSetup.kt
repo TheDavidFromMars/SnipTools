@@ -1,8 +1,8 @@
 package com.jaqxues.sniptools.utils
 
 import android.util.Log
-import com.jaqxues.akrolyb.logger.FileLogger
 import com.jaqxues.akrolyb.prefs.PrefManager
+import com.jaqxues.akrolyb.prefs.serializers.KotlinXPrefMapSerializer
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.data.Preferences
 import timber.log.Timber
@@ -17,7 +17,8 @@ object CommonSetup {
     fun initPrefs() {
         PrefManager.init(
             File(PathProvider.contentPath, PathProvider.PREF_FILE_NAME),
-            Preferences::class
+            Preferences::class,
+            serializer = KotlinXPrefMapSerializer()
         )
     }
 

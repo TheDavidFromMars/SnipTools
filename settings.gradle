@@ -2,10 +2,23 @@ rootProject.name='SnipTools'
 include ':app'
 include ':packimpl'
 
-// Locally Testing PackCompiler Plugin
+
+/**
+ * Locally Testing Akrolyb
+ */
+//include ':akrolyb'
+//project(':akrolyb').projectDir = file('../Akrolyb/akrolyb/')
+
+/** in app/build.gradle as dependency: */
+//    api(project(':akrolyb'))
+
+
+
+/**
+ * Locally Testing PackCompiler Plugin
+ */
 //includeBuild('../PackCompiler') {
 //    dependencySubstitution {
-//        substitute module("gradle.plugin.com.jaqxues:PackCompiler") with project(":")
+//        substitute module('gradle.plugin.com.jaqxues:PackCompiler') with project(':')
 //    }
-//
 //}

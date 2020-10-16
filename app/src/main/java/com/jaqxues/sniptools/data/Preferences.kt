@@ -9,7 +9,5 @@ import com.jaqxues.akrolyb.prefs.Types.Companion.genericType
  * Date: 25.06.20 - Time 20:33.
  */
 object Preferences {
-    val SELECTED_PACKS = Preference<List<String>>(
-        "selected_packs", emptyList(), genericType<List<String>>()
-    )
+    val SELECTED_PACKS = Preference("selected_packs", emptyList<String>())
 }
