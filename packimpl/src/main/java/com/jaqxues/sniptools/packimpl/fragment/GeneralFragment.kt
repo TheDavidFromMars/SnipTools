@@ -18,9 +18,9 @@ import com.jaqxues.akrolyb.prefs.edit
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.features.*
+import com.jaqxues.sniptools.packimpl.utils.CheckboxCard
 import com.jaqxues.sniptools.packimpl.utils.FeatureSet
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.DISABLED_FEATURES
-import com.jaqxues.sniptools.packimpl.utils.SwitchCard
 import com.jaqxues.sniptools.ui.AppScreen
 
 
@@ -51,7 +51,7 @@ class GeneralFragment : PackFragment() {
                         val featureKey =
                             FeatureSet.optionalFeatures.entries.find { (_, v) -> v == k }?.key
                                 ?: error("Feature Key cannot be null")
-                        SwitchCard(
+                        CheckboxCard(
                             toggled = featureKey !in disabledFeatures,
                             onToggle = { enabled ->
                                 disabledFeatures = DISABLED_FEATURES.edit {
