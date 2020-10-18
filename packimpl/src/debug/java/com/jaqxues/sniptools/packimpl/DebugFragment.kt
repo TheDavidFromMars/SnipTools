@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.annotatedString
 import androidx.compose.ui.unit.dp
 import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
+import com.jaqxues.sniptools.packimpl.utils.TitleAndDescription
 import com.jaqxues.sniptools.ui.AppScreen
 
 
@@ -32,7 +35,10 @@ class DebugFragment : PackFragment() {
                 AppScreen {
                     Column(Modifier.padding(16.dp)) {
                         SwitchPreference(DebugPreferences.DB_DEBUG_SERVER) {
-                            Text("Use Database Server")
+                            TitleAndDescription(
+                                title = "Use Database Server",
+                                description = "Activates a Database Server running on localhost:8888"
+                            )
                         }
                     }
                 }

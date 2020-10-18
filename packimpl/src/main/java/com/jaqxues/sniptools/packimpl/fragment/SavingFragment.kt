@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.AUTO_SAVE_SNAPS
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
+import com.jaqxues.sniptools.packimpl.utils.TitleAndDescription
 import com.jaqxues.sniptools.ui.AppScreen
 
 /**
@@ -30,7 +31,10 @@ class SavingFragment: PackFragment() {
             AppScreen {
                 Column(Modifier.padding(16.dp)) {
                     SwitchPreference(AUTO_SAVE_SNAPS) {
-                        Text("Auto Save Snaps")
+                        TitleAndDescription(
+                            title = "Auto Save Snaps",
+                            description = "Save every incoming Snap automatically"
+                        )
                     }
                 }
             }

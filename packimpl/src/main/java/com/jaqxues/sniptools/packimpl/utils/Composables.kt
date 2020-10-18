@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.packimpl.utils
 
+import android.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jaqxues.akrolyb.prefs.Preference
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.prefs.putPref
@@ -32,9 +34,8 @@ private fun SplitCard(
     right: @Composable () -> Unit
 ) {
     CustomCard(modifier) {
-        Row(Modifier.padding(16.dp)) {
-            left()
-            Spacer(Modifier.weight(1f))
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.weight(1f)) { left() }
             right()
         }
     }
@@ -81,24 +82,17 @@ fun <T> DropdownPreference(
     var current by remember { mutableStateOf(pref.getPref()) }
 
     DropdownMenu(toggle = {
-        Card(
-            Modifier.fillMaxWidth()
-                .toggleable(value = expanded, onValueChange = { expanded = !expanded }),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Row(
-                Modifier.padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                title()
-                Spacer(Modifier.weight(1f))
+        SplitCard(
+            Modifier.toggleable(value = expanded, onValueChange = { expanded = !expanded }),
+            left = title,
+            right = {
                 Text(values[current] ?: "Unknown")
                 Image(
-                    imageResource(id = android.R.drawable.arrow_down_float),
+                    imageResource(id = R.drawable.arrow_down_float),
                     Modifier.padding(horizontal = 8.dp).size(8.dp)
                 )
             }
-        }
+        )
     }, expanded = expanded, onDismissRequest = { expanded = false }) {
         values.forEach { (k, v) ->
             DropdownMenuItem(onClick = {
@@ -108,6 +102,16 @@ fun <T> DropdownPreference(
             }) {
                 Text(v)
             }
+        }
+    }
+}
+
+@Composable
+fun TitleAndDescription(title: String, description: String) {
+    Column {
+        Text(title)
+        ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
+            Text(description, fontSize = 12.sp)
         }
     }
 }

@@ -14,6 +14,7 @@ import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_IMAGE_UNLIMITED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_VIDEO_LOOPING
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
+import com.jaqxues.sniptools.packimpl.utils.TitleAndDescription
 import com.jaqxues.sniptools.ui.AppScreen
 
 /**
@@ -32,11 +33,17 @@ class UnlimitedViewingFragment: PackFragment() {
             AppScreen {
                 Column(Modifier.padding(16.dp)) {
                     SwitchPreference(SNAP_VIDEO_LOOPING) {
-                        Text("Loop Videos")
+                        TitleAndDescription(
+                            title = "Loop Videos",
+                            description = "Repeat all videos"
+                        )
                     }
                     Spacer(Modifier.padding(8.dp))
                     SwitchPreference(SNAP_IMAGE_UNLIMITED) {
-                        Text("Disable Snap Timer")
+                        TitleAndDescription(
+                            title = "Disable Snap Timer",
+                            description = "View all Snaps for an indefinite amount of time"
+                        )
                     }
                 }
             }

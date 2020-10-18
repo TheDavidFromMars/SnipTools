@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.ASK_SCREENSHOT_CONFIRMATION
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
+import com.jaqxues.sniptools.packimpl.utils.TitleAndDescription
 import com.jaqxues.sniptools.ui.AppScreen
 
 
@@ -31,7 +32,10 @@ class ScreenshotFragment: PackFragment() {
             AppScreen {
                 Column(Modifier.padding(16.dp)) {
                     SwitchPreference(ASK_SCREENSHOT_CONFIRMATION) {
-                        Text("Confirm Screenshot Notification")
+                        TitleAndDescription(
+                            title = "Confirm Screenshot Notification",
+                            description = "Allows you to chose whether to send the screenshot notification"
+                        )
                     }
                 }
             }

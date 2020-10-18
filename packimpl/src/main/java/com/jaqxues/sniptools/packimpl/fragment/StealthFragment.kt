@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.STORY_STEALTH_ENABLED
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
+import com.jaqxues.sniptools.packimpl.utils.TitleAndDescription
 import com.jaqxues.sniptools.ui.AppScreen
 
 /**
@@ -30,7 +31,10 @@ class StealthFragment: PackFragment() {
             AppScreen {
                 Column(Modifier.padding(16.dp)) {
                     SwitchPreference(STORY_STEALTH_ENABLED) {
-                        Text("Enable Story Stealth")
+                        TitleAndDescription(
+                            title = "Enable Story Stealth",
+                            description = "Viewing Stories of Friends without them noticing"
+                        )
                     }
                 }
             }

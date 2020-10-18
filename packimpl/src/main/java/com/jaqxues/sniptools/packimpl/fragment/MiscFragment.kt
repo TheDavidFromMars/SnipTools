@@ -14,6 +14,7 @@ import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.DISABLE_CAPTION_LENGTH_LIMIT
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.FORCE_SC_APP_DECK_MODE
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
+import com.jaqxues.sniptools.packimpl.utils.TitleAndDescription
 import com.jaqxues.sniptools.ui.AppScreen
 
 /**
@@ -32,11 +33,17 @@ class MiscFragment : PackFragment() {
             AppScreen {
                 Column(Modifier.padding(16.dp)) {
                     SwitchPreference(FORCE_SC_APP_DECK_MODE) {
-                        Text("Disable Bottom App Bar")
+                        TitleAndDescription(
+                            title = "Disable Bottom App Bar",
+                            description = "Disables the 'new' black navigation bar in Snapchat"
+                        )
                     }
                     Spacer(Modifier.padding(8.dp))
                     SwitchPreference(DISABLE_CAPTION_LENGTH_LIMIT) {
-                        Text("Disable Caption Length Limit")
+                        TitleAndDescription(
+                            title = "Disable Caption Limit",
+                            description = "Disables the character limit for captions on Snaps"
+                        )
                     }
                 }
             }
