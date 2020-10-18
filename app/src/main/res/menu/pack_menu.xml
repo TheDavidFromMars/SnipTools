@@ -3,9 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:id="@+id/nav_group_static" android:menuCategory="container" />
+    <group
+        android:id="@+id/nav_group_static"
+        android:menuCategory="container">
+        <item
+            android:id="@+id/nav_general"
+            android:icon="@drawable/ic_baseline_tune_48"
+            android:title="General" />
+    </group>
 
-    <group android:id="@+id/nav_group_dynamic" android:menuCategory="container">
+    <group
+        android:id="@+id/nav_group_dynamic"
+        android:menuCategory="container">
         <item
             android:id="@+id/nav_misc_changes"
             android:icon="@drawable/ic_baseline_edit_48"
