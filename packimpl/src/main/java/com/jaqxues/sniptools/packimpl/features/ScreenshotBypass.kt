@@ -8,9 +8,8 @@ import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.fragment.ScreenshotFragment
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.SCREENSHOT_DETECTED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.ASK_SCREENSHOT_CONFIRMATION
-import com.jaqxues.sniptools.packimpl.utils.tryCreateDialog
+import com.jaqxues.sniptools.packimpl.utils.createDialog
 import de.robv.android.xposed.XC_MethodReplacement
-import de.robv.android.xposed.XposedBridge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,30 +32,28 @@ class ScreenshotBypass : IFeature() {
                     return@replace
 
                 GlobalScope.launch(Dispatchers.Main) {
-                    tryCreateDialog {
-                        setTitle("Send Screenshot Notification")
-                        setMessage("Do you want to dispatch the Screenshot Notification and let the other user know you made a screenshot?")
-                        setCancelable(false)
-                        setOnDismissListener {
-                            dialogShown.set(false)
-                        }
-
-                        setPositiveButton("Yes") { dialog, _ ->
-                            // Cannot be called from Main Thread
-                            GlobalScope.launch(Dispatchers.Default) {
-                                param.invokeOriginalMethod()
-                                XposedBridge.invokeOriginalMethod(
-                                    param.method, param.thisObject, param.args
-                                )
+                    try {
+                        createDialog {
+                            setTitle("Send Screenshot Notification")
+                            setMessage("Do you want to dispatch the Screenshot Notification and let the other user know you made a screenshot?")
+                            setCancelable(false)
+                            setOnDismissListener {
+                                dialogShown.set(false)
                             }
-                            dialog.dismiss()
-                        }
 
-                        setNeutralButton("No") { dialog, _ ->
-                            dialog.dismiss()
-                        }
+                            setPositiveButton("Yes") { dialog, _ ->
+                                // Cannot be called from Main Thread
+                                GlobalScope.launch(Dispatchers.Default) {
+                                    param.invokeOriginalMethod()
+                                }
+                                dialog.dismiss()
+                            }
 
-                    }?.show()
+                            setNeutralButton("No") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                        }.show()
+                    } catch (ignored: Throwable) {  }
                 }
             }
         } else

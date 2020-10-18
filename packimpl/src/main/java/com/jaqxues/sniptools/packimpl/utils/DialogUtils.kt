@@ -13,11 +13,3 @@ inline fun createDialog(config: AlertDialog.Builder.() -> Unit) =
     AlertDialog.Builder(
         ContextContainer.getActivity() ?: error("Activity must be not-null to show Dialog!")
     ).apply(config).create()
-
-inline fun tryCreateDialog(config: AlertDialog.Builder.() -> Unit) =
-    try {
-        createDialog(config)
-    } catch (t: Throwable) {
-        Timber.e(t)
-        null
-    }
