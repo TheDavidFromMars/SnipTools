@@ -65,11 +65,10 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         mutableStateOf(pref.getPref())
     }
 
-    fun onToggle(active: Boolean) {
-        toggled = active
-        pref.putPref(active)
-    }
-    SwitchCard(toggled = toggled, onToggle = ::onToggle, text)
+    SwitchCard(toggled = toggled, onToggle = {
+        toggled = it
+        pref.putPref(it)
+    }, text = text)
 }
 
 @Composable
@@ -109,7 +108,7 @@ fun <T> DropdownPreference(
 @Composable
 fun TitleAndDescription(title: String, description: String) {
     Column {
-        Text(title)
+        Text(title, Modifier.padding(bottom = 2.dp))
         ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
             Text(description, fontSize = 12.sp)
         }
