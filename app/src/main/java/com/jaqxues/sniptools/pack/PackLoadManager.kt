@@ -7,6 +7,8 @@ import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.data.StatefulPackData
 import com.jaqxues.sniptools.utils.PathProvider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
@@ -20,9 +22,11 @@ import java.util.concurrent.ConcurrentHashMap
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 03.06.20 - Time 23:58.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 object PackLoadManager {
     private val packLoadStates = ConcurrentHashMap<String, StatefulPackData>()
     private val channel = BroadcastChannel<Pair<String, StatefulPackData>>(Channel.CONFLATED)
+    @OptIn(FlowPreview::class)
     val packLoadChanges = channel.asFlow()
 
     private suspend inline fun putState(packFileName: String, getState: () -> StatefulPackData) {
@@ -31,7 +35,7 @@ object PackLoadManager {
         channel.send(packFileName to state)
     }
 
-    suspend fun loadState(
+    suspend fun ensureInitialState(
         context: Context,
         packFile: File,
         certificate: X509Certificate? = null,
@@ -42,7 +46,7 @@ object PackLoadManager {
         }
     }
 
-    suspend fun getInitialState(
+    private suspend fun getInitialState(
         context: Context,
         packFile: File,
         certificate: X509Certificate? = null,
@@ -55,21 +59,6 @@ object PackLoadManager {
         } catch (t: Throwable) {
             putState(packFile.name) { StatefulPackData.CorruptedPack(packFile, t.message!!) }
             throw t
-        }
-    }
-
-    suspend fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
-        SELECTED_PACKS.getPref().forEach {
-            try {
-                requestLoadPack(
-                    context,
-                    File(PathProvider.modulesPath, it),
-                    certificate,
-                    packBuilder
-                )
-            } catch (t: Throwable) {
-                Timber.e(t, "Failed to load Pack")
-            }
         }
     }
 

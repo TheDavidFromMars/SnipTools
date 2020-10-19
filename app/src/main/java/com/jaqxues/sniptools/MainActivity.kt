@@ -21,12 +21,9 @@ import com.jaqxues.sniptools.fragments.HomeFragment
 import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.fragments.PackManagerFragment
 import com.jaqxues.sniptools.pack.PackFactory
-import com.jaqxues.sniptools.pack.PackLoadManager
 import com.jaqxues.sniptools.ui.views.DynamicNavigationView
 import com.jaqxues.sniptools.utils.CommonSetup
 import com.jaqxues.sniptools.viewmodel.PackViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -56,11 +53,6 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
 
     private fun init() {
         CommonSetup.initPrefs()
-        GlobalScope.launch(Dispatchers.IO) {
-            PackLoadManager.loadActivatedPacks(this@MainActivity,
-                if (BuildConfig.DEBUG) null else Security.certificateFromApk(this@MainActivity, BuildConfig.APPLICATION_ID),
-                PackFactory(false))
-        }
 
         if (intent.hasExtra("select_new_pack")) {
             val extra = intent.getStringExtra("select_new_pack")
@@ -83,16 +75,11 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
         val actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
         ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.app_name,
-            R.string.app_name
+            this, drawerLayout, toolbar, R.string.app_name, R.string.app_name
         ).let {
             drawerLayout.addDrawerListener(it)
             it.syncState()
         }
-
 
         navView.initialize(this) {
             val homeFragment = HomeFragment()
@@ -116,6 +103,10 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
                 }
             }
         }
+        packViewModel.loadActivatedPacks(this@MainActivity,
+            if (BuildConfig.DEBUG) null else Security.certificateFromApk(this@MainActivity, BuildConfig.APPLICATION_ID),
+            PackFactory(false)
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

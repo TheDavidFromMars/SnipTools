@@ -5,6 +5,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.prefs.edit
+import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.data.StatefulPackData
 import com.jaqxues.sniptools.networking.GitHubApiService
@@ -47,10 +48,10 @@ class PackRepository(private val retrofit: GitHubApiService) {
         _localPacks.postValue(jarFileList.map(File::getName))
     }
 
-    suspend fun refreshPackStates(files: Array<File>, context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
+    private suspend fun refreshPackStates(files: Array<File>, context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
         for (packFile in files) {
             try {
-                PackLoadManager.loadState(context, packFile, certificate, packBuilder)
+                PackLoadManager.ensureInitialState(context, packFile, certificate, packBuilder)
             } catch (t: Throwable) {
                 Timber.e(t, "Could not load PackState correctly")
             }
@@ -94,11 +95,21 @@ class PackRepository(private val retrofit: GitHubApiService) {
         })
     }
 
-    suspend fun initLoadChanges() {
+    suspend fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
         PackLoadManager.packLoadChanges.collect(::onPackStateChanged)
+
+        for (packName in SELECTED_PACKS.getPref()) {
+            try {
+                PackLoadManager.requestLoadPack(
+                    context, File(PathProvider.modulesPath, packName), certificate, packBuilder
+                )
+            } catch (t: Throwable) {
+                Timber.e(t, "Failed to load Pack")
+            }
+        }
     }
 
-    private suspend fun onPackStateChanged(nameState: Pair<String, StatefulPackData>) {
+    private fun onPackStateChanged(nameState: Pair<String, StatefulPackData>) {
         val (packFileName, state) = nameState
         if (packFileName in loadablePackStates)
             loadablePackStates.getValue(packFileName).postValue(state)

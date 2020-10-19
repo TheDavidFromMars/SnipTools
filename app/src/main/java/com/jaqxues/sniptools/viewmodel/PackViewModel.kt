@@ -20,12 +20,6 @@ import kotlin.random.Random
  */
 class PackViewModel(private val packRepo: PackRepository) : ViewModel() {
 
-    init {
-        viewModelScope.launch {
-            packRepo.initLoadChanges()
-        }
-    }
-
     val lastChecked: LiveData<Long> =
         MutableLiveData(System.currentTimeMillis() - Random.nextLong(0, 1e8.toLong()))
 
@@ -55,4 +49,9 @@ class PackViewModel(private val packRepo: PackRepository) : ViewModel() {
 
     fun deletePack(packFile: File) = packRepo.deletePack(packFile)
 
+    fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
+        viewModelScope.launch {
+            packRepo.loadActivatedPacks(context, certificate, packBuilder)
+        }
+    }
 }
