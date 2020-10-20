@@ -96,7 +96,7 @@ class PackRepository(private val retrofit: GitHubApiService) {
     }
 
     suspend fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
-        PackLoadManager.packLoadChanges.collect(::onPackStateChanged)
+        PackLoadManager.packLoadChanges.collect { onPackStateChanged(it) }
 
         for (packName in SELECTED_PACKS.getPref()) {
             try {

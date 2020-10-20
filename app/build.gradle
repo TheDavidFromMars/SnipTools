@@ -60,7 +60,7 @@ android {
     dynamicFeatures = [":packimpl"]
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.0.0-alpha04"
+        kotlinCompilerExtensionVersion "1.0.0-alpha05"
     }
 }
 
@@ -73,10 +73,8 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'androidx.appcompat:appcompat:1.2.0'
-    api 'androidx.core:core-ktx:1.3.1'
-    api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'com.google.android.material:material:1.2.1'
-    api 'androidx.constraintlayout:constraintlayout:2.0.1'
+    api 'androidx.core:core-ktx:1.3.2'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -103,7 +101,7 @@ dependencies {
 
     api('com.github.jaqxues:Akrolyb:4a1f3202a0')
 
-    def compose_version = '1.0.0-alpha04'
+    def compose_version = '1.0.0-alpha05'
     api "androidx.compose.ui:ui:$compose_version"
     api "androidx.compose.material:material:$compose_version"
     api "androidx.ui:ui-tooling:$compose_version"
