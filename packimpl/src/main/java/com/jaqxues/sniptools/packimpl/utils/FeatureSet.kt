@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
  * Date: 04.06.20 - Time 00:22.
  */
 object FeatureSet : FeatureProvider<IFeature> {
-    override val disabledFeatures = DISABLED_FEATURES.getPref().toList()
+    override val disabledFeatures = { DISABLED_FEATURES.getPref().toList() }
 
     override val optionalFeatures = mapOf(
         "chat" to ChatSaving::class,

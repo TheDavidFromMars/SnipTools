@@ -6,12 +6,14 @@ import android.util.SparseArray
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.SubMenu
 import androidx.annotation.IdRes
 import androidx.core.util.set
 import androidx.core.view.isNotEmpty
 import com.google.android.material.navigation.NavigationView
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.fragments.BaseFragment
+import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.utils.items
 import timber.log.Timber
@@ -61,7 +63,8 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
     }
 
     fun addFragment(fragment: BaseFragment, overriddenId: Int = Menu.NONE) {
-        fragments.append(if (overriddenId == Menu.NONE) fragment.menuId else overriddenId, fragment)
+        val id = if (overriddenId == Menu.NONE) fragment.menuId else overriddenId
+        fragments.append(id, fragment)
     }
 
     fun removeFragment(menuId: Int) =
@@ -81,36 +84,51 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
     }
 
     fun addPackFragments(menuInflater: MenuInflater, packName: String, pack: ModPack) {
-        val subMenu = menu.addSubMenu(Menu.NONE, packName.hashCode(), Menu.NONE, packName)
+        val subMenu = menu.addSubMenu(Menu.NONE, pack.hashCode(), Menu.NONE, packName)
         menuInflater.inflate(R.menu.pack_menu, subMenu)
 
+        val (allFragments, staticFragments) = getFragmentsFromPack(pack)
+        packFragments[packName.hashCode()] = editMenuItems(subMenu, allFragments, staticFragments)
+    }
+
+    fun reloadActiveFragments(packName: String, pack: ModPack) {
+        val subMenu = menu.findItem(pack.hashCode()).subMenu
+
+        val (allFragments, staticFragments) = getFragmentsFromPack(pack)
+        packFragments[packName.hashCode()] = editMenuItems(subMenu, allFragments, staticFragments)
+    }
+
+    private fun getFragmentsFromPack(pack: ModPack): Pair<List<PackFragment>, Set<PackFragment>> {
         val staticFragments = pack.staticFragments.toSet()
-        val allFragments = staticFragments +
-                pack.featureManager.getActiveFeatures(true).flatMap {
+        return pack.featureManager.getActiveFeatures(true).flatMap {
                     it.getFragments().toList()
-                }
+                } + staticFragments to staticFragments
+    }
 
+    private fun editMenuItems(
+        subMenu: SubMenu, fragments: Iterable<PackFragment>,
+        staticFragments: Set<PackFragment>
+    ): IntArray {
         val unused = subMenu.items.toMutableList()
+        val fragmentIds = fragments.map { frag ->
+            val found = unused.find { frag.name == it.title }
 
-        val fragmentIds = allFragments.map { frag ->
-            val found = unused.find {
-                frag.name == it.title
-            }
-            if (found != null) {
-                unused -= found
-                addFragment(frag, found.itemId)
-                found.itemId
-            } else {
+            if (found == null) {
                 subMenu.add(
                     if (frag in staticFragments) R.id.nav_group_static else Menu.NONE,
                     frag.menuId, Menu.NONE, frag.name
                 )
                 addFragment(frag)
                 frag.menuId
+            } else {
+                found.isVisible = true
+                unused -= found
+                addFragment(frag, found.itemId)
+                found.itemId
             }
         }.toIntArray()
-        packFragments[packName.hashCode()] = fragmentIds
         unused.forEach { it.isVisible = false }
+        return fragmentIds
     }
 
     fun removePackFragments(packName: String) {
