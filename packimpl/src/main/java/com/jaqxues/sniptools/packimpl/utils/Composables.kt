@@ -109,7 +109,7 @@ fun <T> DropdownPreference(
 fun TitleAndDescription(title: String, description: String) {
     Column {
         Text(title, Modifier.padding(bottom = 2.dp))
-        ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
+        ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
             Text(description, fontSize = 12.sp)
         }
     }
