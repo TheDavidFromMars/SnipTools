@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.packimpl.utils
 
+import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.genhook.FeatureProvider
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.pack.IFeature
@@ -15,7 +16,7 @@ import kotlin.reflect.KClass
  * Date: 04.06.20 - Time 00:22.
  */
 object FeatureSet : FeatureProvider<IFeature> {
-    override val disabledFeatures = { DISABLED_FEATURES.getPref().toList() }
+    override val disabledFeatures = MutableLiveData(DISABLED_FEATURES.getPref())
 
     override val optionalFeatures = mapOf(
         "chat" to ChatSaving::class,

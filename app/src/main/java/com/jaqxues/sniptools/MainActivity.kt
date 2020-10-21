@@ -95,7 +95,10 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
             packViewModel.packLoadChanges.collect { (packName, state) ->
                     when (state) {
                     is StatefulPackData.LoadedPack -> {
-                        navView.addPackFragments(menuInflater, packName, state.pack)
+                        val pack = state.pack
+                        pack.featureManager.disabledFeatures.observe(this@MainActivity) {
+                            navView.setPackFragments(menuInflater, packName, pack)
+                        }
                     }
                     else -> {
                         navView.removePackFragments(packName)

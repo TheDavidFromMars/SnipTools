@@ -83,26 +83,23 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
         return onNavigationItemSelected(item)
     }
 
-    fun addPackFragments(menuInflater: MenuInflater, packName: String, pack: ModPack) {
-        val subMenu = menu.addSubMenu(Menu.NONE, pack.hashCode(), Menu.NONE, packName)
-        menuInflater.inflate(R.menu.pack_menu, subMenu)
+    fun setPackFragments(menuInflater: MenuInflater, packName: String, pack: ModPack) {
+        val subMenu = menu.findItem(pack.hashCode())?.subMenu
+            ?: (menu.addSubMenu(Menu.NONE, pack.hashCode(), Menu.NONE, packName).also {
+                menuInflater.inflate(R.menu.pack_menu, it)
+            })
 
-        val (allFragments, staticFragments) = getFragmentsFromPack(pack)
-        packFragments[packName.hashCode()] = editMenuItems(subMenu, allFragments, staticFragments)
-    }
-
-    fun reloadActiveFragments(packName: String, pack: ModPack) {
-        val subMenu = menu.findItem(pack.hashCode()).subMenu
-
-        val (allFragments, staticFragments) = getFragmentsFromPack(pack)
-        packFragments[packName.hashCode()] = editMenuItems(subMenu, allFragments, staticFragments)
-    }
-
-    private fun getFragmentsFromPack(pack: ModPack): Pair<List<PackFragment>, Set<PackFragment>> {
         val staticFragments = pack.staticFragments.toSet()
-        return pack.featureManager.getActiveFeatures(true).flatMap {
-                    it.getFragments().toList()
-                } + staticFragments to staticFragments
+        val allFragments = pack.featureManager.getActiveFeatures(true).flatMap {
+            it.getFragments().toList()
+        } + staticFragments
+
+        val current = editMenuItems(subMenu, allFragments, staticFragments)
+        packFragments[packName.hashCode()]
+            ?.filter { it !in current }
+            ?.forEach { removeFragment(it) }
+
+        packFragments[packName.hashCode()] = current
     }
 
     private fun editMenuItems(

@@ -57,6 +57,7 @@ class GeneralFragment : PackFragment() {
                                 disabledFeatures = DISABLED_FEATURES.edit {
                                     if (enabled) it - featureKey else it + featureKey
                                 }
+                                FeatureSet.disabledFeatures.value = disabledFeatures
                             }
                         ) {
                             Text(v)
