@@ -50,8 +50,7 @@ class PackViewModel(private val packRepo: PackRepository) : ViewModel() {
     fun deletePack(packFile: File) = packRepo.deletePack(packFile)
 
     fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
-        viewModelScope.launch {
-            packRepo.loadActivatedPacks(context, certificate, packBuilder)
-        }
+        viewModelScope.launch { packRepo.collectPackChanges() }
+        viewModelScope.launch { packRepo.loadActivatedPacks(context, certificate, packBuilder) }
     }
 }

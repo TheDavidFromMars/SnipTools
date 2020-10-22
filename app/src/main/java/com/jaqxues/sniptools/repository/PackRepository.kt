@@ -96,8 +96,6 @@ class PackRepository(private val retrofit: GitHubApiService) {
     }
 
     suspend fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
-        PackLoadManager.packLoadChanges.collect { onPackStateChanged(it) }
-
         for (packName in SELECTED_PACKS.getPref()) {
             try {
                 PackLoadManager.requestLoadPack(
@@ -109,9 +107,11 @@ class PackRepository(private val retrofit: GitHubApiService) {
         }
     }
 
-    private fun onPackStateChanged(nameState: Pair<String, StatefulPackData>) {
-        val (packFileName, state) = nameState
-        if (packFileName in loadablePackStates)
-            loadablePackStates.getValue(packFileName).postValue(state)
+    suspend fun collectPackChanges() {
+        PackLoadManager.packLoadChanges.collect { nameState ->
+            val (packFileName, state) = nameState
+            if (packFileName in loadablePackStates)
+                loadablePackStates.getValue(packFileName).postValue(state)
+        }
     }
 }

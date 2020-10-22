@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
             val extra = intent.getStringExtra("select_new_pack")
                 ?: throw IllegalStateException("Extra cannot be null")
             Timber.i("SnipTools was started with Intent Extra 'select_new_pack' - '$extra'. Selecting new Pack and Starting Snapchat")
-            SELECTED_PACKS.putPref(listOf(extra))
+            SELECTED_PACKS.putPref(setOf(extra))
             finish()
             return
         }
