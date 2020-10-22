@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.jaqxues.akrolyb.prefs.edit
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.fragments.PackFragment
+import com.jaqxues.sniptools.packimpl.PackImpl
 import com.jaqxues.sniptools.packimpl.features.*
 import com.jaqxues.sniptools.packimpl.utils.CheckboxCard
 import com.jaqxues.sniptools.packimpl.utils.FeatureSet
@@ -57,7 +58,7 @@ class GeneralFragment : PackFragment() {
                                 disabledFeatures = DISABLED_FEATURES.edit {
                                     if (enabled) it - featureKey else it + featureKey
                                 }
-                                FeatureSet.disabledFeatures.value = disabledFeatures
+                                PackImpl.disabledFeatures.value = disabledFeatures
                             }
                         ) {
                             Text(v)

@@ -1,12 +1,15 @@
 package com.jaqxues.sniptools.packimpl
 
+import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.genhook.FeatureManager
 import com.jaqxues.akrolyb.prefs.PrefManager
+import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.packimpl.fragment.GeneralFragment
 import com.jaqxues.sniptools.packimpl.utils.FeatureSet
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences
+import com.jaqxues.sniptools.packimpl.utils.PackPreferences.DISABLED_FEATURES
 import timber.log.Timber
 import com.jaqxues.sniptools.BuildConfig as AppBuildConfig
 
@@ -31,8 +34,12 @@ class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
                 DebugCompat.debugPrefsClass
             ).filterNotNull().toTypedArray()
         )
+        Companion.disabledFeatures = MutableLiveData(DISABLED_FEATURES.getPref())
+
         Timber.d("Fully Initialized Pack")
     }
+
+    override val disabledFeatures = Companion.disabledFeatures
 
     override val featureManager by lazy { FeatureManager(FeatureSet) }
 
@@ -44,5 +51,10 @@ class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
             BuildConfig.DEBUG == metadata.devPack
                     && BuildConfig.DEBUG == AppBuildConfig.DEBUG
         ) { "Incompatible DevPack - Debug Combination" }
+    }
+
+    companion object {
+        lateinit var disabledFeatures: MutableLiveData<Set<String>>
+            private set
     }
 }

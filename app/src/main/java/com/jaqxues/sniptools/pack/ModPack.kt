@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.pack
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.jaqxues.akrolyb.genhook.FeatureHelper
 import com.jaqxues.akrolyb.genhook.FeatureManager
 import com.jaqxues.akrolyb.pack.AppData
@@ -20,6 +21,7 @@ import java.util.jar.Attributes
  * Date: 03.06.20 - Time 23:58.
  */
 abstract class ModPack(metadata: PackMetadata) : ModPackBase<PackMetadata>(metadata) {
+    abstract val disabledFeatures: LiveData<Set<String>>
     abstract val featureManager: FeatureManager<out IFeature>
     abstract val staticFragments: List<PackFragment>
     abstract val lateInitActivity: String
