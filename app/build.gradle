@@ -99,7 +99,7 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
 
-    api('com.github.jaqxues:Akrolyb:9b3cfe57f7')
+    api('com.github.jaqxues:Akrolyb:b37bcfb398')
 
     def compose_version = '1.0.0-alpha05'
     api "androidx.compose.ui:ui:$compose_version"
