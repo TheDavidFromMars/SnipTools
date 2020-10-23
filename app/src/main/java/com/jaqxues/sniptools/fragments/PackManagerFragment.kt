@@ -8,10 +8,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animate
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.contentColor
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -81,7 +78,7 @@ fun PackManagerScreen() {
             Crossfade(current = currentTab) {
                 when (it) {
                     PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(packViewModel)
-                    PackManagerTabs.PACK_DOWNLOADER -> Unit //PackDownloaderTab(packViewModel)
+                    PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(packViewModel)
                 }
             }
         }
@@ -92,7 +89,7 @@ fun PackManagerScreen() {
 @Composable
 fun ExpandablePackLayout(
     packName: String,
-    color: Color = contentColor(),
+    color: Color = AmbientContentColor.current,
     extendedContent: @Composable () -> Unit
 ) {
     var extended by remember { mutableStateOf(false) }

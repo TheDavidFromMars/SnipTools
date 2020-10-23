@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.colorResource
@@ -117,6 +118,8 @@ fun HomeContent() {
 }
 
 @Composable
-fun FooterText(text: AnnotatedString, color: Color = Color.LightGray) {
-    Text(text = text, color = color, fontSize = 12.sp)
+fun FooterText(text: AnnotatedString) {
+    ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+        Text(text = text, fontSize = 12.sp)
+    }
 }
