@@ -2,17 +2,13 @@ package com.jaqxues.sniptools.pack
 
 import android.content.Context
 import com.jaqxues.akrolyb.pack.ModPackBase
-import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.data.PackMetadata
-import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.data.StatefulPackData
-import com.jaqxues.sniptools.utils.PathProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
-import timber.log.Timber
 import java.io.File
 import java.security.cert.X509Certificate
 import java.util.concurrent.ConcurrentHashMap

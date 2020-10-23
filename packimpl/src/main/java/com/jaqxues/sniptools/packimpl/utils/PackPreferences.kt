@@ -1,7 +1,6 @@
 package com.jaqxues.sniptools.packimpl.utils
 
 import com.jaqxues.akrolyb.prefs.Preference
-import com.jaqxues.akrolyb.prefs.Types.Companion.genericType
 
 
 /**

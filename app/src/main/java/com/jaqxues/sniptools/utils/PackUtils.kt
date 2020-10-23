@@ -3,7 +3,6 @@ package com.jaqxues.sniptools.utils
 import com.jaqxues.sniptools.data.PackMetadata
 import java.io.File
 import java.util.jar.Attributes
-import java.util.jar.JarFile
 
 
 /**

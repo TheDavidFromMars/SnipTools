@@ -1,13 +1,11 @@
 package com.jaqxues.sniptools.packimpl.utils
 
-import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.genhook.FeatureProvider
-import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.pack.IFeature
-import com.jaqxues.sniptools.packimpl.*
+import com.jaqxues.sniptools.packimpl.DebugCompat
+import com.jaqxues.sniptools.packimpl.PackImpl
 import com.jaqxues.sniptools.packimpl.features.*
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations
-import com.jaqxues.sniptools.packimpl.utils.PackPreferences.DISABLED_FEATURES
 import kotlin.reflect.KClass
 
 
