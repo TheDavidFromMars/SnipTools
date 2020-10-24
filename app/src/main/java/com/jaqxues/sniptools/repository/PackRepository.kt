@@ -83,16 +83,12 @@ class PackRepository(private val retrofit: GitHubApiService) {
         }
     }
 
-    fun deletePack(packFile: File) {
+    suspend fun deletePack(packFile: File) {
+        _localPacks.postValue(_localPacks.value!! - packFile.name)
         SELECTED_PACKS.edit { it - packFile.name }
         packFile.delete()
         PackLoadManager.deletePackState(packFile.name)
         loadablePackStates.remove(packFile.name)
-        _localPacks.postValue(_localPacks.value!!.let {
-            val list = it.toMutableList()
-            list.remove(packFile.name)
-            list
-        })
     }
 
     suspend fun loadActivatedPacks(context: Context, certificate: X509Certificate? = null, packBuilder: PackFactory) {
@@ -108,7 +104,7 @@ class PackRepository(private val retrofit: GitHubApiService) {
     }
 
     suspend fun collectPackChanges() {
-        PackLoadManager.packLoadChanges.collect { nameState ->
+        packLoadChanges.collect { nameState ->
             val (packFileName, state) = nameState
             if (packFileName in loadablePackStates)
                 loadablePackStates.getValue(packFileName).postValue(state)

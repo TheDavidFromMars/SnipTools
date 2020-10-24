@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
 
         lifecycleScope.launch {
             packViewModel.packLoadChanges.collect { (packName, state) ->
-                    when (state) {
+                when (state) {
                     is StatefulPackData.LoadedPack -> {
                         val pack = state.pack
                         pack.disabledFeatures.observe(this@MainActivity) {

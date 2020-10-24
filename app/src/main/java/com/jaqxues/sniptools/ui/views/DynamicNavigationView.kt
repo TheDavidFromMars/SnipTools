@@ -84,8 +84,8 @@ class DynamicNavigationView : NavigationView, NavigationView.OnNavigationItemSel
     }
 
     fun setPackFragments(menuInflater: MenuInflater, packName: String, pack: ModPack) {
-        val subMenu = menu.findItem(pack.hashCode())?.subMenu
-            ?: (menu.addSubMenu(Menu.NONE, pack.hashCode(), Menu.NONE, packName).also {
+        val subMenu = menu.findItem(packName.hashCode())?.subMenu
+            ?: (menu.addSubMenu(Menu.NONE, packName.hashCode(), Menu.NONE, packName).also {
                 menuInflater.inflate(R.menu.pack_menu, it)
             })
 

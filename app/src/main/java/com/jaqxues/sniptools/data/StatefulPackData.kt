@@ -43,4 +43,12 @@ sealed class StatefulPackData {
         StatefulPackData()
 
     val isActive: Boolean get() = this is LoadedPack || this is PackLoadError
+
+    /**
+     * Used to indicate that a Pack has been removed
+     */
+    object RemovedPack: StatefulPackData() {
+        override val packFile: File get() = error("Unavailable for removed Pack")
+        override val packMetadata: PackMetadata get() = error("Unavailable for removed Pack")
+    }
 }

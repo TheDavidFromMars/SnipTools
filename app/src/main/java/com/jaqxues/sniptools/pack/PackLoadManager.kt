@@ -97,7 +97,10 @@ object PackLoadManager {
         getInitialState(context, packFile, certificate, packBuilder)
     }
 
-    fun deletePackState(packFileName: String) = packLoadStates.remove(packFileName)
+    suspend fun deletePackState(packFileName: String) {
+        packLoadStates.remove(packFileName)
+        channel.send(packFileName to StatefulPackData.RemovedPack)
+    }
 
     fun getStateFor(packName: String) = packLoadStates.getValue(packName)
 
