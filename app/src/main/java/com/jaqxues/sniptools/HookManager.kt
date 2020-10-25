@@ -10,7 +10,7 @@ import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.utils.Security
 import com.jaqxues.akrolyb.utils.XposedChecks
-import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
+import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.utils.*

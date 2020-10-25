@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.prefs.edit
 import com.jaqxues.akrolyb.prefs.getPref
-import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
+import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.db.PackDao
 import com.jaqxues.sniptools.db.ServerPackEntity

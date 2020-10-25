@@ -14,7 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.akrolyb.utils.Security
-import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
+import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.fragments.BaseFragment
 import com.jaqxues.sniptools.fragments.HomeFragment

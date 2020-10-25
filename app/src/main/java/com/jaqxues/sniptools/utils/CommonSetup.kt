@@ -4,7 +4,6 @@ import android.util.Log
 import com.jaqxues.akrolyb.prefs.PrefManager
 import com.jaqxues.akrolyb.prefs.serializers.KotlinXPrefMapSerializer
 import com.jaqxues.sniptools.BuildConfig
-import com.jaqxues.sniptools.data.Preferences
 import timber.log.Timber
 import java.io.File
 

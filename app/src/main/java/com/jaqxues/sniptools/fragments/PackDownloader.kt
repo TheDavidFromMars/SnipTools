@@ -1,9 +1,12 @@
 package com.jaqxues.sniptools.fragments
 
 import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.IconButton
+import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.onActive
@@ -12,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.annotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.db.ServerPackEntity
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
@@ -30,19 +34,40 @@ fun PackDownloaderTab() {
     onActive { packViewModel.refreshServerPacks() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        ServerPackContent(packViewModel)
+        ServerPackContent(packViewModel, Modifier.weight(1f))
+        PackDownloaderFooter(packViewModel)
+    }
+}
 
-        val time = packViewModel.lastChecked.observeAsState().value ?: -1
-        FooterText(
-            annotatedString {
-                append("Last Checked: ")
-                highlight {
-                    append(time.formatRelativeAbbrev)
+@Composable
+fun ServerPackContent(packViewModel: ServerPackViewModel, modifier: Modifier = Modifier) {
+    val serverPacks = packViewModel.serverPacks.observeAsState().value
+
+    if (serverPacks.isNullOrEmpty()) {
+        EmptyScreenMessage("No Packs available", modifier)
+    } else {
+        LazyColumnFor(items = serverPacks, modifier) { pack ->
+            ExpandablePackLayout(packName = pack.name) {
+                RemoteActionRow(pack) {
+                    packViewModel.downloadPack(pack.name)
                 }
             }
-        )
-        Spacer(Modifier.height(16.dp))
+        }
     }
+}
+
+@Composable
+fun PackDownloaderFooter(packViewModel: ServerPackViewModel) {
+    val time = packViewModel.lastChecked.observeAsState().value ?: -1
+    ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+        Text(annotatedString {
+            append("Last Checked: ")
+            highlight {
+                append(time.formatRelativeAbbrev)
+            }
+        }, fontSize = 12.sp)
+    }
+    Spacer(Modifier.height(16.dp))
 }
 
 @Composable
@@ -57,23 +82,6 @@ fun RemoteActionRow(pack: ServerPackEntity, onDownload: () -> Unit) {
                 vectorResource(R.drawable.ic_baseline_cloud_download_48),
                 modifier = Modifier.preferredHeight(50.dp).padding(8.dp)
             )
-        }
-    }
-}
-
-@Composable
-fun ColumnScope.ServerPackContent(packViewModel: ServerPackViewModel) {
-    val serverPacks = packViewModel.serverPacks.observeAsState().value
-
-    if (serverPacks.isNullOrEmpty()) {
-        EmptyScreenMessage("No Packs available", Modifier.weight(1f))
-    } else {
-        LazyColumnFor(items = serverPacks, Modifier.weight(1f)) { pack ->
-            ExpandablePackLayout(packName = pack.name) {
-                RemoteActionRow(pack) {
-                    packViewModel.downloadPack(pack.name)
-                }
-            }
         }
     }
 }

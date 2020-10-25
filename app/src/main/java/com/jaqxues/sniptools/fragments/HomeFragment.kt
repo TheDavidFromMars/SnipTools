@@ -48,10 +48,19 @@ class HomeFragment : BaseFragment() {
 }
 
 @Composable
-@Preview
 fun HomeScreen() {
     AppScreen {
-        HomeContent()
+        Column(
+            Modifier.fillMaxHeight(),
+            horizontalAlignment = CenterHorizontally
+        ) {
+            HomeContent(Modifier.weight(1f))
+
+
+            HomeDivider()
+            Spacer(Modifier.height(16.dp))
+            HomeFooter()
+        }
     }
 }
 
@@ -61,63 +70,49 @@ fun HomeDivider() {
 }
 
 @Composable
-fun HomeContent() {
+fun HomeContent(modifier: Modifier = Modifier) {
     Column(
-        Modifier.fillMaxHeight(),
-        horizontalAlignment= CenterHorizontally
+        modifier.padding(16.dp),
+        horizontalAlignment = CenterHorizontally
     ) {
-        Column(
-            Modifier.padding(16.dp).weight(1f),
-            horizontalAlignment = CenterHorizontally
-        ) {
-            Image(
-                imageResource(R.drawable.sniptools_logo),
-                Modifier.padding(32.dp).preferredHeight(72.dp)
-            )
-            HomeDivider()
-            Text(
-                modifier = Modifier.padding(vertical = 16.dp),
-                text = stringResource(R.string.home_description),
-                textAlign = TextAlign.Center
-            )
-            HomeDivider()
-        }
-
+        Image(
+            imageResource(R.drawable.sniptools_logo),
+            Modifier.padding(32.dp).preferredHeight(72.dp)
+        )
         HomeDivider()
-        Spacer(Modifier.height(16.dp))
-
-        FooterText(
-            annotatedString {
-                append("Author: ")
-                highlight { append("jaqxues") }
-            }
+        Text(
+            modifier = Modifier.padding(vertical = 16.dp),
+            text = stringResource(R.string.home_description),
+            textAlign = TextAlign.Center
         )
-        FooterText(
-            annotatedString {
-                append(ContextAmbient.current.getString(R.string.footer_app_version))
-                append(": ")
-                highlight { append(BuildConfig.VERSION_NAME) }
-            }
-        )
-        FooterText(
-            annotatedString {
-                append(ContextAmbient.current.getString(R.string.footer_snapchat_version))
-                append(": ")
-                highlight { append(ContextAmbient.current.installedScVersion ?: "Unknown") }
-            }
-        )
-        Spacer(Modifier.height(16.dp))
-    }
-}
-
-@Composable
-fun FooterText(text: AnnotatedString) {
-    ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
-        Text(text = text, fontSize = 12.sp)
+        HomeDivider()
     }
 }
 
 @Composable
 fun AnnotatedString.Builder.highlight(action: @Composable AnnotatedString.Builder.() -> Unit) {
     withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) { action() }
+}
+
+@Composable
+fun HomeFooter() {
+    ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+        Text(annotatedString {
+            append("Author: ")
+            highlight { append("jaqxues") }
+        }, fontSize = 12.sp)
+
+        Text(annotatedString {
+            append(ContextAmbient.current.getString(R.string.footer_app_version))
+            append(": ")
+            highlight { append(BuildConfig.VERSION_NAME) }
+        }, fontSize = 12.sp)
+
+        Text(annotatedString {
+            append(ContextAmbient.current.getString(R.string.footer_snapchat_version))
+            append(": ")
+            highlight { append(ContextAmbient.current.installedScVersion ?: "Unknown") }
+        }, fontSize = 12.sp)
+    }
+    Spacer(Modifier.height(16.dp))
 }

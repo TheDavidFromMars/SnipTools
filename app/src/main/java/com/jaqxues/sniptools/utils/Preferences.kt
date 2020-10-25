@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.data
+package com.jaqxues.sniptools.utils
 
 import com.jaqxues.akrolyb.prefs.Preference
 

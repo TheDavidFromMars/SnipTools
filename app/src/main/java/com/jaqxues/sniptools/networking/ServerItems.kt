@@ -1,7 +1,6 @@
-package com.jaqxues.sniptools.data
+package com.jaqxues.sniptools.networking
 
 import com.google.gson.annotations.SerializedName
-import com.jaqxues.akrolyb.pack.IPackMetadata
 
 
 /**

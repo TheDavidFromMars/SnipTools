@@ -1,7 +1,5 @@
 package com.jaqxues.sniptools.networking
 
-import com.jaqxues.sniptools.data.ServerPack
-import com.jaqxues.sniptools.data.ShopItem
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path
