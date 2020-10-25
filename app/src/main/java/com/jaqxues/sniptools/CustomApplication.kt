@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools
 
 import android.app.Application
+import com.jaqxues.sniptools.di.KoinModules.databases
 import com.jaqxues.sniptools.di.KoinModules.repositories
 import com.jaqxues.sniptools.di.KoinModules.services
 import com.jaqxues.sniptools.di.KoinModules.viewModels
@@ -25,7 +26,7 @@ class CustomApplication: Application() {
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@CustomApplication)
-            modules(viewModels, repositories, services)
+            modules(viewModels, repositories, services, databases)
         }
     }
 

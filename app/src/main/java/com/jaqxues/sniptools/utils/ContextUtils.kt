@@ -2,8 +2,6 @@ package com.jaqxues.sniptools.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
-import androidx.annotation.ColorRes
 import timber.log.Timber
 
 
@@ -21,9 +19,3 @@ val Context.installedScVersion
             Timber.v("Unable to locate Snapchat on this device")
             null
         }
-
-@Suppress("DEPRECATION")
-fun Context.getColorCompat(@ColorRes colorId: Int) =
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-        resources.getColor(colorId)
-    else getColor(colorId)

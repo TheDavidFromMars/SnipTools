@@ -32,7 +32,7 @@ object KoinModules {
     }
 
     val repositories = module {
-        single { PackRepository(get()) }
+        single { PackRepository(get(), get(), get(), get()) }
     }
 
     val services = module {

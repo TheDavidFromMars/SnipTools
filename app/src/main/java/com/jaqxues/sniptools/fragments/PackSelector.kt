@@ -2,13 +2,14 @@ package com.jaqxues.sniptools.fragments
 
 import androidx.compose.animation.animate
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +23,9 @@ import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.data.StatefulPackData
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
+import com.jaqxues.sniptools.utils.viewModel
 import com.jaqxues.sniptools.viewmodel.PackViewModel
+import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
@@ -30,23 +33,22 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
  */
 
 @Composable
-fun PackSelectorTab(packViewModel: PackViewModel) {
-    packViewModel.refreshLocalPacks(ContextAmbient.current, null, PackFactory(false))
-    val localPacks by packViewModel.localPacks.observeAsState()
+fun PackSelectorTab() {
+    val packViewModel by viewModel<PackViewModel>()
+    ContextAmbient.current.let { ctx ->
+        onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
+    }
+    val _localPacks by packViewModel.localPacks.observeAsState()
+    val localPacks = _localPacks
 
-    @Suppress("NAME_SHADOWING")
-    localPacks!!.let { localPacks ->
-        if (localPacks.isEmpty()) {
-            EmptyScreenMessage("No Packs found")
-        } else {
-            ScrollableColumn {
-                localPacks.forEach {
-                    val packData by packViewModel.getStateDataForPack(it).run {
-                        observeAsState(value!!)
-                    }
-                    PackElementLayout(packData, packViewModel)
-                }
+    if (localPacks.isNullOrEmpty()) {
+        EmptyScreenMessage("No Packs found")
+    } else {
+        LazyColumnFor(localPacks) {
+            val packData by packViewModel.getStateDataForPack(it).run {
+                observeAsState(value!!)
             }
+            PackElementLayout(packData, packViewModel)
         }
     }
 }
@@ -83,7 +85,7 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
 
                     val context = ContextAmbient.current
 
-                    IconButtonRow(packData, onChangelog = {
+                    LocalActionRow(packData, onChangelog = {
 
                     }, onChangeActive = {
                         if (it) {
@@ -121,7 +123,7 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
 }
 
 @Composable
-fun IconButtonRow(
+fun LocalActionRow(
     packData: StatefulPackData,
     modifier: Modifier = Modifier,
     onChangelog: () -> Unit,

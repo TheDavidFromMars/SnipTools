@@ -2,7 +2,6 @@ package com.jaqxues.sniptools.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaqxues.sniptools.data.StatefulPackData
@@ -11,7 +10,6 @@ import com.jaqxues.sniptools.repository.PackRepository
 import kotlinx.coroutines.launch
 import java.io.File
 import java.security.cert.X509Certificate
-import kotlin.random.Random
 
 
 /**

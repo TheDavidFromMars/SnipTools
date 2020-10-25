@@ -18,9 +18,9 @@ import com.jaqxues.sniptools.R
  * Date: 23.06.20 - Time 19:43.
  */
 @Composable
-fun EmptyScreenMessage(message: String) {
+fun EmptyScreenMessage(message: String, modifier: Modifier = Modifier) {
     Column(
-        Modifier.fillMaxSize(),
+        modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

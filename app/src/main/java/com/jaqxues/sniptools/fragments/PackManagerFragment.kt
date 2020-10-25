@@ -8,7 +8,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animate
-import androidx.compose.foundation.*
+import androidx.compose.foundation.AmbientContentColor
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -27,8 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.ui.AppScreen
-import com.jaqxues.sniptools.utils.viewModel
-import com.jaqxues.sniptools.viewmodel.PackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
@@ -74,11 +75,10 @@ fun PackManagerScreen() {
             }
             Spacer(Modifier.padding(8.dp))
 
-            val packViewModel by viewModel<PackViewModel>()
             Crossfade(current = currentTab) {
                 when (it) {
-                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(packViewModel)
-                    PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(packViewModel)
+                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab()
+                    PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab()
                 }
             }
         }

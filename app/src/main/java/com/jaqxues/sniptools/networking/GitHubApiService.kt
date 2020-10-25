@@ -13,7 +13,7 @@ import retrofit2.http.Streaming
  * Date: 03.06.20 - Time 20:16.
  */
 interface GitHubApiService {
-    @GET("/Packs/JSON/ServerPacks.json")
+    @GET("Packs/Info/ServerPacks.json")
     suspend fun getServerPacks(): List<ServerPackMetadata>
 
     @GET("/General/ShopItems.json")
@@ -47,7 +47,7 @@ interface GitHubApiService {
 
 
     @Streaming
-    @GET("https://github.com/jaqxues/SnapTools_DataProvider/blob/master/Packs/Files/{packName}.jar?raw=true")
+    @GET("https://github.com/jaqxues/SnipTools_DataProvider/blob/master/Packs/Files/{packName}.jar?raw=true")
     suspend fun getPackFile(@Path("packName") packName: String): ResponseBody
 
     @Streaming

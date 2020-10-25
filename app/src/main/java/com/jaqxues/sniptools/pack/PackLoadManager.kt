@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Date: 03.06.20 - Time 23:58.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-object PackLoadManager {
+class PackLoadManager {
     private val packLoadStates = ConcurrentHashMap<String, StatefulPackData>()
     private val channel = BroadcastChannel<Pair<String, StatefulPackData>>(Channel.CONFLATED)
     @OptIn(FlowPreview::class)

@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.utils
 
+import android.text.format.DateUtils
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isEmpty
@@ -19,4 +20,14 @@ val Menu.items: List<MenuItem>
             for (x in 0 until this@items.size)
                 add(getItem(x))
         }
+    }
+
+val Long.formatRelativeAbbrev: String
+    get() {
+        return if (this < 0)
+            "Never"
+        else
+            DateUtils.getRelativeTimeSpanString(
+                this, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE).toString()
     }

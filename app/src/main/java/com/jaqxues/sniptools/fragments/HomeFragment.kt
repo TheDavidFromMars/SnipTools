@@ -89,28 +89,21 @@ fun HomeContent() {
         FooterText(
             annotatedString {
                 append("Author: ")
-                withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) {
-                    append("jaqxues")
-                }
+                highlight { append("jaqxues") }
             }
         )
         FooterText(
             annotatedString {
                 append(ContextAmbient.current.getString(R.string.footer_app_version))
                 append(": ")
-
-                withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) {
-                    append(BuildConfig.VERSION_NAME)
-                }
+                highlight { append(BuildConfig.VERSION_NAME) }
             }
         )
         FooterText(
             annotatedString {
                 append(ContextAmbient.current.getString(R.string.footer_snapchat_version))
                 append(": ")
-                withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) {
-                    append(ContextAmbient.current.installedScVersion ?: "Unknown")
-                }
+                highlight { append(ContextAmbient.current.installedScVersion ?: "Unknown") }
             }
         )
         Spacer(Modifier.height(16.dp))
@@ -122,4 +115,9 @@ fun FooterText(text: AnnotatedString) {
     ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
         Text(text = text, fontSize = 12.sp)
     }
+}
+
+@Composable
+fun AnnotatedString.Builder.highlight(action: @Composable AnnotatedString.Builder.() -> Unit) {
+    withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) { action() }
 }
