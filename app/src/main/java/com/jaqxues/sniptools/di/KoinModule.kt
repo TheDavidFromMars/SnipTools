@@ -1,11 +1,20 @@
 package com.jaqxues.sniptools.di
 
+import android.content.Context
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.jaqxues.akrolyb.pack.AppData
+import com.jaqxues.sniptools.db.AppDatabase
 import com.jaqxues.sniptools.networking.GitHubApiService
+import com.jaqxues.sniptools.pack.PackLoadManager
 import com.jaqxues.sniptools.repository.PackRepository
 import com.jaqxues.sniptools.viewmodel.PackViewModel
+import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 /**
@@ -17,6 +26,9 @@ object KoinModules {
         viewModel {
             PackViewModel(get())
         }
+        viewModel {
+            ServerPackViewModel(get())
+        }
     }
 
     val repositories = module {
@@ -26,9 +38,31 @@ object KoinModules {
     val services = module {
         single {
             Retrofit.Builder()
-                .baseUrl("https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/")
+                .baseUrl("https://raw.githubusercontent.com/jaqxues/SnipTools_DataProvider/master/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(GitHubApiService::class.java)
+        }
+
+        single {
+            PackLoadManager()
+        }
+
+        factory {
+            androidContext().getSharedPreferences("main", Context.MODE_PRIVATE)
+        }
+    }
+
+    val databases = module {
+        single {
+            Room.databaseBuilder(
+                androidContext(),
+                AppDatabase::class.java, "main.db"
+            ).build()
+        }
+
+        single {
+            get<AppDatabase>().packDao()
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.data
 
+import com.google.gson.annotations.SerializedName
 import com.jaqxues.akrolyb.pack.IPackMetadata
 
 
@@ -8,37 +9,29 @@ import com.jaqxues.akrolyb.pack.IPackMetadata
  * Date: 27.05.20 - Time 08:54.
  * Moved to SnipTools on Date: 03.06.20 - Time 17:45.
  */
-interface BasePackMetadata: IPackMetadata {
-    val flavour: String
-    val scVersion: String
-    val name: String
-}
-
 data class ServerPackMetadata(
-    val description: String,
-    val isInstalled: Boolean,
-    val hasUpdate: Boolean,
-    val latest: Boolean,
+    @SerializedName("sc_version")
+    val scVersion: String,
+    @SerializedName("name")
+    val name: String,
 
-    override val flavour: String,
-    override val scVersion: String,
-    override val name: String,
-
-    override val devPack: Boolean,
-    override val packVersion: String,
-    override val packVersionCode: Int,
-    override val packImplClass: String,
-    override val minApkVersionCode: Int
-) : BasePackMetadata
+    val devPack: Boolean = false,
+    @SerializedName("pack_version")
+    val packVersion: String,
+    @SerializedName("pack_v_code")
+    val packVersionCode: Int,
+    @SerializedName("min_apk_v_code")
+    val minApkVersionCode: Int
+)
 
 data class PackMetadata(
-    override val flavour: String,
-    override val scVersion: String,
-    override val name: String,
+    val flavour: String,
+    val scVersion: String,
+    val name: String,
 
     override val devPack: Boolean,
     override val packVersion: String,
     override val packVersionCode: Int,
     override val packImplClass: String,
     override val minApkVersionCode: Int
-) : BasePackMetadata
+): IPackMetadata
