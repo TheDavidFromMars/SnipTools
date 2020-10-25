@@ -138,7 +138,7 @@ fun LocalActionRow(
             Image(
                 vectorResource(id = R.drawable.ic_baseline_history_48),
                 colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier.preferredHeight(40.dp).padding(8.dp)
+                modifier = Modifier.preferredHeight(24.dp)
             )
         }
 
@@ -153,7 +153,7 @@ fun LocalActionRow(
             Image(
                 vectorResource(id = R.drawable.ic_baseline_remove_circle_outline_48),
                 colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier.preferredHeight(40.dp).padding(8.dp)
+                modifier = Modifier.preferredHeight(24.dp)
             )
         }
     }

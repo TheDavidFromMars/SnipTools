@@ -1,10 +1,12 @@
 package com.jaqxues.sniptools.fragments
 
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.AmbientEmphasisLevels
+import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
@@ -12,10 +14,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.annotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.db.ServerPackEntity
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
@@ -48,8 +52,22 @@ fun ServerPackContent(packViewModel: ServerPackViewModel, modifier: Modifier = M
     } else {
         LazyColumnFor(items = serverPacks, modifier) { pack ->
             ExpandablePackLayout(packName = pack.name) {
-                RemoteActionRow(pack) {
-                    packViewModel.downloadPack(pack.name)
+                Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
+                    Divider(Modifier.padding(horizontal = 20.dp))
+                    RemoteActionRow(pack, onDownload = {
+                        packViewModel.downloadPack(pack.name)
+                    }, onShowHistory = {
+
+                    })
+                    Divider(Modifier.padding(horizontal = 80.dp))
+
+                    Spacer(Modifier.padding(8.dp))
+                    ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+                        Text("Pack Type: ${if (pack.devPack) "Developer" else "User"}", fontSize = 12.sp)
+                        Text("Snapchat Version: ${pack.scVersion}", fontSize = 12.sp)
+                        Text("Pack Version: ${pack.packVersion}", fontSize = 12.sp)
+                    }
+                    Spacer(Modifier.padding(8.dp))
                 }
             }
         }
@@ -71,7 +89,7 @@ fun PackDownloaderFooter(packViewModel: ServerPackViewModel) {
 }
 
 @Composable
-fun RemoteActionRow(pack: ServerPackEntity, onDownload: () -> Unit) {
+fun RemoteActionRow(pack: ServerPackEntity, onDownload: () -> Unit, onShowHistory: () -> Unit) {
     Row(
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -80,7 +98,19 @@ fun RemoteActionRow(pack: ServerPackEntity, onDownload: () -> Unit) {
         IconButton(onClick = onDownload) {
             Icon(
                 vectorResource(R.drawable.ic_baseline_cloud_download_48),
-                modifier = Modifier.preferredHeight(50.dp).padding(8.dp)
+                modifier = Modifier.preferredHeight(24.dp)
+            )
+        }
+        IconButton(onClick = onShowHistory, Modifier.padding(horizontal = 16.dp)) {
+            Icon(
+                vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                modifier = Modifier.preferredHeight(28.dp)
+            )
+        }
+        IconButton(onClick = onShowHistory) {
+            Icon(
+                vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                modifier = Modifier.preferredHeight(24.dp)
             )
         }
     }
