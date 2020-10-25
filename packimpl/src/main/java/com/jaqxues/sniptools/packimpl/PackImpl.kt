@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.genhook.FeatureManager
 import com.jaqxues.akrolyb.prefs.PrefManager
 import com.jaqxues.akrolyb.prefs.getPref
-import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.pack.ModPack
+import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.packimpl.fragment.GeneralFragment
 import com.jaqxues.sniptools.packimpl.utils.FeatureSet
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences

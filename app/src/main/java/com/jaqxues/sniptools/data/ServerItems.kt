@@ -9,7 +9,7 @@ import com.jaqxues.akrolyb.pack.IPackMetadata
  * Date: 27.05.20 - Time 08:54.
  * Moved to SnipTools on Date: 03.06.20 - Time 17:45.
  */
-data class ServerPackMetadata(
+data class ServerPack(
     @SerializedName("sc_version")
     val scVersion: String,
     @SerializedName("name")
@@ -24,14 +24,15 @@ data class ServerPackMetadata(
     val minApkVersionCode: Int
 )
 
-data class PackMetadata(
-    val flavour: String,
-    val scVersion: String,
-    val name: String,
+data class ShopItem(
+    val id: String,
+    val type: ShopItemType,
+    val price: Double,
+    val description: String,
+    val purchaseLink: String,
+    val purchased: Boolean
+)
 
-    override val devPack: Boolean,
-    override val packVersion: String,
-    override val packVersionCode: Int,
-    override val packImplClass: String,
-    override val minApkVersionCode: Int
-): IPackMetadata
+enum class ShopItemType {
+    DONATION, PACK
+}

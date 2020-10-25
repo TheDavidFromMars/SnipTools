@@ -19,13 +19,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.data.PackMetadata
-import com.jaqxues.sniptools.data.StatefulPackData
+import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.pack.PackFactory
+import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.utils.viewModel
 import com.jaqxues.sniptools.viewmodel.PackViewModel
-import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>

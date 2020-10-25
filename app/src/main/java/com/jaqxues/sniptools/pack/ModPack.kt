@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import com.jaqxues.akrolyb.genhook.FeatureHelper
 import com.jaqxues.akrolyb.genhook.FeatureManager
 import com.jaqxues.akrolyb.pack.AppData
+import com.jaqxues.akrolyb.pack.IPackMetadata
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.pack.PackFactoryBase
 import com.jaqxues.sniptools.BuildConfig
-import com.jaqxues.sniptools.data.PackMetadata
 import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.utils.buildMetadata
 import com.jaqxues.sniptools.utils.installedScVersion
@@ -51,3 +51,15 @@ class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMeta
 
 class UnsupportedScVersion(scVersion: String?, supportedScVersion: String):
     Exception("Current Snapchat Version not supported ('$scVersion' - '$supportedScVersion')")
+
+data class PackMetadata(
+    val flavour: String,
+    val scVersion: String,
+    val name: String,
+
+    override val devPack: Boolean,
+    override val packVersion: String,
+    override val packVersionCode: Int,
+    override val packImplClass: String,
+    override val minApkVersionCode: Int
+): IPackMetadata

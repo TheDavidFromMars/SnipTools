@@ -1,6 +1,6 @@
 package com.jaqxues.sniptools.networking
 
-import com.jaqxues.sniptools.data.ServerPackMetadata
+import com.jaqxues.sniptools.data.ServerPack
 import com.jaqxues.sniptools.data.ShopItem
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -14,7 +14,7 @@ import retrofit2.http.Streaming
  */
 interface GitHubApiService {
     @GET("Packs/Info/ServerPacks.json")
-    suspend fun getServerPacks(): List<ServerPackMetadata>
+    suspend fun getServerPacks(): List<ServerPack>
 
     @GET("/General/ShopItems.json")
     suspend fun getShopItems(): List<ShopItem>

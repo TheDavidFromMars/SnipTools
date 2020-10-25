@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.prefs.edit
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.data.Preferences.SELECTED_PACKS
-import com.jaqxues.sniptools.data.StatefulPackData
+import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.db.PackDao
 import com.jaqxues.sniptools.db.ServerPackEntity
 import com.jaqxues.sniptools.networking.GitHubApiService

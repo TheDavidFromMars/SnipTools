@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jaqxues.sniptools.data.StatefulPackData
+import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.repository.PackRepository
 import kotlinx.coroutines.launch

@@ -1,6 +1,5 @@
-package com.jaqxues.sniptools.data
+package com.jaqxues.sniptools.pack
 
-import com.jaqxues.sniptools.pack.ModPack
 import java.io.File
 
 /**

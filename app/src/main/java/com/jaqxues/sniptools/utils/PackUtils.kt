@@ -1,6 +1,6 @@
 package com.jaqxues.sniptools.utils
 
-import com.jaqxues.sniptools.data.PackMetadata
+import com.jaqxues.sniptools.pack.PackMetadata
 import java.io.File
 import java.util.jar.Attributes
 
