@@ -14,6 +14,10 @@ interface GitHubApiService {
     @GET("Packs/Info/ServerPacks.json")
     suspend fun getServerPacks(): List<ServerPack>
 
+    @GET("Packs/Info/KnownBugs/KnownBugs_Sc_v{scVersion}.json")
+    suspend fun getKnownBugsFor(@Path("scVersion") scVersion: String): Map<String, List<KnownBug>>
+
+
     @GET("/General/ShopItems.json")
     suspend fun getShopItems(): List<ShopItem>
 

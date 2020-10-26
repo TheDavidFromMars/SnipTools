@@ -1,8 +1,7 @@
 package com.jaqxues.sniptools.db
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import java.util.*
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnapTools.<br>
@@ -19,5 +18,25 @@ data class ServerPackEntity(
     @ColumnInfo(name = "min_apk_v_code") val minApkVersionCode: Int,
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id: Int
+    @ColumnInfo(name = "pack_id") val id: Long
+)
+
+@Entity(primaryKeys = ["pack_id", "bug_id"])
+data class BugCrossRef(val pack_id: Long, val bug_id: Long)
+
+@Entity
+data class KnownBugEntity(
+    @ColumnInfo(name = "category") val category: String,
+    @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "filed_on") val filedOn: Date,
+    @ColumnInfo(name = "fixed_on") val fixedOn: Date? = null,
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "bug_id") val id: Long
+)
+
+data class PackWithBugs(
+    @Embedded val pack: ServerPackEntity,
+    @Relation(parentColumn = "pack_id", entityColumn = "bug_id", associateBy = Junction(BugCrossRef::class))
+    val bugs: List<KnownBugEntity>
 )

@@ -23,6 +23,17 @@ data class ServerPack(
     val minApkVersionCode: Int
 )
 
+data class KnownBug(
+    @SerializedName("category")
+    val category: String,
+    @SerializedName("description")
+    val description: String,
+    @SerializedName("filed_on")
+    val filed_on: String,
+    @SerializedName("fixed_on")
+    val fixed_on: String
+)
+
 data class ShopItem(
     val id: String,
     val type: ShopItemType,
