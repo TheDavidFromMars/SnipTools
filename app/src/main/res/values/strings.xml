@@ -23,6 +23,7 @@
     <string name="menu_shop">Shop/Donations</string>
     <string name="menu_features">Features</string>
     <string name="menu_legal">Legal</string>
+    <string name="menu_bugs">Known Bugs</string>
 
     <string name="tab_pack_selector_title">Pack Selector</string>
     <string name="tab_pack_downloader_title">Pack Downloader</string>

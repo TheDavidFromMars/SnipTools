@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jaqxues.sniptools.MainActivity
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackMetadata
@@ -85,7 +86,7 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
                     val context = ContextAmbient.current
 
                     LocalActionRow(packData, onChangelog = {
-
+                        (context as MainActivity).selectedFragment(KnownBugsFragment())
                     }, onChangeActive = {
                         if (it) {
                             packViewModel.activatePack(

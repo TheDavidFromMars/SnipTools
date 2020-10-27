@@ -7,7 +7,9 @@ import com.jaqxues.akrolyb.pack.AppData
 import com.jaqxues.sniptools.db.AppDatabase
 import com.jaqxues.sniptools.networking.GitHubApiService
 import com.jaqxues.sniptools.pack.PackLoadManager
+import com.jaqxues.sniptools.repository.KnownBugsRepo
 import com.jaqxues.sniptools.repository.PackRepository
+import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 import org.koin.android.ext.koin.androidContext
@@ -23,16 +25,14 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object KoinModules {
     val viewModels = module {
-        viewModel {
-            PackViewModel(get())
-        }
-        viewModel {
-            ServerPackViewModel(get())
-        }
+        viewModel { PackViewModel(get()) }
+        viewModel { ServerPackViewModel(get()) }
+        viewModel { KnownBugsViewModel(get()) }
     }
 
     val repositories = module {
         single { PackRepository(get(), get(), get(), get()) }
+        single { KnownBugsRepo(get(), get()) }
     }
 
     val services = module {

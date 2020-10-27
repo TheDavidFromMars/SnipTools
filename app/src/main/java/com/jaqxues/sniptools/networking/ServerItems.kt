@@ -29,9 +29,9 @@ data class KnownBug(
     @SerializedName("description")
     val description: String,
     @SerializedName("filed_on")
-    val filed_on: String,
+    val filed_on: Long,
     @SerializedName("fixed_on")
-    val fixed_on: String
+    val fixed_on: Long? = null
 )
 
 data class ShopItem(

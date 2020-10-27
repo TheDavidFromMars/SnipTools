@@ -40,5 +40,9 @@
             android:id="@+id/nav_legal"
             android:icon="@drawable/ic_info_outline_black_48dp"
             android:title="@string/menu_legal" />
+        <item
+            android:id="@+id/nav_bugs"
+            android:visible="false"
+            android:title="@string/menu_bugs" />
     </group>
 </menu>
