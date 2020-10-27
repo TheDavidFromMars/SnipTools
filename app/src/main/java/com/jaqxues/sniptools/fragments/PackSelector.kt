@@ -86,7 +86,7 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
                     val context = ContextAmbient.current
 
                     LocalActionRow(packData, onChangelog = {
-                        (context as MainActivity).selectedFragment(KnownBugsFragment())
+                        (context as MainActivity).selectedFragment(KnownBugsFragment(packData.packMetadata))
                     }, onChangeActive = {
                         if (it) {
                             packViewModel.activatePack(
@@ -137,7 +137,7 @@ fun LocalActionRow(
     ) {
         IconButton(onClick = onChangelog) {
             Image(
-                vectorResource(id = R.drawable.ic_baseline_history_48),
+                vectorResource(id = R.drawable.ic_baseline_bug_report_48),
                 colorFilter = ColorFilter.tint(Color.White),
                 modifier = Modifier.preferredHeight(24.dp)
             )

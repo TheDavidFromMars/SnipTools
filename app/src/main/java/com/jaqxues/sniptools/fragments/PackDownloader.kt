@@ -109,7 +109,7 @@ fun RemoteActionRow(pack: ServerPackEntity, onDownload: () -> Unit, onShowHistor
         }
         IconButton(onClick = onShowHistory) {
             Icon(
-                vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                vectorResource(R.drawable.ic_baseline_history_48),
                 modifier = Modifier.preferredHeight(24.dp)
             )
         }

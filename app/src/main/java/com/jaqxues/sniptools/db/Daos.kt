@@ -28,24 +28,21 @@ interface PackDao {
 
 @Dao
 interface KnownBugDao {
-    @Transaction
-    @Query("SELECT * FROM ServerPackEntity WHERE pack_id=:packId")
-    fun getBugsFor(packId: Long): LiveData<PackWithBugs>
+    @Query("SELECT * FROM BugCrossRef JOIN KnownBugEntity WHERE sc_version=:scVersion AND pack_version=:packVersion")
+    fun getBugsFor(scVersion: String, packVersion: String): LiveData<List<KnownBugEntity>>
 
-    @Query("DELETE FROM BugCrossRef WHERE pack_id=:packId")
-    fun deleteBugsFor(packId: Long)
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBugs(vararg bugs: KnownBugEntity): List<Long>
 
-    @Transaction
-    fun updateFor(packId: Long, vararg bugs: KnownBugEntity) {
-        createCrossRefs(*insertBugs(*bugs).map { BugCrossRef(packId, it) }.toTypedArray())
-    }
-
-    @Insert
-    fun createCrossRefs(vararg crossRefs: BugCrossRef)
+    @Query("DELETE FROM BugCrossRef WHERE sc_version=:scVersion AND pack_version=:packVersion")
+    fun deleteBugRefsFor(scVersion: String, packVersion: String)
 
     @Query("DELETE FROM KnownBugEntity")
     fun deleteAllBugs()
+
+    @Transaction
+    fun updateBugs(scVersion: String, packVersion: String, vararg bugs: KnownBugEntity) {
+        deleteBugRefsFor(scVersion, packVersion)
+        insertBugs(*bugs)
+    }
 }

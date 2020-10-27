@@ -1,7 +1,11 @@
 package com.jaqxues.sniptools.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.jaqxues.sniptools.db.KnownBugEntity
 import com.jaqxues.sniptools.repository.KnownBugsRepo
+import kotlinx.coroutines.launch
 
 
 /**
@@ -9,5 +13,10 @@ import com.jaqxues.sniptools.repository.KnownBugsRepo
  * Date: 27.10.20 - Time 19:20.
  */
 class KnownBugsViewModel(private val repository: KnownBugsRepo): ViewModel() {
-//    fun getBugsFor(pack)
+    fun getBugsFor(scVersion: String, packVersion: String): LiveData<List<KnownBugEntity>> {
+        viewModelScope.launch {
+            repository.refreshBugsFor(scVersion, packVersion)
+        }
+        return repository.getBugsFor(scVersion, packVersion)
+    }
 }

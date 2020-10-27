@@ -44,13 +44,8 @@ object KoinModules {
                 .create(GitHubApiService::class.java)
         }
 
-        single {
-            PackLoadManager()
-        }
-
-        factory {
-            androidContext().getSharedPreferences("main", Context.MODE_PRIVATE)
-        }
+        single { PackLoadManager() }
+        factory { androidContext().getSharedPreferences("main", Context.MODE_PRIVATE) }
     }
 
     val databases = module {
@@ -61,8 +56,7 @@ object KoinModules {
             ).build()
         }
 
-        single {
-            get<AppDatabase>().packDao()
-        }
+        single { get<AppDatabase>().packDao() }
+        single { get<AppDatabase>().knownBugDao() }
     }
 }

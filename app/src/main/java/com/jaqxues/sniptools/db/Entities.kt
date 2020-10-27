@@ -21,8 +21,14 @@ data class ServerPackEntity(
     @ColumnInfo(name = "pack_id") val id: Long
 )
 
-@Entity(primaryKeys = ["pack_id", "bug_id"])
-data class BugCrossRef(val pack_id: Long, val bug_id: Long)
+@Entity
+data class BugCrossRef(
+    @ColumnInfo(name = "sc_version") val scVersion: String,
+    @ColumnInfo(name = "pack_version") val packVersion: String,
+
+    @PrimaryKey
+    @ColumnInfo(name = "bug_id") val bug_id: Long
+)
 
 @Entity
 data class KnownBugEntity(
@@ -33,10 +39,4 @@ data class KnownBugEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "bug_id") val id: Long
-)
-
-data class PackWithBugs(
-    @Embedded val pack: ServerPackEntity,
-    @Relation(parentColumn = "pack_id", entityColumn = "bug_id", associateBy = Junction(BugCrossRef::class))
-    val bugs: List<KnownBugEntity>
 )
