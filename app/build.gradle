@@ -61,7 +61,7 @@ android {
     dynamicFeatures = [":packimpl"]
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.0.0-alpha05"
+        kotlinCompilerExtensionVersion "1.0.0-alpha06"
     }
 }
 
@@ -112,7 +112,7 @@ dependencies {
 
     api('com.github.jaqxues:Akrolyb:327b707afd')
 
-    def compose_version = '1.0.0-alpha05'
+    def compose_version = '1.0.0-alpha06'
     api "androidx.compose.ui:ui:$compose_version"
     api "androidx.compose.material:material:$compose_version"
     api "androidx.ui:ui-tooling:$compose_version"

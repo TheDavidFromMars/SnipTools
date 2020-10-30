@@ -37,7 +37,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.0.0-alpha04"
+        kotlinCompilerExtensionVersion "1.0.0-alpha06"
     }
 }
 
@@ -112,7 +112,7 @@ afterEvaluate {
                             "$appPkg/.MainActivity", '--es', 'select_new_pack',
                             tasks.getByName("adbPushPack$aVNameCap").outputs.files.singleFile.name
                 }
-                sleep(200)
+                sleep(800)
                 exec { commandLine android.adbExecutable, 'shell', 'am', 'force-stop', appPkg }
                 exec {
                     commandLine android.adbExecutable, 'shell', 'am', 'start', '-n',

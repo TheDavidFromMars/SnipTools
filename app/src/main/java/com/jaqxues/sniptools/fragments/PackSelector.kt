@@ -146,7 +146,10 @@ fun LocalActionRow(
         Switch(
             packData.isActive,
             onCheckedChange = onChangeActive,
-            color = if (packData !is StatefulPackData.PackLoadError) Color(0xFF00AA00) else Color.Red,
+            colors = SwitchConstants.defaultColors(
+                checkedThumbColor = if (packData !is StatefulPackData.PackLoadError)
+                    Color(0xFF00AA00) else Color.Red
+            ),
             modifier = Modifier.padding(horizontal = 16.dp).size(50.dp)
         )
 
