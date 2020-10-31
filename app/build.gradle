@@ -118,6 +118,7 @@ dependencies {
     api "androidx.compose.material:material:$compose_version"
     api "androidx.ui:ui-tooling:$compose_version"
     api "androidx.compose.runtime:runtime-livedata:$compose_version"
+//    api "androidx.compose.material:material-icons-extended:$compose_version"
     api "androidx.navigation:navigation-compose:$nav_compose_version"
 
     def libsuVersion = '3.0.2'

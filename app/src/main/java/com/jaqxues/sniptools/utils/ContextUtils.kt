@@ -13,8 +13,9 @@ val Context.installedScVersion
     get() =
         try {
             packageManager
-                .getPackageInfo("com.snapchat.android", 0)
-                .versionName
+                // Nullable for Jetpack Compose Previews
+                ?.getPackageInfo("com.snapchat.android", 0)
+                ?.versionName
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.v("Unable to locate Snapchat on this device")
             null
