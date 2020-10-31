@@ -1,6 +1,8 @@
 package com.jaqxues.sniptools.packimpl.utils
 
-import android.R
+import android.app.Activity
+import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
@@ -10,12 +12,19 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.akrolyb.prefs.Preference
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.prefs.putPref
+import com.jaqxues.sniptools.utils.SuUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.get
 
 
 /**
@@ -65,9 +74,24 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         mutableStateOf(pref.getPref())
     }
 
+    val ctx = ContextAmbient.current
+
     SwitchCard(toggled = toggled, onToggle = {
         toggled = it
         pref.putPref(it)
+
+        if ((ctx as Activity).get<SharedPreferences>().getBoolean("should_kill_sc", true)) {
+            GlobalScope.launch {
+                val success = SuUtils.runSuCommands("am force-stop com.snapchat.android")
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        ctx, if (success) "Killed Snapchat" else "Failed to kill Snapchat",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
     }, text = text)
 }
 
@@ -87,7 +111,7 @@ fun <T> DropdownPreference(
             right = {
                 Text(values[current] ?: "Unknown")
                 Image(
-                    imageResource(id = R.drawable.arrow_down_float),
+                    imageResource(id = android.R.drawable.arrow_down_float),
                     Modifier.padding(horizontal = 8.dp).size(8.dp)
                 )
             }
