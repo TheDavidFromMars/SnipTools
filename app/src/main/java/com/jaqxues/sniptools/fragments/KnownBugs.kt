@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.db.KnownBugEntity
-import com.jaqxues.sniptools.ui.cViewModel
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
 
@@ -25,8 +24,7 @@ import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
  * Date: 27.10.20 - Time 19:19.
  */
 @Composable
-fun KnownBugsScreen(scVersion: String, packVersion: String) {
-    val bugsViewModel: KnownBugsViewModel by cViewModel()
+fun KnownBugsScreen(scVersion: String, packVersion: String, bugsViewModel: KnownBugsViewModel) {
     val bugs by bugsViewModel.getBugsFor(scVersion, packVersion).observeAsState()
 
     BugsContent(bugs)

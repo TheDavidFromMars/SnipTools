@@ -24,7 +24,6 @@ import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.pack.StatefulPackData
-import com.jaqxues.sniptools.ui.cViewModel
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 
@@ -34,9 +33,7 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
  */
 
 @Composable
-fun PackSelectorTab(navController: NavController) {
-    // fixme ViewModel Hilt Stuff
-    val packViewModel = cViewModel<PackViewModel>("pack_selector")
+fun PackSelectorTab(navController: NavController, packViewModel: PackViewModel) {
     ContextAmbient.current.let { ctx ->
         onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
     }

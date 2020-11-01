@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.db.ServerPackEntity
-import com.jaqxues.sniptools.ui.cViewModel
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.utils.formatRelativeAbbrev
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
@@ -30,8 +29,7 @@ import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
  * Date: 23.10.20 - Time 19:01.
  */
 @Composable
-fun PackDownloaderTab() {
-    val packViewModel = cViewModel<ServerPackViewModel>()
+fun PackDownloaderTab(packViewModel: ServerPackViewModel) {
     onActive { packViewModel.refreshServerPacks() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

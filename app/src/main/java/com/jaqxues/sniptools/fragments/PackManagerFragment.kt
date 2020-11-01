@@ -25,13 +25,15 @@ import androidx.navigation.NavController
 import androidx.ui.tooling.preview.Preview
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.ui.AppScreen
+import com.jaqxues.sniptools.viewmodel.PackViewModel
+import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 03.06.20 - Time 10:56.
  */
 @Composable
-fun PackManagerScreen(navController: NavController) {
+fun PackManagerScreen(navController: NavController, packViewModel: PackViewModel, serverPackViewModel: ServerPackViewModel) {
     AppScreen {
         Column {
             var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
@@ -55,8 +57,8 @@ fun PackManagerScreen(navController: NavController) {
 
             Crossfade(current = currentTab) {
                 when (it) {
-                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController)
-                    PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab()
+                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController, packViewModel)
+                    PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(serverPackViewModel)
                 }
             }
         }

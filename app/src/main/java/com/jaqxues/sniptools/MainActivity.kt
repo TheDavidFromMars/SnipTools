@@ -17,7 +17,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -46,12 +46,13 @@ import com.jaqxues.sniptools.fragments.PackManagerScreen
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.AppScreen
-import com.jaqxues.sniptools.ui.ViewModelFactoryAmbient
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.ui.theme.DarkTheme
 import com.jaqxues.sniptools.utils.CommonSetup
 import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
+import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
 import com.jaqxues.sniptools.viewmodel.PackViewModel
+import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -118,9 +119,7 @@ class MainActivity : AppCompatActivity() {
             PackFactory(false)
         )
         setContent {
-            Providers(ViewModelFactoryAmbient provides defaultViewModelProviderFactory) {
-                AppUi()
-            }
+            AppUi()
         }
     }
 }
@@ -159,9 +158,12 @@ fun AppUi() {
 
 @Composable
 fun Routing(navController: NavHostController) {
+    val serverPackViewModel = viewModel<ServerPackViewModel>()
+    val packViewModel = viewModel<PackViewModel>()
+    val knownBugsViewModel = viewModel<KnownBugsViewModel>()
     NavHost(navController, startDestination = LocalScreen.Home.route) {
         composable(LocalScreen.Home.route) { HomeScreen() }
-        composable(LocalScreen.PackManager.route) { PackManagerScreen(navController) }
+        composable(LocalScreen.PackManager.route) { PackManagerScreen(navController, packViewModel, serverPackViewModel) }
         composable(LocalScreen.Settings.route) { EmptyScreenMessage("Screen not available") }
         composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
         composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
@@ -183,7 +185,8 @@ fun Routing(navController: NavHostController) {
         ) {
             KnownBugsScreen(
                 it.arguments!!.getString("sc_version")!!,
-                it.arguments!!.getString("pack_version")!!
+                it.arguments!!.getString("pack_version")!!,
+                knownBugsViewModel
             )
         }
     }
