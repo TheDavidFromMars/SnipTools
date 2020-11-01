@@ -1,6 +1,5 @@
 package com.jaqxues.sniptools.fragments
 
-import androidx.activity.viewModels
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
@@ -14,15 +13,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.annotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import com.jaqxues.sniptools.MainActivity
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.db.ServerPackEntity
+import com.jaqxues.sniptools.ui.cViewModel
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.utils.formatRelativeAbbrev
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
@@ -33,12 +30,8 @@ import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
  * Date: 23.10.20 - Time 19:01.
  */
 @Composable
-inline fun <reified T: ViewModel> viewModel() =
-    (ContextAmbient.current as MainActivity).viewModels<T>()
-
-@Composable
 fun PackDownloaderTab() {
-    val packViewModel by viewModel<ServerPackViewModel>()
+    val packViewModel = cViewModel<ServerPackViewModel>()
     onActive { packViewModel.refreshServerPacks() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

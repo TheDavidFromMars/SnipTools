@@ -18,12 +18,14 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.pack.StatefulPackData
+import com.jaqxues.sniptools.ui.cViewModel
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 
@@ -34,7 +36,7 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
 
 @Composable
 fun PackSelectorTab(navController: NavController) {
-    val packViewModel by viewModel<PackViewModel>()
+    val packViewModel = cViewModel<PackViewModel>()
     ContextAmbient.current.let { ctx ->
         onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
     }

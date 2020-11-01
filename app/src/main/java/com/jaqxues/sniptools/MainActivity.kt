@@ -17,6 +17,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ import com.jaqxues.sniptools.fragments.PackManagerScreen
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.AppScreen
+import com.jaqxues.sniptools.ui.ViewModelFactory
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.ui.theme.DarkTheme
 import com.jaqxues.sniptools.utils.CommonSetup
@@ -90,33 +92,35 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val packViewModel: PackViewModel by viewModels()
+//        val packViewModel: PackViewModel by viewModels()
 
-        lifecycleScope.launch {
-            packViewModel.packLoadChanges.collect { (packName, state) ->
-                when (state) {
-                    is StatefulPackData.LoadedPack -> {
-                        val pack = state.pack
-                        pack.disabledFeatures.observe(this@MainActivity) {
-//                            navView.setPackFragments(menuInflater, packName, pack)
-                        }
-                    }
-                    else -> {
-//                        navView.removePackFragments(packName)
-                    }
-                }
-            }
-        }
-        packViewModel.loadActivatedPacks(
-            this@MainActivity,
-            if (BuildConfig.DEBUG) null else Security.certificateFromApk(
-                this@MainActivity,
-                BuildConfig.APPLICATION_ID
-            ),
-            PackFactory(false)
-        )
+//        lifecycleScope.launch {
+//            packViewModel.packLoadChanges.collect { (packName, state) ->
+//                when (state) {
+//                    is StatefulPackData.LoadedPack -> {
+//                        val pack = state.pack
+//                        pack.disabledFeatures.observe(this@MainActivity) {
+////                            navView.setPackFragments(menuInflater, packName, pack)
+//                        }
+//                    }
+//                    else -> {
+////                        navView.removePackFragments(packName)
+//                    }
+//                }
+//            }
+//        }
+//        packViewModel.loadActivatedPacks(
+//            this@MainActivity,
+//            if (BuildConfig.DEBUG) null else Security.certificateFromApk(
+//                this@MainActivity,
+//                BuildConfig.APPLICATION_ID
+//            ),
+//            PackFactory(false)
+//        )
         setContent {
-            AppUi()
+            Providers(ViewModelFactory provides defaultViewModelProviderFactory) {
+                AppUi()
+            }
         }
     }
 }
@@ -216,7 +220,10 @@ fun DrawerContent(navController: NavController, closeDrawer: () -> Unit) {
                 label = stringResource(it.name),
                 isSelected = it.route == currentRoute,
                 action = {
-                    navController.navigate(it.route)
+                    if (it.route != currentRoute) {
+                        navController.popBackStack(navController.graph.startDestination, false)
+                        navController.navigate(it.route)
+                    }
                     closeDrawer()
                 }
             )
