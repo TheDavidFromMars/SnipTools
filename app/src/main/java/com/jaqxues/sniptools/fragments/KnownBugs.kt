@@ -23,7 +23,6 @@ import com.jaqxues.sniptools.db.KnownBugEntity
 import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.ui.AppScreen
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
-import com.jaqxues.sniptools.utils.viewModel
 import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
 
 
@@ -49,10 +48,8 @@ class KnownBugsFragment(private val packMetadata: PackMetadata) : BaseFragment()
 
 @Composable
 fun KnownBugsScreen(scVersion: String, packVersion: String) {
-    val bugsViewModel by viewModel<KnownBugsViewModel>()
-
-    val bugs by bugsViewModel.getBugsFor(scVersion, packVersion)
-        .observeAsState()
+    val bugsViewModel: KnownBugsViewModel by viewModel()
+    val bugs by bugsViewModel.getBugsFor(scVersion, packVersion).observeAsState()
 
     BugsContent(bugs)
 }

@@ -1,15 +1,10 @@
 package com.jaqxues.sniptools.fragments
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animate
 import androidx.compose.foundation.AmbientContentColor
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,10 +18,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.ui.tooling.preview.Preview
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.ui.AppScreen
@@ -35,25 +30,8 @@ import com.jaqxues.sniptools.ui.AppScreen
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 03.06.20 - Time 10:56.
  */
-class PackManagerFragment : BaseFragment() {
-    override val menuId get() = R.id.nav_pack_manager
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                PackManagerScreen()
-            }
-        }
-    }
-}
-
-@Preview
 @Composable
-fun PackManagerScreen() {
+fun PackManagerScreen(navController: NavController) {
     AppScreen {
         Column {
             var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
@@ -77,7 +55,7 @@ fun PackManagerScreen() {
 
             Crossfade(current = currentTab) {
                 when (it) {
-                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab()
+                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController)
                     PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab()
                 }
             }

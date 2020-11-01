@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaqxues.sniptools.repository.PackRepository
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 24.10.20 - Time 15:56.
  */
-class ServerPackViewModel(private val packRepo: PackRepository) : ViewModel() {
+class ServerPackViewModel @ViewModelInject constructor(private val packRepo: PackRepository) : ViewModel() {
     val lastChecked = packRepo.lastChecked
     val serverPacks = packRepo.serverPacks
 

@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.io.File
 import java.security.cert.X509Certificate
+import javax.inject.Inject
 
 
 /**
@@ -27,7 +28,7 @@ import java.security.cert.X509Certificate
  * Date: 13.05.20 - Time 10:01.
  * Moved to SnipTools on Date: 03.06.20 - Time 17:42.
  */
-class PackRepository(
+class PackRepository @Inject constructor(
     private val packLoadManager: PackLoadManager,
     private val retrofit: GitHubApiService,
     private val packDao: PackDao,

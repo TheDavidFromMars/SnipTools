@@ -1,7 +1,7 @@
 package com.jaqxues.sniptools.packimpl.utils
 
 import android.app.Activity
-import android.content.SharedPreferences
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -24,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.android.ext.android.get
 
 
 /**
@@ -80,7 +79,7 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         toggled = it
         pref.putPref(it)
 
-        if ((ctx as Activity).get<SharedPreferences>().getBoolean("should_kill_sc", true)) {
+        if ((ctx as Activity).getSharedPreferences("main", Context.MODE_PRIVATE).getBoolean("should_kill_sc", true)) {
             GlobalScope.launch {
                 val result = SuUtils.runSuCommands("am force-stop com.snapchat.android")
 

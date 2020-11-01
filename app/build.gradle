@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'androidx.navigation.safeargs'
 
 def keystoreProperties = new Properties()
@@ -67,7 +68,6 @@ android {
 
 dependencies {
     // Dependency Versions
-    def koin_version = '2.1.5'
     def lifecycle_version = '2.2.0'
 
 
@@ -86,13 +86,6 @@ dependencies {
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
-
-    // Service Locator (Dependency Injection)
-    api "org.koin:koin-android:$koin_version"
-    api "org.koin:koin-androidx-scope:$koin_version"
-    api "org.koin:koin-androidx-viewmodel:$koin_version"
-//    implementation "org.koin:koin-androidx-fragment:$koin_version"
 
     api 'com.jakewharton.timber:timber:4.7.1'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -120,6 +113,11 @@ dependencies {
     api "androidx.compose.runtime:runtime-livedata:$compose_version"
 //    api "androidx.compose.material:material-icons-extended:$compose_version"
     api "androidx.navigation:navigation-compose:$nav_compose_version"
+
+    api "com.google.dagger:hilt-android:2.28-alpha"
+    api 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
 
     def libsuVersion = '3.0.2'
     api "com.github.topjohnwu.libsu:core:${libsuVersion}"

@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnapTools.<br>
  * Date: 27.10.20 - Time 19:20.
  */
-class KnownBugsViewModel(private val repository: KnownBugsRepo): ViewModel() {
+class KnownBugsViewModel @ViewModelInject constructor(private val repository: KnownBugsRepo): ViewModel() {
     fun getBugsFor(scVersion: String, packVersion: String): LiveData<List<KnownBugEntity>> {
         viewModelScope.launch {
             repository.refreshBugsFor(scVersion, packVersion)

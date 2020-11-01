@@ -3,13 +3,12 @@ package com.jaqxues.sniptools
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.Menu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
@@ -18,6 +17,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +30,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -39,21 +38,25 @@ import androidx.navigation.compose.*
 import androidx.ui.tooling.preview.Preview
 import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.akrolyb.utils.Security
-import com.jaqxues.sniptools.fragments.*
+import com.jaqxues.sniptools.fragments.HomeDivider
+import com.jaqxues.sniptools.fragments.HomeScreen
+import com.jaqxues.sniptools.fragments.KnownBugsScreen
+import com.jaqxues.sniptools.fragments.PackManagerScreen
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.AppScreen
+import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.ui.theme.DarkTheme
-import com.jaqxues.sniptools.ui.views.DynamicNavigationView
 import com.jaqxues.sniptools.utils.CommonSetup
 import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.viewmodel.PackViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragmentListener {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +90,7 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
             return
         }
 
-        val packViewModel by viewModel<PackViewModel>()
+        val packViewModel: PackViewModel by viewModels()
 
         lifecycleScope.launch {
             packViewModel.packLoadChanges.collect { (packName, state) ->
@@ -116,31 +119,8 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
             AppUi()
         }
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment)
-//        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-        return false || super.onSupportNavigateUp()
-    }
-
-    override fun selectedFragment(fragment: BaseFragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frag_container_main, fragment)
-            .commit()
-        findViewById<Toolbar>(R.id.toolbar).subtitle =
-            findViewById<DynamicNavigationView>(R.id.nav_view).menu.findItem(fragment.menuId)?.title
-                ?: (fragment as PackFragment).name
-        findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawers()
-    }
 }
 
-@Preview
 @Composable
 fun AppUi() {
     DarkTheme {
@@ -164,7 +144,7 @@ fun AppUi() {
             drawerContent = {
                 // Stop Drawer from closing when touching on non-clickable elements
                 Box(Modifier.fillMaxSize().clickable(onClick = {}, indication = null)) {
-                    DrawerContent(LocalScreen.Home, navController)
+                    DrawerContent(navController) { scaffoldState.drawerState.close() }
                 }
             }
         ) {
@@ -177,17 +157,17 @@ fun AppUi() {
 fun Routing(navController: NavHostController) {
     NavHost(navController, startDestination = LocalScreen.Home.route) {
         composable(LocalScreen.Home.route) { HomeScreen() }
-        composable(LocalScreen.PackManager.route) { PackManagerScreen() }
-        composable(LocalScreen.Settings.route) {}
-        composable(LocalScreen.Faqs.route) {}
-        composable(LocalScreen.Support.route) {}
-        composable(LocalScreen.AboutUs.route) {}
-        composable(LocalScreen.Shop.route) {}
-        composable(LocalScreen.Features.route) {}
-        composable(LocalScreen.Legal.route) {}
+        composable(LocalScreen.PackManager.route) { PackManagerScreen(navController) }
+        composable(LocalScreen.Settings.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.AboutUs.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Shop.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Features.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Legal.route) { EmptyScreenMessage("Screen not available") }
 
         composable(
-            "known_bugs", listOf(
+            "known_bugs/{sc_version}/{pack_version}", listOf(
                 navArgument("sc_version") {
                     type = NavType.StringType
                     nullable = false
@@ -206,7 +186,7 @@ fun Routing(navController: NavHostController) {
 }
 
 @Composable
-fun DrawerContent(selectedItem: LocalScreen, navController: NavController) {
+fun DrawerContent(navController: NavController, closeDrawer: () -> Unit) {
     Column(Modifier.fillMaxWidth()) {
         Row(
             Modifier.padding(16.dp).fillMaxWidth(),
@@ -228,13 +208,16 @@ fun DrawerContent(selectedItem: LocalScreen, navController: NavController) {
 
         HomeDivider()
 
+        val backStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = backStackEntry?.arguments?.getString(KEY_ROUTE)
         LocalScreen.displayable.forEach {
             DrawerButton(
                 icon = it.icon,
                 label = stringResource(it.name),
-                isSelected = it == selectedItem,
+                isSelected = it.route == currentRoute,
                 action = {
                     navController.navigate(it.route)
+                    closeDrawer()
                 }
             )
         }
@@ -292,7 +275,7 @@ private fun DrawerButton(
 @Composable
 fun PreviewDrawerContent() {
     AppScreen {
-        DrawerContent(LocalScreen.Settings, rememberNavController())
+        DrawerContent(rememberNavController()) {}
     }
 }
 

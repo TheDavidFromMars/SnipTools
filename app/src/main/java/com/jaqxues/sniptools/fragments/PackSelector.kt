@@ -18,13 +18,13 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jaqxues.sniptools.MainActivity
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
-import com.jaqxues.sniptools.utils.viewModel
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 
 /**
@@ -33,7 +33,7 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
  */
 
 @Composable
-fun PackSelectorTab() {
+fun PackSelectorTab(navController: NavController) {
     val packViewModel by viewModel<PackViewModel>()
     ContextAmbient.current.let { ctx ->
         onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
@@ -48,13 +48,13 @@ fun PackSelectorTab() {
             val packData by packViewModel.getStateDataForPack(it).run {
                 observeAsState(value!!)
             }
-            PackElementLayout(packData, packViewModel)
+            PackElementLayout(packData, packViewModel, navController)
         }
     }
 }
 
 @Composable
-fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) {
+fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, navController: NavController) {
     when (packData) {
         is StatefulPackData.CorruptedPack -> ExpandablePackLayout(
             packName = packData.packFile.name,
@@ -86,7 +86,7 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel) 
                     val context = ContextAmbient.current
 
                     LocalActionRow(packData, onChangelog = {
-                        (context as MainActivity).selectedFragment(KnownBugsFragment(packData.packMetadata))
+                        navController.navigate("known_bugs/${packData.packMetadata.scVersion}/${packData.packMetadata.packVersion}")
                     }, onChangeActive = {
                         if (it) {
                             packViewModel.activatePack(
