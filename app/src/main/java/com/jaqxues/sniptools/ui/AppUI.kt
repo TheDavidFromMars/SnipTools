@@ -14,11 +14,13 @@ import com.jaqxues.sniptools.ui.theme.DarkTheme
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 31.08.20 - Time 14:32.
  */
-val ViewModelFactory =
+val ViewModelFactoryAmbient =
     staticAmbientOf<ViewModelProvider.Factory> { error("No active ViewModel Provider Factory") }
 
 @Composable
-inline fun <reified VM : ViewModel> cViewModel(key: String? = null) = viewModel<VM>(factory = ViewModelFactory.current, key = key)
+// fixme ViewModel Hilt Stuff
+inline fun <reified VM : ViewModel> cViewModel(key: String? = null) =
+    viewModel<VM>(factory = ViewModelFactoryAmbient.current, key = key)
 
 @Composable
 fun AppScreen(screen: @Composable () -> Unit) {

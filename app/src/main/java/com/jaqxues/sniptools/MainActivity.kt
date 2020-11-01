@@ -46,7 +46,7 @@ import com.jaqxues.sniptools.fragments.PackManagerScreen
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.AppScreen
-import com.jaqxues.sniptools.ui.ViewModelFactory
+import com.jaqxues.sniptools.ui.ViewModelFactoryAmbient
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.ui.theme.DarkTheme
 import com.jaqxues.sniptools.utils.CommonSetup
@@ -92,33 +92,33 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-//        val packViewModel: PackViewModel by viewModels()
+        val packViewModel: PackViewModel by viewModels()
 
-//        lifecycleScope.launch {
-//            packViewModel.packLoadChanges.collect { (packName, state) ->
-//                when (state) {
-//                    is StatefulPackData.LoadedPack -> {
-//                        val pack = state.pack
-//                        pack.disabledFeatures.observe(this@MainActivity) {
-////                            navView.setPackFragments(menuInflater, packName, pack)
-//                        }
-//                    }
-//                    else -> {
-////                        navView.removePackFragments(packName)
-//                    }
-//                }
-//            }
-//        }
-//        packViewModel.loadActivatedPacks(
-//            this@MainActivity,
-//            if (BuildConfig.DEBUG) null else Security.certificateFromApk(
-//                this@MainActivity,
-//                BuildConfig.APPLICATION_ID
-//            ),
-//            PackFactory(false)
-//        )
+        lifecycleScope.launch {
+            packViewModel.packLoadChanges.collect { (packName, state) ->
+                when (state) {
+                    is StatefulPackData.LoadedPack -> {
+                        val pack = state.pack
+                        pack.disabledFeatures.observe(this@MainActivity) {
+//                            navView.setPackFragments(menuInflater, packName, pack)
+                        }
+                    }
+                    else -> {
+//                        navView.removePackFragments(packName)
+                    }
+                }
+            }
+        }
+        packViewModel.loadActivatedPacks(
+            this@MainActivity,
+            if (BuildConfig.DEBUG) null else Security.certificateFromApk(
+                this@MainActivity,
+                BuildConfig.APPLICATION_ID
+            ),
+            PackFactory(false)
+        )
         setContent {
-            Providers(ViewModelFactory provides defaultViewModelProviderFactory) {
+            Providers(ViewModelFactoryAmbient provides defaultViewModelProviderFactory) {
                 AppUi()
             }
         }

@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.jaqxues.sniptools.R
@@ -36,7 +35,8 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
 
 @Composable
 fun PackSelectorTab(navController: NavController) {
-    val packViewModel = cViewModel<PackViewModel>()
+    // fixme ViewModel Hilt Stuff
+    val packViewModel = cViewModel<PackViewModel>("pack_selector")
     ContextAmbient.current.let { ctx ->
         onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
     }
