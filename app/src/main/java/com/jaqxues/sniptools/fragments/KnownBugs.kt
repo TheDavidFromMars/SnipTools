@@ -41,17 +41,17 @@ class KnownBugsFragment(private val packMetadata: PackMetadata) : BaseFragment()
     ) = ComposeView(requireContext()).apply {
         setContent {
             AppScreen {
-                KnownBugsScreen(packMetadata)
+                KnownBugsScreen(packMetadata.scVersion, packMetadata.packVersion)
             }
         }
     }
 }
 
 @Composable
-fun KnownBugsScreen(packMetadata: PackMetadata) {
+fun KnownBugsScreen(scVersion: String, packVersion: String) {
     val bugsViewModel by viewModel<KnownBugsViewModel>()
 
-    val bugs by bugsViewModel.getBugsFor(packMetadata.scVersion, packMetadata.packVersion)
+    val bugs by bugsViewModel.getBugsFor(scVersion, packVersion)
         .observeAsState()
 
     BugsContent(bugs)

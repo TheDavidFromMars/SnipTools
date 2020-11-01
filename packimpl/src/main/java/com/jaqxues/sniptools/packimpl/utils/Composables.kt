@@ -82,11 +82,11 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
 
         if ((ctx as Activity).get<SharedPreferences>().getBoolean("should_kill_sc", true)) {
             GlobalScope.launch {
-                val success = SuUtils.runSuCommands("am force-stop com.snapchat.android")
+                val result = SuUtils.runSuCommands("am force-stop com.snapchat.android")
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        ctx, if (success) "Killed Snapchat" else "Failed to kill Snapchat",
+                        ctx, if (result.isSuccess) "Killed Snapchat" else "Failed to kill Snapchat",
                         Toast.LENGTH_LONG
                     ).show()
                 }

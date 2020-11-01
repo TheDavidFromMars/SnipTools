@@ -6,12 +6,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -31,6 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
 import androidx.ui.tooling.preview.Preview
 import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.akrolyb.utils.Security
@@ -82,32 +87,6 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
             return
         }
 
-        setContentView(R.layout.activity_main)
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val navView = findViewById<DynamicNavigationView>(R.id.nav_view)
-
-        setSupportActionBar(toolbar)
-        val actionBar = supportActionBar!!
-        actionBar.setDisplayHomeAsUpEnabled(true)
-        ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.app_name, R.string.app_name
-        ).let {
-            drawerLayout.addDrawerListener(it)
-            it.syncState()
-        }
-
-        navView.initialize(this) {
-            val homeFragment = HomeFragment()
-
-            +homeFragment
-            +PackManagerFragment()
-
-            homeFragment
-        }
         val packViewModel by viewModel<PackViewModel>()
 
         lifecycleScope.launch {
@@ -116,11 +95,11 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
                     is StatefulPackData.LoadedPack -> {
                         val pack = state.pack
                         pack.disabledFeatures.observe(this@MainActivity) {
-                            navView.setPackFragments(menuInflater, packName, pack)
+//                            navView.setPackFragments(menuInflater, packName, pack)
                         }
                     }
                     else -> {
-                        navView.removePackFragments(packName)
+//                        navView.removePackFragments(packName)
                     }
                 }
             }
@@ -133,9 +112,9 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
             ),
             PackFactory(false)
         )
-//        setContent {
-//            AppUi()
-//        }
+        setContent {
+            AppUi()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -166,6 +145,7 @@ class MainActivity : AppCompatActivity(), DynamicNavigationView.NavigationFragme
 fun AppUi() {
     DarkTheme {
         val scaffoldState = rememberScaffoldState()
+        val navController = rememberNavController()
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
@@ -182,16 +162,51 @@ fun AppUi() {
             },
             drawerElevation = 2.dp,
             drawerContent = {
-                DrawerContent(NavigationItem.HOME)
+                // Stop Drawer from closing when touching on non-clickable elements
+                Box(Modifier.fillMaxSize().clickable(onClick = {}, indication = null)) {
+                    DrawerContent(LocalScreen.Home, navController)
+                }
             }
         ) {
-            HomeScreen()
+            Routing(navController)
         }
     }
 }
 
 @Composable
-fun DrawerContent(selectedItem: NavigationItem) {
+fun Routing(navController: NavHostController) {
+    NavHost(navController, startDestination = LocalScreen.Home.route) {
+        composable(LocalScreen.Home.route) { HomeScreen() }
+        composable(LocalScreen.PackManager.route) { PackManagerScreen() }
+        composable(LocalScreen.Settings.route) {}
+        composable(LocalScreen.Faqs.route) {}
+        composable(LocalScreen.Support.route) {}
+        composable(LocalScreen.AboutUs.route) {}
+        composable(LocalScreen.Shop.route) {}
+        composable(LocalScreen.Features.route) {}
+        composable(LocalScreen.Legal.route) {}
+
+        composable(
+            "known_bugs", listOf(
+                navArgument("sc_version") {
+                    type = NavType.StringType
+                    nullable = false
+                },
+                navArgument("pack_version") {
+                    type = NavType.StringType
+                    nullable = false
+                })
+        ) {
+            KnownBugsScreen(
+                it.arguments!!.getString("sc_version")!!,
+                it.arguments!!.getString("pack_version")!!
+            )
+        }
+    }
+}
+
+@Composable
+fun DrawerContent(selectedItem: LocalScreen, navController: NavController) {
     Column(Modifier.fillMaxWidth()) {
         Row(
             Modifier.padding(16.dp).fillMaxWidth(),
@@ -213,12 +228,14 @@ fun DrawerContent(selectedItem: NavigationItem) {
 
         HomeDivider()
 
-        NavigationItem.values().forEach {
+        LocalScreen.displayable.forEach {
             DrawerButton(
                 icon = it.icon,
-                label = stringResource(it.navName),
+                label = stringResource(it.name),
                 isSelected = it == selectedItem,
-                action = {}
+                action = {
+                    navController.navigate(it.route)
+                }
             )
         }
     }
@@ -275,25 +292,42 @@ private fun DrawerButton(
 @Composable
 fun PreviewDrawerContent() {
     AppScreen {
-        DrawerContent(NavigationItem.SETTINGS)
+        DrawerContent(LocalScreen.Settings, rememberNavController())
     }
 }
 
-enum class NavigationItem(
-    @StringRes val navName: Int,
-    private val _icon: @Composable () -> VectorAsset
-) {
-    HOME(R.string.menu_home, { Icons.Default.Home }),
-    PACK_MANAGER(R.string.menu_packs, { vectorResource(R.drawable.ic_pack) }),
-    SETTINGS(R.string.menu_settings, { Icons.Default.Settings }),
-    FAQS(R.string.menu_faqs, { vectorResource(R.drawable.ic_question_answer_black_48dp) }),
-    SUPPORT(R.string.menu_support, { vectorResource(R.drawable.ic_support_agent_black_48dp) }),
-    ABOUT_US(R.string.menu_about_us, { vectorResource(R.drawable.ic_group_black_48dp) }),
-    SHOP(R.string.menu_shop, { vectorResource(R.drawable.ic_payment_black_48dp) }),
-    FEATURES(R.string.menu_features, { Icons.Default.List }),
-    LEGAL(R.string.menu_legal, { Icons.Default.Info });
+sealed class LocalScreen(val route: String, @StringRes val name: Int, private val _icon: Any) {
+    object Home : LocalScreen("home", R.string.menu_home, Icons.Default.Home)
+    object PackManager : LocalScreen("pack_manager", R.string.menu_packs, R.drawable.ic_pack)
+    object Settings : LocalScreen("settings", R.string.menu_settings, Icons.Default.Settings)
+    object Faqs : LocalScreen("faqs", R.string.menu_faqs, R.drawable.ic_question_answer_black_48dp)
+    object Support :
+        LocalScreen("support", R.string.menu_support, R.drawable.ic_support_agent_black_48dp)
+
+    object AboutUs : LocalScreen("about_us", R.string.menu_about_us, R.drawable.ic_group_black_48dp)
+    object Shop : LocalScreen("shop", R.string.menu_shop, R.drawable.ic_payment_black_48dp)
+    object Features : LocalScreen("features", R.string.menu_features, Icons.Default.List)
+    object Legal : LocalScreen("legal", R.string.menu_legal, Icons.Default.Info)
+
+    init {
+        check(_icon is VectorAsset || _icon is @DrawableRes Int) {
+            "Unknown Type for Icon ('${_icon::javaClass.name}' - '${_icon}')"
+        }
+    }
 
     @Composable
-    val icon
-        get() = _icon()
+    val icon: VectorAsset
+        get() {
+            return when (_icon) {
+                is VectorAsset -> _icon
+                is @DrawableRes Int -> vectorResource(_icon)
+                else -> error("Unknown Type for Icon")
+            }
+        }
+
+    companion object {
+        val displayable
+            // fixme Bug where array is modified and Home set to null. Used a getter to fix issue.
+          get()= arrayOf(Home, PackManager, Settings, Faqs, Support, AboutUs, Shop, Features, Legal)
+    }
 }
