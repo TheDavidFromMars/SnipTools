@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -137,8 +138,17 @@ fun AppUi() {
                         Text("SnipTools")
                     },
                     navigationIcon = {
-                        IconButton(onClick = { scaffoldState.drawerState.open() }) {
-                            Icon(Icons.Default.Menu)
+                        val currentBackStackEntry by navController.currentBackStackEntryAsState()
+                        val mainRoutes = remember { LocalScreen.displayable.map { it.route }.toSet() }
+
+                        if (currentBackStackEntry?.arguments?.getString(KEY_ROUTE) in mainRoutes) {
+                            IconButton(onClick = { scaffoldState.drawerState.open() }) {
+                                Icon(Icons.Default.Menu)
+                            }
+                        } else {
+                            IconButton(onClick = { navController.popBackStack() }) {
+                                Icon(Icons.Default.ArrowBack)
+                            }
                         }
                     }
                 )
@@ -173,7 +183,7 @@ fun Routing(navController: NavHostController) {
         composable(LocalScreen.Legal.route) { EmptyScreenMessage("Screen not available") }
 
         composable(
-            "known_bugs/{sc_version}/{pack_version}", listOf(
+            "${LocalScreen.KnownBugs.route}/{sc_version}/{pack_version}", listOf(
                 navArgument("sc_version") {
                     type = NavType.StringType
                     nullable = false
@@ -292,6 +302,7 @@ fun PreviewDrawerContent() {
 sealed class LocalScreen(val route: String, @StringRes val name: Int, private val _icon: Any) {
     object Home : LocalScreen("home", R.string.menu_home, Icons.Default.Home)
     object PackManager : LocalScreen("pack_manager", R.string.menu_packs, R.drawable.ic_pack)
+    object KnownBugs: LocalScreen("known_bugs", R.string.menu_bugs, R.drawable.ic_baseline_bug_report_48)
     object Settings : LocalScreen("settings", R.string.menu_settings, Icons.Default.Settings)
     object Faqs : LocalScreen("faqs", R.string.menu_faqs, R.drawable.ic_question_answer_black_48dp)
     object Support :
