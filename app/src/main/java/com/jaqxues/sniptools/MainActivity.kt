@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.viewModel
@@ -130,18 +131,31 @@ fun AppUi() {
     DarkTheme {
         val scaffoldState = rememberScaffoldState()
         val navController = rememberNavController()
+        val currentBackStackEntry by navController.currentBackStackEntryAsState()
+        val allRoutes = remember { LocalScreen.allScreens.associateBy { it.route } }
+        val mainRoutes = remember { LocalScreen.displayable.associateBy { it.route } }
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
+                val currentRoute =
+                    currentBackStackEntry?.arguments?.getString(KEY_ROUTE)?.replaceAfter('/', "")
+                        ?.replace("/", "")
                 TopAppBar(
                     title = {
-                        Text("SnipTools")
+                        Column {
+                            Text("SnipTools")
+                            allRoutes[currentRoute]?.let {
+                                ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+                                    Text(
+                                        stringResource(it.name),
+                                        fontWeight = FontWeight.Normal, fontSize = 12.sp
+                                    )
+                                }
+                            }
+                        }
                     },
                     navigationIcon = {
-                        val currentBackStackEntry by navController.currentBackStackEntryAsState()
-                        val mainRoutes = remember { LocalScreen.displayable.map { it.route }.toSet() }
-
-                        if (currentBackStackEntry?.arguments?.getString(KEY_ROUTE) in mainRoutes) {
+                        if (currentRoute in mainRoutes) {
                             IconButton(onClick = { scaffoldState.drawerState.open() }) {
                                 Icon(Icons.Default.Menu)
                             }
@@ -173,7 +187,13 @@ fun Routing(navController: NavHostController) {
     val knownBugsViewModel = viewModel<KnownBugsViewModel>()
     NavHost(navController, startDestination = LocalScreen.Home.route) {
         composable(LocalScreen.Home.route) { HomeScreen() }
-        composable(LocalScreen.PackManager.route) { PackManagerScreen(navController, packViewModel, serverPackViewModel) }
+        composable(LocalScreen.PackManager.route) {
+            PackManagerScreen(
+                navController,
+                packViewModel,
+                serverPackViewModel
+            )
+        }
         composable(LocalScreen.Settings.route) { EmptyScreenMessage("Screen not available") }
         composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
         composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
@@ -225,8 +245,9 @@ fun DrawerContent(navController: NavController, closeDrawer: () -> Unit) {
 
         HomeDivider()
 
-        val backStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = backStackEntry?.arguments?.getString(KEY_ROUTE)
+        val currentRoute = navController.currentBackStackEntryAsState().value?.arguments
+            ?.getString(KEY_ROUTE)?.replaceAfter('/', "")?.replace("/", "")
+
         LocalScreen.displayable.forEach {
             DrawerButton(
                 icon = it.icon,
@@ -302,7 +323,9 @@ fun PreviewDrawerContent() {
 sealed class LocalScreen(val route: String, @StringRes val name: Int, private val _icon: Any) {
     object Home : LocalScreen("home", R.string.menu_home, Icons.Default.Home)
     object PackManager : LocalScreen("pack_manager", R.string.menu_packs, R.drawable.ic_pack)
-    object KnownBugs: LocalScreen("known_bugs", R.string.menu_bugs, R.drawable.ic_baseline_bug_report_48)
+    object KnownBugs :
+        LocalScreen("known_bugs", R.string.menu_bugs, R.drawable.ic_baseline_bug_report_48)
+
     object Settings : LocalScreen("settings", R.string.menu_settings, Icons.Default.Settings)
     object Faqs : LocalScreen("faqs", R.string.menu_faqs, R.drawable.ic_question_answer_black_48dp)
     object Support :
@@ -332,6 +355,15 @@ sealed class LocalScreen(val route: String, @StringRes val name: Int, private va
     companion object {
         val displayable
             // fixme Bug where array is modified and Home set to null. Used a getter to fix issue.
-          get()= arrayOf(Home, PackManager, Settings, Faqs, Support, AboutUs, Shop, Features, Legal)
+            get() = arrayOf(
+                Home, PackManager, Settings, Faqs,
+                Support, AboutUs, Shop, Features, Legal
+            )
+
+        val allScreens
+            get() = arrayOf(
+                Home, PackManager, KnownBugs, Settings, Faqs, Support,
+                AboutUs, Shop, Features, Legal
+            )
     }
 }
