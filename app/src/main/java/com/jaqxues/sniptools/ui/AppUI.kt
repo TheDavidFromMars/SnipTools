@@ -76,7 +76,7 @@ fun AppUi() {
             }
         }
 
-        val loadedPackDestinations = loadedPacks.mapValues { (_, pack) ->
+        val packDestinations = loadedPacks.mapValues { (_, pack) ->
             pack.disabledFeatures.observeAsState().value
             pack.staticFragments + pack.featureManager.getActiveFeatures().flatMap {
                 it.getDestinations().toList()
@@ -92,20 +92,23 @@ fun AppUi() {
                     allLocalRoutes[currentRoute]
                 } else {
                     KnownExternalDestinations.byRoute[currentRoute]
-                        ?: loadedPackDestinations[pack]?.find { it.route == currentRoute }
+                        ?: packDestinations[pack]?.find { it.route == currentRoute }
                 }
 
                 TopAppBar(
                     title = {
                         Column {
                             Text("SnipTools")
-                            if (currentScreen != null)
+
+                            // SubTitle if data is available for current screen
+                            currentScreen?.let { screen ->
                                 ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
                                     Text(
-                                        currentScreen.screenName,
+                                        screen.screenName,
                                         fontWeight = FontWeight.Normal, fontSize = 12.sp
                                     )
                                 }
+                            }
                         }
                     },
                     navigationIcon = {
@@ -127,16 +130,20 @@ fun AppUi() {
                 Box(Modifier.fillMaxSize().clickable(onClick = {}, indication = null)) {
                     DrawerContent(
                         navController,
-                        loadedPackDestinations
+                        packDestinations
                     ) { scaffoldState.drawerState.close() }
                 }
             }
         ) {
             Routing(
                 navController,
-                packViewModel,
-                loadedPackDestinations
-            )
+                packViewModel
+            ) { packName, packScreen ->
+                packDestinations[packName]
+                    ?.find { it.route == packScreen }
+                    ?.screenComposable
+                    ?.invoke()
+            }
         }
     }
 }
@@ -147,8 +154,7 @@ val NavBackStackEntry?.routeInfo: RouteInfo
     get() =
         this?.arguments?.getString(KEY_ROUTE)?.let {
             if (it.startsWith("pack/")) {
-                val split = it.replace("pack/", "").split("/")
-                RouteInfo(split[0], split[1])
+                RouteInfo(arguments?.getString("pack_name"), arguments?.getString("pack_screen"))
             } else {
                 RouteInfo(null, it.replaceAfter('/', "").replace("/", ""))
             }
@@ -158,54 +164,68 @@ val NavBackStackEntry?.routeInfo: RouteInfo
 fun Routing(
     navController: NavHostController,
     packViewModel: PackViewModel,
-    loadedPackDestinations: Map<String, Array<ExternalDestination>>
+    openPackScreen: @Composable (String, String) -> Unit
 ) {
     val serverPackViewModel = viewModel<ServerPackViewModel>()
     val knownBugsViewModel = viewModel<KnownBugsViewModel>()
 
-    val start = navController.currentBackStackEntry?.arguments?.getString(KEY_ROUTE)
-        ?: LocalScreen.Home.route
-    NavHost(navController, startDestination = start) {
-        composable(LocalScreen.Home.route) { HomeScreen() }
-        composable(LocalScreen.PackManager.route) {
-            PackManagerScreen(
-                navController,
-                packViewModel,
-                serverPackViewModel
-            )
-        }
-        composable(LocalScreen.Settings.route) { EmptyScreenMessage("Screen not available") }
-        composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
-        composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
-        composable(LocalScreen.AboutUs.route) { EmptyScreenMessage("Screen not available") }
-        composable(LocalScreen.Shop.route) { EmptyScreenMessage("Screen not available") }
-        composable(LocalScreen.Features.route) { EmptyScreenMessage("Screen not available") }
-        composable(LocalScreen.Legal.route) { EmptyScreenMessage("Screen not available") }
+    val builder: NavGraphBuilder.() -> Unit = remember {
+        {
+            composable(LocalScreen.Home.route) { HomeScreen() }
+            composable(LocalScreen.PackManager.route) {
+                PackManagerScreen(
+                    navController,
+                    packViewModel,
+                    serverPackViewModel
+                )
+            }
+            composable(LocalScreen.Settings.route) { EmptyScreenMessage("Screen not available") }
+            composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
+            composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
+            composable(LocalScreen.AboutUs.route) { EmptyScreenMessage("Screen not available") }
+            composable(LocalScreen.Shop.route) { EmptyScreenMessage("Screen not available") }
+            composable(LocalScreen.Features.route) { EmptyScreenMessage("Screen not available") }
+            composable(LocalScreen.Legal.route) { EmptyScreenMessage("Screen not available") }
 
-        composable(
-            "${LocalScreen.KnownBugs.route}/{sc_version}/{pack_version}", listOf(
-                navArgument("sc_version") {
-                    type = NavType.StringType
-                    nullable = false
-                },
-                navArgument("pack_version") {
-                    type = NavType.StringType
-                    nullable = false
-                })
-        ) {
-            KnownBugsScreen(
-                it.arguments!!.getString("sc_version")!!,
-                it.arguments!!.getString("pack_version")!!,
-                knownBugsViewModel
-            )
-        }
-        loadedPackDestinations.forEach { (packName, destinations) ->
-            destinations.forEach { destination ->
-                composable(
-                    "pack/$packName/${destination.route}",
-                    content = { destination.screenComposable() })
+            composable(
+                "${LocalScreen.KnownBugs.route}/{sc_version}/{pack_version}", listOf(
+                    navArgument("sc_version") {
+                        type = NavType.StringType
+                        nullable = false
+                    },
+                    navArgument("pack_version") {
+                        type = NavType.StringType
+                        nullable = false
+                    })
+            ) {
+                KnownBugsScreen(
+                    it.arguments!!.getString("sc_version")!!,
+                    it.arguments!!.getString("pack_version")!!,
+                    knownBugsViewModel
+                )
+            }
+            composable(
+                "pack/{pack_name}/{pack_screen}",
+                arguments = listOf(
+                    navArgument("pack_name") {
+                        type = NavType.StringType
+                        nullable = false
+                    },
+                    navArgument("pack_screen") {
+                        type = NavType.StringType
+                        nullable = false
+                    }
+                )
+            ) {
+                openPackScreen(
+                    it.arguments!!.getString("pack_name")!!,
+                    it.arguments!!.getString("pack_screen")!!
+                )
             }
         }
+    }
+    NavHost(navController, startDestination = LocalScreen.Home.route) {
+        builder()
     }
 }
 

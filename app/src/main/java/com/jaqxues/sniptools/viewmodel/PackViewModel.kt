@@ -11,7 +11,6 @@ import com.jaqxues.sniptools.repository.PackRepository
 import kotlinx.coroutines.launch
 import java.io.File
 import java.security.cert.X509Certificate
-import javax.inject.Inject
 
 
 /**
