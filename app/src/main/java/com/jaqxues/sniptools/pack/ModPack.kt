@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.pack
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.LiveData
 import com.jaqxues.akrolyb.genhook.FeatureHelper
 import com.jaqxues.akrolyb.genhook.FeatureManager
@@ -9,7 +10,6 @@ import com.jaqxues.akrolyb.pack.IPackMetadata
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.pack.PackFactoryBase
 import com.jaqxues.sniptools.BuildConfig
-import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.utils.buildMetadata
 import com.jaqxues.sniptools.utils.installedScVersion
 import java.io.File
@@ -23,13 +23,19 @@ import java.util.jar.Attributes
 abstract class ModPack(metadata: PackMetadata) : ModPackBase<PackMetadata>(metadata) {
     abstract val disabledFeatures: LiveData<Set<String>>
     abstract val featureManager: FeatureManager<out IFeature>
-    abstract val staticFragments: List<PackFragment>
+    abstract val staticFragments: Array<ExternalDestination>
     abstract val lateInitActivity: String
 }
 
 abstract class IFeature: FeatureHelper() {
-    abstract fun getFragments(): Array<out PackFragment>
+    abstract fun getDestinations(): Array<ExternalDestination>
 }
+
+data class ExternalDestination(
+    val route: String,
+    val defaultName: String,
+    val screenComposable: @Composable () -> Unit
+)
 
 class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMetadata>() {
     override val appData = AppData(BuildConfig.VERSION_CODE, BuildConfig.DEBUG)

@@ -7,7 +7,7 @@ import com.jaqxues.akrolyb.genhook.decs.after
 import com.jaqxues.akrolyb.genhook.decs.before
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.pack.IFeature
-import com.jaqxues.sniptools.packimpl.fragment.MiscFragment
+import com.jaqxues.sniptools.packimpl.fragment.Destinations
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.CAPTION_EDIT_TEXT_VIEW
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.FORCE_APP_DECK
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.DISABLE_CAPTION_LENGTH_LIMIT
@@ -21,7 +21,7 @@ import de.robv.android.xposed.XposedHelpers.findClass
  * Date: 04.06.20 - Time 00:19.
  */
 class MiscFeatures : IFeature() {
-    override fun getFragments() = arrayOf(MiscFragment())
+    override fun getDestinations() = arrayOf(Destinations.MISC.destination)
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 

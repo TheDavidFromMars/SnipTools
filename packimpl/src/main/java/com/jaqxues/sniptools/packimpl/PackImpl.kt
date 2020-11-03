@@ -6,7 +6,7 @@ import com.jaqxues.akrolyb.prefs.PrefManager
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.PackMetadata
-import com.jaqxues.sniptools.packimpl.fragment.GeneralFragment
+import com.jaqxues.sniptools.packimpl.fragment.Destinations
 import com.jaqxues.sniptools.packimpl.utils.FeatureSet
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.DISABLED_FEATURES
@@ -43,7 +43,8 @@ class PackImpl constructor(metadata: PackMetadata) : ModPack(metadata) {
 
     override val featureManager by lazy { FeatureManager(FeatureSet) }
 
-    override val staticFragments = listOf(GeneralFragment())
+    override val staticFragments = arrayOf(Destinations.GENERAL.destination)
+
     override val lateInitActivity = "com.snap.mushroom.MainActivity"
 
     private fun performAdditionalChecks(metadata: PackMetadata) {

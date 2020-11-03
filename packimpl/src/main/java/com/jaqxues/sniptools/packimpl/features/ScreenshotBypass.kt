@@ -5,7 +5,7 @@ import com.jaqxues.akrolyb.genhook.decs.replace
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.utils.invokeOriginalMethod
 import com.jaqxues.sniptools.pack.IFeature
-import com.jaqxues.sniptools.packimpl.fragment.ScreenshotFragment
+import com.jaqxues.sniptools.packimpl.fragment.Destinations
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.SCREENSHOT_DETECTED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.ASK_SCREENSHOT_CONFIRMATION
 import com.jaqxues.sniptools.packimpl.utils.createDialog
@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Date: 04.07.20 - Time 10:25.
  */
 class ScreenshotBypass : IFeature() {
-    override fun getFragments() = arrayOf(ScreenshotFragment())
+    override fun getDestinations() = arrayOf(Destinations.SCREENSHOT.destination)
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 

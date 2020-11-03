@@ -4,7 +4,7 @@ import android.content.Context
 import com.jaqxues.akrolyb.genhook.decs.before
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.pack.IFeature
-import com.jaqxues.sniptools.packimpl.fragment.UnlimitedViewingFragment
+import com.jaqxues.sniptools.packimpl.fragment.Destinations
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_IMAGE_UNLIMITED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_VIDEO_LOOPING
@@ -15,7 +15,7 @@ import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_VIDEO_LOOPING
  * Date: 09.07.20 - Time 15:35.
  */
 class UnlimitedViewing : IFeature() {
-    override fun getFragments() = arrayOf(UnlimitedViewingFragment())
+    override fun getDestinations() = arrayOf(Destinations.UNLIMITED.destination)
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
 

@@ -4,7 +4,7 @@ import android.content.Context
 import com.jaqxues.akrolyb.genhook.decs.after
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.sniptools.pack.IFeature
-import com.jaqxues.sniptools.packimpl.fragment.SavingFragment
+import com.jaqxues.sniptools.packimpl.fragment.Destinations
 import com.jaqxues.sniptools.packimpl.hookdec.MemberDeclarations.DECRYPT_MEDIA_STREAM
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.AUTO_SAVE_SNAPS
 import java.io.ByteArrayInputStream
@@ -17,7 +17,7 @@ import java.io.InputStream
  * Date: 24.08.20 - Time 13:12.
  */
 class SavingFeature : IFeature() {
-    override fun getFragments() = arrayOf(SavingFragment())
+    override fun getDestinations() = arrayOf(Destinations.SAVING.destination)
 
     override fun loadFeature(classLoader: ClassLoader, context: Context) {
         if (AUTO_SAVE_SNAPS.getPref())
