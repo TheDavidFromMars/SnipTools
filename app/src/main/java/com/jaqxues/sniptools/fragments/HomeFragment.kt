@@ -23,23 +23,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.ui.AppScreen
 import com.jaqxues.sniptools.utils.installedScVersion
 
 @Composable
 fun HomeScreen() {
-    AppScreen {
-        Column(
-            Modifier.fillMaxHeight(),
-            horizontalAlignment = CenterHorizontally
-        ) {
-            HomeContent(Modifier.weight(1f))
+    Column(
+        Modifier.fillMaxHeight(),
+        horizontalAlignment = CenterHorizontally
+    ) {
+        HomeContent(Modifier.weight(1f))
 
 
-            HomeDivider()
-            Spacer(Modifier.height(16.dp))
-            HomeFooter()
-        }
+        HomeDivider()
+        Spacer(Modifier.height(16.dp))
+        HomeFooter()
     }
 }
 

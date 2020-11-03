@@ -47,16 +47,6 @@ import kotlinx.coroutines.launch
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 31.08.20 - Time 14:32.
  */
-@Composable
-fun AppScreen(screen: @Composable () -> Unit) {
-    DarkTheme {
-        Surface(color = MaterialTheme.colors.background) {
-            screen()
-        }
-    }
-}
-
-
 @OptIn(ExperimentalStdlibApi::class)
 @Composable
 fun AppUi() {

@@ -22,9 +22,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.ui.tooling.preview.Preview
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.ui.AppScreen
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 
@@ -33,33 +31,35 @@ import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
  * Date: 03.06.20 - Time 10:56.
  */
 @Composable
-fun PackManagerScreen(navController: NavController, packViewModel: PackViewModel, serverPackViewModel: ServerPackViewModel) {
-    AppScreen {
-        Column {
-            var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
-            TabRow(
-                selectedTabIndex = currentTab.ordinal,
-                indicator = {
-                    TabConstants.DefaultIndicator(
-                        modifier = Modifier.defaultTabIndicatorOffset(
-                            it[currentTab.ordinal]
-                        ), color = MaterialTheme.colors.primary
-                    )
-                }
-            ) {
-                for (tab in PackManagerTabs.values())
-                    Tab(
-                        selected = currentTab == tab,
-                        onClick = { currentTab = tab },
-                        text = { Text(tab.tabName) })
+fun PackManagerScreen(
+    navController: NavController,
+    packViewModel: PackViewModel,
+    serverPackViewModel: ServerPackViewModel
+) {
+    Column {
+        var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
+        TabRow(
+            selectedTabIndex = currentTab.ordinal,
+            indicator = {
+                TabConstants.DefaultIndicator(
+                    modifier = Modifier.defaultTabIndicatorOffset(
+                        it[currentTab.ordinal]
+                    ), color = MaterialTheme.colors.primary
+                )
             }
-            Spacer(Modifier.padding(8.dp))
+        ) {
+            for (tab in PackManagerTabs.values())
+                Tab(
+                    selected = currentTab == tab,
+                    onClick = { currentTab = tab },
+                    text = { Text(tab.tabName) })
+        }
+        Spacer(Modifier.padding(8.dp))
 
-            Crossfade(current = currentTab) {
-                when (it) {
-                    PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController, packViewModel)
-                    PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(serverPackViewModel)
-                }
+        Crossfade(current = currentTab) {
+            when (it) {
+                PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController, packViewModel)
+                PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(serverPackViewModel)
             }
         }
     }
