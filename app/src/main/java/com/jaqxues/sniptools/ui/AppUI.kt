@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,9 +9,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,23 +19,28 @@ import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
+import androidx.navigation.*
 import androidx.navigation.compose.*
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.fragments.HomeDivider
 import com.jaqxues.sniptools.fragments.HomeScreen
 import com.jaqxues.sniptools.fragments.KnownBugsScreen
 import com.jaqxues.sniptools.fragments.PackManagerScreen
+import com.jaqxues.sniptools.pack.ExternalDestination
+import com.jaqxues.sniptools.pack.KnownExternalDestinations
+import com.jaqxues.sniptools.pack.ModPack
+import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.ui.theme.DarkTheme
 import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 /**
@@ -52,36 +57,70 @@ fun AppScreen(screen: @Composable () -> Unit) {
 }
 
 
+@OptIn(ExperimentalStdlibApi::class)
 @Composable
 fun AppUi() {
     DarkTheme {
         val scaffoldState = rememberScaffoldState()
         val navController = rememberNavController()
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
-        val allRoutes = remember { LocalScreen.allScreens.associateBy { it.route } }
-        val mainRoutes = remember { LocalScreen.displayable.associateBy { it.route } }
+
+        val allLocalRoutes = remember { LocalScreen.allScreens.associateBy { it.route } }
+
+        val packViewModel = viewModel<PackViewModel>()
+        val loadedPacks = remember { mutableStateMapOf<String, ModPack>() }
+
+        val coroutineScope = rememberCoroutineScope()
+        remember {
+            coroutineScope.launch {
+                packViewModel.packLoadChanges.collect { (packName, state) ->
+                    when (state) {
+                        is StatefulPackData.LoadedPack -> {
+                            loadedPacks[packName] = state.pack
+                        }
+                        else -> {
+                            loadedPacks -= packName
+                        }
+                    }
+                }
+            }
+        }
+
+        val loadedPackDestinations = loadedPacks.mapValues { (_, pack) ->
+            pack.disabledFeatures.observeAsState()
+
+            pack.staticFragments + pack.featureManager.getActiveFeatures().flatMap {
+                it.getDestinations().toList()
+            }
+        }
+
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                val currentRoute =
-                    currentBackStackEntry?.arguments?.getString(KEY_ROUTE)?.replaceAfter('/', "")
-                        ?.replace("/", "")
+                val (pack, currentRoute) = currentBackStackEntry.routeInfo
+
+                val currentScreen = if (pack == null) {
+                    allLocalRoutes[currentRoute]
+                } else {
+                    KnownExternalDestinations.byRoute[currentRoute]
+                        ?: loadedPackDestinations[pack]?.find { it.route == currentRoute }
+                }
+
                 TopAppBar(
                     title = {
                         Column {
                             Text("SnipTools")
-                            allRoutes[currentRoute]?.let {
+                            if (currentScreen != null)
                                 ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
                                     Text(
-                                        stringResource(it.name),
+                                        currentScreen.screenName,
                                         fontWeight = FontWeight.Normal, fontSize = 12.sp
                                     )
                                 }
-                            }
                         }
                     },
                     navigationIcon = {
-                        if (currentRoute in mainRoutes) {
+                        if (currentScreen?.isTopLevelScreen == true) {
                             IconButton(onClick = { scaffoldState.drawerState.open() }) {
                                 Icon(Icons.Default.Menu)
                             }
@@ -97,21 +136,47 @@ fun AppUi() {
             drawerContent = {
                 // Stop Drawer from closing when touching on non-clickable elements
                 Box(Modifier.fillMaxSize().clickable(onClick = {}, indication = null)) {
-                    DrawerContent(navController) { scaffoldState.drawerState.close() }
+                    DrawerContent(
+                        navController,
+                        loadedPackDestinations
+                    ) { scaffoldState.drawerState.close() }
                 }
             }
         ) {
-            Routing(navController)
+            Routing(
+                navController,
+                packViewModel,
+                loadedPackDestinations
+            )
         }
     }
 }
 
+data class RouteInfo(val packRoute: String? = null, val screenRoute: String? = null)
+
+val NavBackStackEntry?.routeInfo: RouteInfo
+    get() =
+        this?.arguments?.getString(KEY_ROUTE)?.let {
+            if (it.startsWith("pack/")) {
+                val split = it.replace("pack/", "").split("/")
+                RouteInfo(split[0], split[1])
+            } else {
+                RouteInfo(null, it.replaceAfter('/', "").replace("/", ""))
+            }
+        } ?: RouteInfo()
+
 @Composable
-fun Routing(navController: NavHostController) {
+fun Routing(
+    navController: NavHostController,
+    packViewModel: PackViewModel,
+    loadedPackDestinations: Map<String, Array<ExternalDestination>>
+) {
     val serverPackViewModel = viewModel<ServerPackViewModel>()
-    val packViewModel = viewModel<PackViewModel>()
     val knownBugsViewModel = viewModel<KnownBugsViewModel>()
-    NavHost(navController, startDestination = LocalScreen.Home.route) {
+
+    val start = navController.currentBackStackEntry?.arguments?.getString(KEY_ROUTE)
+        ?: LocalScreen.Home.route
+    NavHost(navController, startDestination = start) {
         composable(LocalScreen.Home.route) { HomeScreen() }
         composable(LocalScreen.PackManager.route) {
             PackManagerScreen(
@@ -145,12 +210,23 @@ fun Routing(navController: NavHostController) {
                 knownBugsViewModel
             )
         }
+        loadedPackDestinations.forEach { (packName, destinations) ->
+            destinations.forEach { destination ->
+                composable(
+                    "pack/$packName/${destination.route}",
+                    content = { destination.screenComposable() })
+            }
+        }
     }
 }
 
 @Composable
-fun DrawerContent(navController: NavController, closeDrawer: () -> Unit) {
-    Column(Modifier.fillMaxWidth()) {
+fun DrawerContent(
+    navController: NavController,
+    loadedPackDestinations: Map<String, Array<ExternalDestination>>,
+    closeDrawer: () -> Unit
+) {
+    ScrollableColumn(Modifier.fillMaxWidth()) {
         Row(
             Modifier.padding(16.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -171,16 +247,15 @@ fun DrawerContent(navController: NavController, closeDrawer: () -> Unit) {
 
         HomeDivider()
 
-        val currentRoute = navController.currentBackStackEntryAsState().value?.arguments
-            ?.getString(KEY_ROUTE)?.replaceAfter('/', "")?.replace("/", "")
+        val (pack, route) = navController.currentBackStackEntryAsState().value.routeInfo
 
-        LocalScreen.displayable.forEach {
+        LocalScreen.topLevelScreens.forEach {
             DrawerButton(
+                label = it.screenName,
                 icon = it.icon,
-                label = stringResource(it.name),
-                isSelected = it.route == currentRoute,
+                isSelected = it.route == route,
                 action = {
-                    if (it.route != currentRoute) {
+                    if (it.route != route) {
                         navController.popBackStack(navController.graph.startDestination, false)
                         navController.navigate(it.route)
                     }
@@ -188,13 +263,47 @@ fun DrawerContent(navController: NavController, closeDrawer: () -> Unit) {
                 }
             )
         }
+        loadedPackDestinations.forEach { (packName, destinations) ->
+            Divider(Modifier.padding(horizontal = 16.dp))
+            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+                Text(
+                    packName,
+                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 14.sp
+                )
+            }
+
+            for (destination in destinations) {
+                val known = KnownExternalDestinations.byRoute[destination.route]
+
+                val (icon, label) = if (known == null) {
+                    null to destination.defaultName
+                } else {
+                    known.icon to stringResource(known.stringRes)
+                }
+                DrawerButton(
+                    icon = icon,
+                    label = label,
+                    isSelected = packName == pack && destination.route == route,
+                    action = {
+                        if (destination.route != route) {
+                            navController.popBackStack(navController.graph.startDestination, false)
+                            navController.navigate("pack/$packName/${destination.route}")
+                        }
+                        closeDrawer()
+                    }
+                )
+            }
+        }
     }
 }
 
+
 @Composable
 private fun DrawerButton(
-    icon: VectorAsset,
     label: String,
+    icon: VectorAsset? = null,
     isSelected: Boolean,
     action: () -> Unit
 ) {
@@ -221,12 +330,15 @@ private fun DrawerButton(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth()
             ) {
-                Image(
-                    asset = icon,
-                    colorFilter = ColorFilter.tint(textIconColor),
-                    alpha = imageAlpha,
-                    modifier = Modifier.size(24.dp)
-                )
+                if (icon != null)
+                    Image(
+                        asset = icon,
+                        colorFilter = ColorFilter.tint(textIconColor),
+                        alpha = imageAlpha,
+                        modifier = Modifier.size(24.dp)
+                    )
+                else
+                    Spacer(Modifier.size(24.dp))
                 Spacer(Modifier.preferredWidth(16.dp))
                 Text(
                     text = label,

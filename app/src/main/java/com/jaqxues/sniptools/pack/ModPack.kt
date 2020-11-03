@@ -2,6 +2,7 @@ package com.jaqxues.sniptools.pack
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.lifecycle.LiveData
 import com.jaqxues.akrolyb.genhook.FeatureHelper
 import com.jaqxues.akrolyb.genhook.FeatureManager
@@ -10,6 +11,7 @@ import com.jaqxues.akrolyb.pack.IPackMetadata
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.pack.PackFactoryBase
 import com.jaqxues.sniptools.BuildConfig
+import com.jaqxues.sniptools.ui.NavScreen
 import com.jaqxues.sniptools.utils.buildMetadata
 import com.jaqxues.sniptools.utils.installedScVersion
 import java.io.File
@@ -32,10 +34,19 @@ abstract class IFeature: FeatureHelper() {
 }
 
 data class ExternalDestination(
-    val route: String,
+    override val route: String,
     val defaultName: String,
     val screenComposable: @Composable () -> Unit
-)
+): NavScreen {
+
+    @Composable
+    override val screenName: String
+        get() = defaultName
+
+    @Composable
+    override val icon: VectorAsset?
+        get() = null
+}
 
 class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMetadata>() {
     override val appData = AppData(BuildConfig.VERSION_CODE, BuildConfig.DEBUG)

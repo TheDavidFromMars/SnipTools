@@ -12,10 +12,9 @@ import org.junit.Test
 class DestinationTests {
     @Test
     fun `Assert that all Pack destinations are in KnownDestinations`() {
-        val knownByRoute = KnownExternalDestinations.values().associateBy { it.route }
         assertTrue(
             "A destination in the Pack was not implemented into KnownDestinations in the Apk.",
-            Destinations.values().all { it.destination.route in knownByRoute }
+            Destinations.values().all { it.destination.route in KnownExternalDestinations.byRoute }
         )
     }
 }

@@ -60,21 +60,6 @@ class MainActivity : AppCompatActivity() {
 
         val packViewModel: PackViewModel by viewModels()
 
-        lifecycleScope.launch {
-            packViewModel.packLoadChanges.collect { (packName, state) ->
-                when (state) {
-                    is StatefulPackData.LoadedPack -> {
-                        val pack = state.pack
-                        pack.disabledFeatures.observe(this@MainActivity) {
-//                            navView.setPackFragments(menuInflater, packName, pack)
-                        }
-                    }
-                    else -> {
-//                        navView.removePackFragments(packName)
-                    }
-                }
-            }
-        }
         packViewModel.loadActivatedPacks(
             this@MainActivity,
             if (BuildConfig.DEBUG) null else Security.certificateFromApk(

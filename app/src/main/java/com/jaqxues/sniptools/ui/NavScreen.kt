@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.jaqxues.sniptools.R
 
@@ -17,11 +18,13 @@ import com.jaqxues.sniptools.R
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 02.11.20 - Time 19:48.
  */
-sealed class LocalScreen(val route: String, @StringRes val name: Int, _icon: Any) :
-    CheckIconTypes(_icon) {
+sealed class LocalScreen(override val route: String, @StringRes val stringRes: Int, _icon: Any) :
+    CheckIconTypes(_icon), NavScreen {
     object Home : LocalScreen("home", R.string.menu_home, Icons.Default.Home)
     object PackManager : LocalScreen("pack_manager", R.string.menu_packs, R.drawable.ic_pack)
-    object KnownBugs : LocalScreen("known_bugs", R.string.menu_bugs, Unit)
+    object KnownBugs : LocalScreen("known_bugs", R.string.menu_bugs, Unit) {
+        override val isTopLevelScreen = false
+    }
 
     object Settings : LocalScreen("settings", R.string.menu_settings, Icons.Default.Settings)
     object Faqs : LocalScreen("faqs", R.string.menu_faqs, R.drawable.ic_question_answer_black_48dp)
@@ -33,8 +36,11 @@ sealed class LocalScreen(val route: String, @StringRes val name: Int, _icon: Any
     object Features : LocalScreen("features", R.string.menu_features, Icons.Default.List)
     object Legal : LocalScreen("legal", R.string.menu_legal, Icons.Default.Info)
 
+    @Composable
+    override val screenName get() = stringResource(stringRes)
+
     companion object {
-        val displayable
+        val topLevelScreens
             // fixme Bug where array is modified and Home set to null. Used a getter to fix issue.
             get() = arrayOf(
                 Home, PackManager, Settings, Faqs,
@@ -73,4 +79,15 @@ abstract class CheckIconTypes(val _icon: Any) {
             else -> error("Unknown Type for Icon")
         }
     }
+}
+
+interface NavScreen {
+    val route: String
+    @Composable
+    val screenName: String
+
+    @Composable
+    val icon: VectorAsset?
+
+    val isTopLevelScreen: Boolean get() = true
 }
