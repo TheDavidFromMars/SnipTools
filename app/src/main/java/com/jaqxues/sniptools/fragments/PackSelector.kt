@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
-import com.jaqxues.sniptools.LocalScreen
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.pack.StatefulPackData
+import com.jaqxues.sniptools.ui.LocalScreen
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 
