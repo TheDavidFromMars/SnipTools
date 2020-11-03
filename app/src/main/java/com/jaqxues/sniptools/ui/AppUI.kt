@@ -87,8 +87,7 @@ fun AppUi() {
         }
 
         val loadedPackDestinations = loadedPacks.mapValues { (_, pack) ->
-            pack.disabledFeatures.observeAsState()
-
+            pack.disabledFeatures.observeAsState().value
             pack.staticFragments + pack.featureManager.getActiveFeatures().flatMap {
                 it.getDestinations().toList()
             }
