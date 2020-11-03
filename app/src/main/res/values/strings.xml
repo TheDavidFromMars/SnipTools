@@ -35,4 +35,14 @@
 
     <!-- Content Descriptions -->
     <string name="cdesc_sniptools_logo">SnapTools Logo</string>
+
+
+    <!-- Names for external pack destinations -->
+    <string name="nav_ext_general">General</string>
+    <string name="nav_ext_misc">Misc Changes</string>
+    <string name="nav_ext_saving">Saving</string>
+    <string name="nav_ext_debug">Debug Tools</string>
+    <string name="nav_ext_unlimited">Unlimited Viewing</string>
+    <string name="nav_ext_stealth">Stealth Viewing</string>
+    <string name="nav_ext_screenshot">Screenshot Bypass</string>
 </resources>
