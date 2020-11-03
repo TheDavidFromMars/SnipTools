@@ -1,51 +1,35 @@
 package com.jaqxues.sniptools.packimpl.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
-import com.jaqxues.sniptools.fragments.PackFragment
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_IMAGE_UNLIMITED
 import com.jaqxues.sniptools.packimpl.utils.PackPreferences.SNAP_VIDEO_LOOPING
 import com.jaqxues.sniptools.packimpl.utils.SwitchPreference
 import com.jaqxues.sniptools.packimpl.utils.TitleAndDescription
-import com.jaqxues.sniptools.ui.AppScreen
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 10.10.20 - Time 15:15.
  */
-class UnlimitedViewingFragment: PackFragment() {
-    override val name = "Unlimited Viewing"
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = ComposeView(requireContext()).apply {
-        setContent {
-            AppScreen {
-                Column(Modifier.padding(16.dp)) {
-                    SwitchPreference(SNAP_VIDEO_LOOPING) {
-                        TitleAndDescription(
-                            title = "Loop Videos",
-                            description = "Repeat all videos"
-                        )
-                    }
-                    Spacer(Modifier.padding(8.dp))
-                    SwitchPreference(SNAP_IMAGE_UNLIMITED) {
-                        TitleAndDescription(
-                            title = "Disable Snap Timer",
-                            description = "View all Snaps for an indefinite amount of time"
-                        )
-                    }
-                }
-            }
+@Composable
+fun UnlimitedScreen() {
+    Column(Modifier.padding(16.dp)) {
+        SwitchPreference(SNAP_VIDEO_LOOPING) {
+            TitleAndDescription(
+                title = "Loop Videos",
+                description = "Repeat all videos"
+            )
+        }
+        Spacer(Modifier.padding(8.dp))
+        SwitchPreference(SNAP_IMAGE_UNLIMITED) {
+            TitleAndDescription(
+                title = "Disable Snap Timer",
+                description = "View all Snaps for an indefinite amount of time"
+            )
         }
     }
 }

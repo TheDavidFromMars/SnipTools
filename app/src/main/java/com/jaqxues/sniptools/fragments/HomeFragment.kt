@@ -1,9 +1,5 @@
 package com.jaqxues.sniptools.fragments
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
@@ -14,7 +10,6 @@ import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
@@ -26,26 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.ui.tooling.preview.Preview
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.ui.AppScreen
 import com.jaqxues.sniptools.utils.installedScVersion
-
-class HomeFragment : BaseFragment() {
-    override val menuId get() = R.id.nav_home
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                HomeScreen()
-            }
-        }
-    }
-}
 
 @Composable
 fun HomeScreen() {
