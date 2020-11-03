@@ -59,7 +59,7 @@ packCompiler {
             PackVersionCode  : 1,
             MinApkVersionCode: 1,
             PackImplClass    : "com.jaqxues.sniptools.packimpl.PackImpl",
-            ScVersion        : "11.4.1.64",
+            ScVersion        : "11.4.5.73",
     ]
     getJarName = { attributes ->
         return "Pack_${attributes["PackVersion"]}_${attributes["ScVersion"]}".toString()
