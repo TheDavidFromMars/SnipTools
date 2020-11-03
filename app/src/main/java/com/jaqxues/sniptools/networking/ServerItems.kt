@@ -34,6 +34,17 @@ data class KnownBug(
     val fixedOn: Long? = null
 )
 
+data class ServerApk(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("apk_v_code")
+    val versionCode: Int,
+    @SerializedName("apk_v_name")
+    val versionName: String,
+    @SerializedName("created_at")
+    val createdAt: Long
+)
+
 data class ShopItem(
     val id: String,
     val type: ShopItemType,

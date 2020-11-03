@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.utils
 
 import com.topjohnwu.superuser.Shell
+import java.io.File
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -13,6 +14,14 @@ object SuUtils {
     suspend fun runSuCommands(vararg commands: String): Shell.Result {
         return suspendCoroutine { cont ->
             Shell.su(*commands).submit { shellResult ->
+                cont.resume(shellResult)
+            }
+        }
+    }
+
+    suspend fun installApk(apkFile: File): Shell.Result {
+        return suspendCoroutine { cont ->
+            Shell.su("pm install ${apkFile.absolutePath}").submit { shellResult ->
                 cont.resume(shellResult)
             }
         }

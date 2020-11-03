@@ -17,35 +17,8 @@ interface GitHubApiService {
     @GET("Packs/Info/KnownBugs/KnownBugs_Sc_v{scVersion}.json")
     suspend fun getKnownBugsFor(@Path("scVersion") scVersion: String): Map<String, List<KnownBug>>
 
-
-    @GET("/General/ShopItems.json")
-    suspend fun getShopItems(): List<ShopItem>
-
-
-    @GET("/Packs/JSON/History/PackHistory_SC_v{scVersion}.json")
-    suspend fun getPackHistory(@Path("scVersion") scVersion: String)
-
-    @GET("/Packs/JSON/ChangeLog/PackChangelog_SC_v{scVersion}.json")
-    suspend fun getPackChangelog(@Path("scVersion") scVersion: String)
-
-
-    @GET("/Packs/JSON/PackUpdates/LatestPack_SC_v{scVersion}.json")
-    suspend fun getLatestPack()
-
-    @GET("/Apks/JSON/APKUpdates/LatestApkVersion.json")
-    suspend fun getLatestReleaseApkVersion()
-
-    @GET("/Apks/JSON/APKUpdates/LatestBetaApkVersion.json")
-    suspend fun getLatestBetaApkVersion()
-
-
-    @Streaming
-    @GET("/General/Features.txt")
-    suspend fun getFeatures(): ResponseBody
-
-    @Streaming
-    @GET("/General/FAQs.txt")
-    suspend fun getFAQs(): ResponseBody
+    @GET("Apks/Info/ServerApks.json")
+    suspend fun getLatestApk(): ServerApk
 
 
     @Streaming
@@ -53,6 +26,6 @@ interface GitHubApiService {
     suspend fun getPackFile(@Path("packName") packName: String): ResponseBody
 
     @Streaming
-    @GET("https://github.com/jaqxues/SnapTools_DataProvider/blob/master/Apks/Files/SnapTools-{flavour}.apk?raw=true")
-    suspend fun getApkFile(@Path("flavour") flavour: String): ResponseBody
+    @GET("https://github.com/jaqxues/SnipTools_DataProvider/blob/master/Apks/Files/{apk_name}.apk?raw=true")
+    suspend fun getApkFile(@Path("apk_name") apkName: String): ResponseBody
 }
