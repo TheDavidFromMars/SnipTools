@@ -6,10 +6,7 @@ import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.lifecycle.LiveData
 import com.jaqxues.akrolyb.genhook.FeatureHelper
 import com.jaqxues.akrolyb.genhook.FeatureManager
-import com.jaqxues.akrolyb.pack.AppData
-import com.jaqxues.akrolyb.pack.IPackMetadata
-import com.jaqxues.akrolyb.pack.ModPackBase
-import com.jaqxues.akrolyb.pack.PackFactoryBase
+import com.jaqxues.akrolyb.pack.*
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.ui.NavScreen
 import com.jaqxues.sniptools.utils.buildMetadata
@@ -27,6 +24,23 @@ abstract class ModPack(metadata: PackMetadata) : ModPackBase<PackMetadata>(metad
     abstract val featureManager: FeatureManager<out IFeature>
     abstract val staticFragments: Array<ExternalDestination>
     abstract val lateInitActivity: String
+
+    companion object {
+        fun getPackErrorMessage(t: Throwable): String = when (t) {
+            is PackNotFoundException -> "Activated Pack could not be found"
+            is PackEnvironmentException -> {
+                val cause = t.cause
+                if (cause is UnsupportedScVersion) {
+                    cause.message
+                } else t.message
+            }
+            is PackAttributesException,
+            is PackMetadataException -> "Pack data could not be extracted"
+            is PackClassLoaderException,
+            is PackReflectionException -> "Pack could not be loaded"
+            else -> "Unknown Error (${t.message})"
+        } ?: "Error without any message"
+    }
 }
 
 abstract class IFeature: FeatureHelper() {

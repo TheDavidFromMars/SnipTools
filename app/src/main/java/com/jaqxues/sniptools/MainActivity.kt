@@ -9,18 +9,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.lifecycleScope
 import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.akrolyb.utils.Security
 import com.jaqxues.sniptools.pack.PackFactory
-import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.AppUi
 import com.jaqxues.sniptools.utils.CommonSetup
 import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint

@@ -4,16 +4,19 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import com.jaqxues.akrolyb.genhook.decs.after
 import com.jaqxues.akrolyb.genhook.states.StateLogger
 import com.jaqxues.akrolyb.pack.ModPackBase
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.utils.Security
 import com.jaqxues.akrolyb.utils.XposedChecks
-import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.PackFactory
-import com.jaqxues.sniptools.utils.*
+import com.jaqxues.sniptools.utils.CommonSetup
+import com.jaqxues.sniptools.utils.ContextContainer
+import com.jaqxues.sniptools.utils.PathProvider
+import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
@@ -98,7 +101,11 @@ class HookManager : IXposedHookLoadPackage {
                         unhookContainer[0]!!.unhook()
                     }
                 } catch (t: Throwable) {
-                    Timber.e(t)
+                    val message = ModPack.getPackErrorMessage(t)
+                    ContextContainer.getModuleContext()?.let { ctx ->
+                        Toast.makeText(ctx, message, Toast.LENGTH_LONG).show()
+                    }
+                    Timber.e(t, message)
                 }
             })
     }

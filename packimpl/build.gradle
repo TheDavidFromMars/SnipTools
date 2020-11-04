@@ -54,8 +54,8 @@ dependencies {
 packCompiler {
     attributes = [
             Flavor           : "prod",
-            Development      : true,
-            PackVersion      : "1.0.0",
+            Development      : false,
+            PackVersion      : "0.0.01",
             PackVersionCode  : 1,
             MinApkVersionCode: 1,
             PackImplClass    : "com.jaqxues.sniptools.packimpl.PackImpl",
