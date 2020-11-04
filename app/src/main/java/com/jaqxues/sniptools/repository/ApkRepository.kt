@@ -1,13 +1,8 @@
 package com.jaqxues.sniptools.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.networking.GitHubApiService
-import com.jaqxues.sniptools.networking.ServerApk
-import com.jaqxues.sniptools.utils.Request
-import com.jaqxues.sniptools.utils.sendAsRequest
 import java.io.File
 import javax.inject.Inject
 
@@ -23,7 +18,7 @@ class ApkRepository @Inject constructor(
      */
     suspend fun downloadLatestApk(context: Context): File? {
         val latestApk = apiService.getLatestApk()
-        if (latestApk.versionName == BuildConfig.VERSION_NAME && latestApk.versionCode == BuildConfig.VERSION_CODE) {
+        if (latestApk.versionCode >= BuildConfig.VERSION_CODE && latestApk.versionName == BuildConfig.VERSION_NAME) {
             return null
         }
         val file = File(context.filesDir, "${latestApk.name}.apk")
