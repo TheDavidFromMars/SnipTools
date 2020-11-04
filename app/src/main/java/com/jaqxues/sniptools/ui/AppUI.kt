@@ -36,6 +36,7 @@ import com.jaqxues.sniptools.ui.theme.DarkTheme
 import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
 import com.jaqxues.sniptools.viewmodel.PackViewModel
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
+import com.jaqxues.sniptools.viewmodel.SettingsViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -153,7 +154,10 @@ val NavBackStackEntry?.routeInfo: RouteInfo
             if (it.startsWith("pack/")) {
                 RouteInfo(arguments?.getString("pack_name"), arguments?.getString("pack_screen"))
             } else {
-                RouteInfo(null, it.replaceAfter('/', "").replace("/", ""))
+                RouteInfo(null, it
+                    .replaceAfter('/', "").replace("/", "")
+                    .replaceAfter('?', "").replace("?", "")
+                )
             }
         } ?: RouteInfo()
 
@@ -165,6 +169,7 @@ fun Routing(
 ) {
     val serverPackViewModel = viewModel<ServerPackViewModel>()
     val knownBugsViewModel = viewModel<KnownBugsViewModel>()
+    val settingsViewModel = viewModel<SettingsViewModel>()
 
     val builder: NavGraphBuilder.() -> Unit = remember {
         {
@@ -188,7 +193,7 @@ fun Routing(
                     it.arguments?.getString("pack_name")
                 )
             }
-            composable(LocalScreen.Settings.route) { EmptyScreenMessage("Screen not available") }
+            composable(LocalScreen.Settings.route) { SettingsScreen(settingsViewModel) }
             composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
             composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
             composable(LocalScreen.AboutUs.route) { EmptyScreenMessage("Screen not available") }

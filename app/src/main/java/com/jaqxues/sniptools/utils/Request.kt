@@ -12,6 +12,7 @@ sealed class Request<out D> {
     class Success<out D>(val data: D): Request<D>()
     class Error(val t: Throwable): Request<Nothing>()
 }
+
 suspend infix fun <T> Channel<Request<T>>.sendAsRequest(action: suspend () -> T) {
     send(Request.Loading)
     try {
