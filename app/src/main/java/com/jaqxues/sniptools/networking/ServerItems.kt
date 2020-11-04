@@ -45,6 +45,17 @@ data class ServerApk(
     val createdAt: Long
 )
 
+data class PackHistory(
+    @SerializedName("pack_version")
+    val packVersion: String,
+    @SerializedName("pack_v_code")
+    val packVersionCode: Int,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("created_at")
+    val createdAt: Long
+)
+
 data class ShopItem(
     val id: String,
     val type: ShopItemType,

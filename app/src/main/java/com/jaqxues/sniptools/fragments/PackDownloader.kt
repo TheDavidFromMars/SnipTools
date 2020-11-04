@@ -1,14 +1,10 @@
 package com.jaqxues.sniptools.fragments
 
 import android.widget.Toast
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.material.AmbientEmphasisLevels
-import androidx.compose.material.Divider
-import androidx.compose.material.IconButton
-import androidx.compose.material.ProvideEmphasis
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.db.ServerPackEntity
 import com.jaqxues.sniptools.ui.LocalScreen
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.utils.Request
@@ -47,19 +42,23 @@ fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackVie
     val downloadEvents = packViewModel.downloadEvents.collectAsState(null)
     downloadEvents.value?.let { evt ->
         when (evt) {
-            is Request.Loading -> {}
+            is Request.Loading -> {
+            }
             is Request.Error -> {
-                Toast.makeText(ContextAmbient.current,
+                Toast.makeText(
+                    ContextAmbient.current,
                     "Could not download Pack (${evt.t.message})",
                     Toast.LENGTH_SHORT
                 ).show()
             }
             is Request.Success -> {
-                navController.navigate("%s?tab=%s?pack_name=%s"
-                    .format(
-                        LocalScreen.PackManager.route,
-                        PackManagerTabs.PACK_SELECTOR.name,
-                        evt.data)
+                navController.navigate(
+                    "%s?tab=%s?pack_name=%s"
+                        .format(
+                            LocalScreen.PackManager.route,
+                            PackManagerTabs.PACK_SELECTOR.name,
+                            evt.data
+                        )
                 )
             }
         }
@@ -77,16 +76,24 @@ fun ServerPackContent(packViewModel: ServerPackViewModel, modifier: Modifier = M
             ExpandablePackLayout(packName = pack.name) {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
-                    RemoteActionRow(pack, onDownload = {
-                        packViewModel.downloadPack(pack.name)
-                    }, onShowHistory = {
 
-                    })
+                    RemoteActionRow(
+                        onDownload = {
+                            packViewModel.downloadPack(pack.name)
+                        }, onShowHistory = {
+
+                        }, onShowChangeLog = {
+
+                        })
+
                     Divider(Modifier.padding(horizontal = 80.dp))
 
                     Spacer(Modifier.padding(8.dp))
                     ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
-                        Text("Pack Type: ${if (pack.devPack) "Developer" else "User"}", fontSize = 12.sp)
+                        Text(
+                            "Pack Type: ${if (pack.devPack) "Developer" else "User"}",
+                            fontSize = 12.sp
+                        )
                         Text("Snapchat Version: ${pack.scVersion}", fontSize = 12.sp)
                         Text("Pack Version: ${pack.packVersion}", fontSize = 12.sp)
                     }
@@ -112,27 +119,31 @@ fun PackDownloaderFooter(packViewModel: ServerPackViewModel) {
 }
 
 @Composable
-fun RemoteActionRow(pack: ServerPackEntity, onDownload: () -> Unit, onShowHistory: () -> Unit) {
+fun RemoteActionRow(
+    onShowHistory: () -> Unit,
+    onDownload: () -> Unit,
+    onShowChangeLog: () -> Unit
+) {
     Row(
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        IconButton(onClick = onDownload) {
+        IconButton(onClick = onShowHistory) {
             Icon(
-                vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                vectorResource(R.drawable.ic_baseline_history_48),
                 modifier = Modifier.preferredHeight(24.dp)
             )
         }
-        IconButton(onClick = onShowHistory, Modifier.padding(horizontal = 16.dp)) {
+        IconButton(onClick = onDownload, Modifier.padding(horizontal = 16.dp)) {
             Icon(
                 vectorResource(R.drawable.ic_baseline_cloud_download_48),
                 modifier = Modifier.preferredHeight(28.dp)
             )
         }
-        IconButton(onClick = onShowHistory) {
+        IconButton(onClick = onShowChangeLog) {
             Icon(
-                vectorResource(R.drawable.ic_baseline_history_48),
+                vectorResource(R.drawable.ic_baseline_library_books_48),
                 modifier = Modifier.preferredHeight(24.dp)
             )
         }

@@ -2,9 +2,11 @@ package com.jaqxues.sniptools.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.jaqxues.sniptools.repository.PackRepository
 import com.jaqxues.sniptools.utils.Request
+import com.jaqxues.sniptools.utils.liveDataRequest
 import com.jaqxues.sniptools.utils.sendAsRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -34,5 +36,9 @@ class ServerPackViewModel @ViewModelInject constructor(private val packRepo: Pac
                 packRepo.downloadPack(packName)
             }
         }
+    }
+
+    fun getPackHistory(scVersion: String) = liveDataRequest(Dispatchers.IO) {
+        packRepo.getPackHistory(scVersion)
     }
 }

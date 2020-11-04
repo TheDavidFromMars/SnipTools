@@ -166,4 +166,6 @@ class PackRepository @Inject constructor(
         }
         return packName
     }
+
+    suspend fun getPackHistory(scVersion: String) = retrofit.getHistoryFor(scVersion)
 }
