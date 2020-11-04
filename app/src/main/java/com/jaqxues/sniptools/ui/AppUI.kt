@@ -26,10 +26,7 @@ import androidx.compose.ui.viewinterop.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.*
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.fragments.HomeDivider
-import com.jaqxues.sniptools.fragments.HomeScreen
-import com.jaqxues.sniptools.fragments.KnownBugsScreen
-import com.jaqxues.sniptools.fragments.PackManagerScreen
+import com.jaqxues.sniptools.fragments.*
 import com.jaqxues.sniptools.pack.ExternalDestination
 import com.jaqxues.sniptools.pack.KnownExternalDestinations
 import com.jaqxues.sniptools.pack.ModPack
@@ -172,11 +169,23 @@ fun Routing(
     val builder: NavGraphBuilder.() -> Unit = remember {
         {
             composable(LocalScreen.Home.route) { HomeScreen() }
-            composable(LocalScreen.PackManager.route) {
+            composable(
+                "${LocalScreen.PackManager.route}?tab={tab}?pack_name={pack_name}",
+                listOf(
+                    navArgument("tab") {
+                        nullable = true
+                    },
+                    navArgument("pack_name") {
+                        nullable = true
+                    }
+                )
+            ) {
                 PackManagerScreen(
                     navController,
                     packViewModel,
-                    serverPackViewModel
+                    serverPackViewModel,
+                    it.arguments?.getString("tab")?.let { PackManagerTabs.valueOf(it) },
+                    it.arguments?.getString("pack_name")
                 )
             }
             composable(LocalScreen.Settings.route) { EmptyScreenMessage("Screen not available") }
@@ -189,14 +198,9 @@ fun Routing(
 
             composable(
                 "${LocalScreen.KnownBugs.route}/{sc_version}/{pack_version}", listOf(
-                    navArgument("sc_version") {
-                        type = NavType.StringType
-                        nullable = false
-                    },
-                    navArgument("pack_version") {
-                        type = NavType.StringType
-                        nullable = false
-                    })
+                    navArgument("sc_version") {},
+                    navArgument("pack_version") {}
+                )
             ) {
                 KnownBugsScreen(
                     it.arguments!!.getString("sc_version")!!,

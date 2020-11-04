@@ -160,9 +160,10 @@ class PackRepository @Inject constructor(
         }
     }
 
-    suspend fun downloadPack(packName: String) {
+    suspend fun downloadPack(packName: String): String {
         retrofit.getPackFile(packName).byteStream().use { input ->
             File(packDirectory, "$packName.jar").outputStream().use(input::copyTo)
         }
+        return packName
     }
 }

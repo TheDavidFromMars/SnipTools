@@ -4,7 +4,11 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaqxues.sniptools.repository.PackRepository
+import com.jaqxues.sniptools.utils.Request
+import com.jaqxues.sniptools.utils.sendAsRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 
@@ -15,6 +19,8 @@ import kotlinx.coroutines.launch
 class ServerPackViewModel @ViewModelInject constructor(private val packRepo: PackRepository) : ViewModel() {
     val lastChecked = packRepo.lastChecked
     val serverPacks = packRepo.serverPacks
+    private val _downloadEvents = Channel<Request<String>>()
+    val downloadEvents = _downloadEvents.receiveAsFlow()
 
     fun refreshServerPacks() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -24,7 +30,9 @@ class ServerPackViewModel @ViewModelInject constructor(private val packRepo: Pac
 
     fun downloadPack(packName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            packRepo.downloadPack(packName)
+            _downloadEvents sendAsRequest {
+                packRepo.downloadPack(packName)
+            }
         }
     }
 }

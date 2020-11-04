@@ -34,10 +34,12 @@ import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 fun PackManagerScreen(
     navController: NavController,
     packViewModel: PackViewModel,
-    serverPackViewModel: ServerPackViewModel
+    serverPackViewModel: ServerPackViewModel,
+    selectedTab: PackManagerTabs? = null,
+    selectedPack: String? = null
 ) {
     Column {
-        var currentTab by remember { mutableStateOf(PackManagerTabs.PACK_SELECTOR) }
+        var currentTab by remember { mutableStateOf(selectedTab ?: PackManagerTabs.PACK_SELECTOR) }
         TabRow(
             selectedTabIndex = currentTab.ordinal,
             indicator = {
@@ -56,11 +58,14 @@ fun PackManagerScreen(
         }
         Spacer(Modifier.padding(8.dp))
 
+        // For resetting the selectedPack after switching Tabs
+        var selectedPackState = selectedPack
         Crossfade(current = currentTab) {
             when (it) {
-                PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController, packViewModel)
-                PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(serverPackViewModel)
+                PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController, packViewModel, selectedPackState)
+                PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(navController, serverPackViewModel)
             }
+            selectedPackState = null
         }
     }
 }
@@ -70,9 +75,10 @@ fun PackManagerScreen(
 fun ExpandablePackLayout(
     packName: String,
     color: Color = AmbientContentColor.current,
+    initiallyExpanded: Boolean = false,
     extendedContent: @Composable () -> Unit
 ) {
-    var extended by remember { mutableStateOf(false) }
+    var extended by remember { mutableStateOf(initiallyExpanded) }
     ListCardElement(onClick = { extended = !extended }) {
         Column {
             Row(

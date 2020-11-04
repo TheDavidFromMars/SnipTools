@@ -1,5 +1,6 @@
 package com.jaqxues.sniptools.fragments
 
+import android.widget.Toast
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
@@ -9,17 +10,23 @@ import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.annotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.db.ServerPackEntity
+import com.jaqxues.sniptools.ui.LocalScreen
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
+import com.jaqxues.sniptools.utils.Request
 import com.jaqxues.sniptools.utils.formatRelativeAbbrev
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
 
@@ -29,12 +36,33 @@ import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
  * Date: 23.10.20 - Time 19:01.
  */
 @Composable
-fun PackDownloaderTab(packViewModel: ServerPackViewModel) {
+fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackViewModel) {
     onActive { packViewModel.refreshServerPacks() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ServerPackContent(packViewModel, Modifier.weight(1f))
         PackDownloaderFooter(packViewModel)
+    }
+
+    val downloadEvents = packViewModel.downloadEvents.collectAsState(null)
+    downloadEvents.value?.let { evt ->
+        when (evt) {
+            is Request.Loading -> {}
+            is Request.Error -> {
+                Toast.makeText(ContextAmbient.current,
+                    "Could not download Pack (${evt.t.message})",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            is Request.Success -> {
+                navController.navigate("%s?tab=%s?pack_name=%s"
+                    .format(
+                        LocalScreen.PackManager.route,
+                        PackManagerTabs.PACK_SELECTOR.name,
+                        evt.data)
+                )
+            }
+        }
     }
 }
 

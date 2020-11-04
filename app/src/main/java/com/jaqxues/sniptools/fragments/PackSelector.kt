@@ -34,27 +34,29 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
  */
 
 @Composable
-fun PackSelectorTab(navController: NavController, packViewModel: PackViewModel) {
+fun PackSelectorTab(navController: NavController, packViewModel: PackViewModel, selectedPack: String? = null) {
     ContextAmbient.current.let { ctx ->
         onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
     }
-    val _localPacks by packViewModel.localPacks.observeAsState()
-    val localPacks = _localPacks
+    val localPacks = packViewModel.localPacks.observeAsState()
+    val localPacksCaptured = localPacks.value
 
-    if (localPacks.isNullOrEmpty()) {
+    if (localPacksCaptured.isNullOrEmpty()) {
         EmptyScreenMessage("No Packs found")
     } else {
-        LazyColumnFor(localPacks) {
+        LazyColumnFor(localPacksCaptured) {
             val packData by packViewModel.getStateDataForPack(it).run {
                 observeAsState(value!!)
             }
-            PackElementLayout(packData, packViewModel, navController)
+            val initiallyExpanded = selectedPack != null
+                    && selectedPack == runCatching { packData.packMetadata.name }.getOrNull()
+            PackElementLayout(packData, packViewModel,  initiallyExpanded, navController)
         }
     }
 }
 
 @Composable
-fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, navController: NavController) {
+fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, initiallyExpanded: Boolean, navController: NavController) {
     when (packData) {
         is StatefulPackData.CorruptedPack -> ExpandablePackLayout(
             packName = packData.packFile.name,
@@ -79,7 +81,7 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, 
                 }
             )
 
-            ExpandablePackLayout(packName = packData.packMetadata.name, color = color) {
+            ExpandablePackLayout(packName = packData.packMetadata.name, color = color, initiallyExpanded = initiallyExpanded) {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
