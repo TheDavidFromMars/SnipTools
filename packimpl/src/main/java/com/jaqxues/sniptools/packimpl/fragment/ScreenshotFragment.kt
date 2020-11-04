@@ -20,7 +20,7 @@ fun ScreenshotScreen() {
         SwitchPreference(ASK_SCREENSHOT_CONFIRMATION) {
             TitleAndDescription(
                 title = "Confirm Screenshot Notification",
-                description = "Allows you to chose whether to send the screenshot notification"
+                description = "Allows you to choose whether to send the screenshot notification"
             )
         }
     }

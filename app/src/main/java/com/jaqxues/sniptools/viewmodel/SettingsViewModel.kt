@@ -8,6 +8,7 @@ import com.jaqxues.sniptools.repository.ApkRepository
 import com.jaqxues.sniptools.utils.Request
 import com.jaqxues.sniptools.utils.SuUtils
 import com.jaqxues.sniptools.utils.sendAsRequest
+import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -34,7 +35,11 @@ class SettingsViewModel @ViewModelInject constructor(
 
     fun installApk(file: File) {
         viewModelScope.launch {
-            SuUtils.installApk(file)
+            if (Shell.rootAccess()) {
+                SuUtils.installApk(file)
+            } else {
+                // TODO Add Ability to install Apk
+            }
         }
     }
 }
