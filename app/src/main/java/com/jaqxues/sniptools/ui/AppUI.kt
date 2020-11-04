@@ -1,11 +1,11 @@
 package com.jaqxues.sniptools.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -13,18 +13,22 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.*
+import com.jaqxues.akrolyb.utils.XposedChecks
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.fragments.*
 import com.jaqxues.sniptools.pack.ExternalDestination
@@ -93,34 +97,48 @@ fun AppUi() {
                         ?: packDestinations[pack]?.find { it.route == currentRoute }
                 }
 
-                TopAppBar(
-                    title = {
-                        Column {
-                            Text("SnipTools")
+                Column {
+                    TopAppBar(
+                        title = {
+                            Column {
+                                Text("SnipTools")
 
-                            // SubTitle if data is available for current screen
-                            currentScreen?.let { screen ->
-                                ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
-                                    Text(
-                                        screen.screenName,
-                                        fontWeight = FontWeight.Normal, fontSize = 12.sp
-                                    )
+                                // SubTitle if data is available for current screen
+                                currentScreen?.let { screen ->
+                                    ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+                                        Text(
+                                            screen.screenName,
+                                            fontWeight = FontWeight.Normal, fontSize = 12.sp
+                                        )
+                                    }
+                                }
+                            }
+                        },
+                        navigationIcon = {
+                            if (currentScreen?.isTopLevelScreen == true) {
+                                IconButton(onClick = { scaffoldState.drawerState.open() }) {
+                                    Icon(Icons.Default.Menu)
+                                }
+                            } else {
+                                IconButton(onClick = { navController.popBackStack() }) {
+                                    Icon(Icons.Default.ArrowBack)
                                 }
                             }
                         }
-                    },
-                    navigationIcon = {
-                        if (currentScreen?.isTopLevelScreen == true) {
-                            IconButton(onClick = { scaffoldState.drawerState.open() }) {
-                                Icon(Icons.Default.Menu)
-                            }
-                        } else {
-                            IconButton(onClick = { navController.popBackStack() }) {
-                                Icon(Icons.Default.ArrowBack)
-                            }
-                        }
+                    )
+                    if (!XposedChecks.isModuleActive()) {
+                        Text(
+                            text = "Xposed Module not active",
+                            color = MaterialTheme.colors.onError,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(bottomLeft = 8.dp, bottomRight = 8.dp))
+                                .background(MaterialTheme.colors.error)
+                                .padding(8.dp).fillMaxWidth(),
+                            style = MaterialTheme.typography.body1
+                        )
                     }
-                )
+                }
             },
             drawerElevation = 2.dp,
             drawerContent = {
