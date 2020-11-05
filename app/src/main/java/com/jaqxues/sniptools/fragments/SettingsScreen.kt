@@ -36,29 +36,34 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
         ) {
             Text("Download Latest Apk", modifier = Modifier.padding(8.dp))
         }
+    }
+    HandleDownloadEvent(settingsViewModel)
+}
 
-        val evtState = settingsViewModel.downloadEvents.collectAsState(null)
-        when (val evt = evtState.value) {
-            null,
-            is Request.Loading -> {}
-            is Request.Success -> {
-                if (evt.data == null) {
-                    Toast.makeText(
-                        ContextAmbient.current,
-                        "Already on latest Apk",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    settingsViewModel.installApk(evt.data)
-                }
-            }
-            is Request.Error -> {
+
+@Composable
+fun HandleDownloadEvent(settingsViewModel: SettingsViewModel) {
+    val evtState = settingsViewModel.downloadEvents.collectAsState(null)
+    when (val evt = evtState.value) {
+        null,
+        is Request.Loading -> {}
+        is Request.Success -> {
+            if (evt.data == null) {
                 Toast.makeText(
                     ContextAmbient.current,
-                    "Could not download apk (${evt.t.message}",
+                    "Already on latest Apk",
                     Toast.LENGTH_LONG
                 ).show()
+            } else {
+                settingsViewModel.installApk(evt.data)
             }
+        }
+        is Request.Error -> {
+            Toast.makeText(
+                ContextAmbient.current,
+                "Could not download apk (${evt.t.message}",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

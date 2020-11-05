@@ -37,12 +37,17 @@ interface KnownBugDao {
     @Query("DELETE FROM BugCrossRef WHERE sc_version=:scVersion AND pack_version=:packVersion")
     fun deleteBugRefsFor(scVersion: String, packVersion: String)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertBugCrossRef(crossRef: BugCrossRef)
+
     @Query("DELETE FROM KnownBugEntity")
     fun deleteAllBugs()
 
     @Transaction
     fun updateBugs(scVersion: String, packVersion: String, vararg bugs: KnownBugEntity) {
         deleteBugRefsFor(scVersion, packVersion)
-        insertBugs(*bugs)
+
+        for (id in insertBugs(*bugs))
+            insertBugCrossRef(BugCrossRef(scVersion, packVersion, id))
     }
 }

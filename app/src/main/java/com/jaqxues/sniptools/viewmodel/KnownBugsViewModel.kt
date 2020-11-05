@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaqxues.sniptools.db.KnownBugEntity
 import com.jaqxues.sniptools.repository.KnownBugsRepo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
  */
 class KnownBugsViewModel @ViewModelInject constructor(private val repository: KnownBugsRepo): ViewModel() {
     fun getBugsFor(scVersion: String, packVersion: String): LiveData<List<KnownBugEntity>> {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.refreshBugsFor(scVersion, packVersion)
         }
         return repository.getBugsFor(scVersion, packVersion)
