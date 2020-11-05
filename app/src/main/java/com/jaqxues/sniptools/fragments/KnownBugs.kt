@@ -2,6 +2,7 @@ package com.jaqxues.sniptools.fragments
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.AmbientEmphasisLevels
@@ -37,13 +38,19 @@ fun BugsContent(bugs: List<KnownBugEntity>?) {
         return
     }
 
-    LazyColumnFor(bugs, Modifier.padding(vertical = 16.dp)) { bug ->
+    LazyColumnFor(bugs.groupBy { it.category }.toList(), Modifier.padding(vertical = 16.dp)) { (category, bugs) ->
         ListCardElement {
             Column(Modifier.padding(16.dp)) {
-                Text(bug.category, color = MaterialTheme.colors.primary)
-                Divider(Modifier.padding(vertical = 8.dp).padding(end = 80.dp))
+                Text(category)
+                Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
+
                 ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
-                    Text(bug.description, fontSize = 14.sp)
+                    for (bug in bugs) {
+                        Row(Modifier.padding(vertical = 4.dp, horizontal = 8.dp)) {
+                            Text("\u2022", modifier = Modifier.padding(end = 16.dp), fontSize = 14.sp)
+                            Text(bug.description, fontSize = 14.sp)
+                        }
+                    }
                 }
             }
         }
