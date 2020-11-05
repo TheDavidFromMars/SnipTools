@@ -3,9 +3,9 @@ package com.jaqxues.sniptools.packimpl.utils
 import android.app.Activity
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.sp
 import com.jaqxues.akrolyb.prefs.Preference
 import com.jaqxues.akrolyb.prefs.getPref
 import com.jaqxues.akrolyb.prefs.putPref
+import com.jaqxues.sniptools.utils.PrefEntries
 import com.jaqxues.sniptools.utils.SuUtils
+import com.jaqxues.sniptools.utils.getBoolean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -79,7 +81,9 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         toggled = it
         pref.putPref(it)
 
-        if ((ctx as Activity).getSharedPreferences("main", Context.MODE_PRIVATE).getBoolean("should_kill_sc", true)) {
+        if ((ctx as Activity).getSharedPreferences("main", Context.MODE_PRIVATE)
+                .getBoolean(PrefEntries.shouldKillSc)
+        ) {
             GlobalScope.launch {
                 val result = SuUtils.runSuCommands("am force-stop com.snapchat.android")
 

@@ -1,18 +1,26 @@
 package com.jaqxues.sniptools.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.widget.Toast
+import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ButtonConstants
-import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.edit
+import com.jaqxues.sniptools.utils.PrefEntries
+import com.jaqxues.sniptools.utils.PrefEntry
 import com.jaqxues.sniptools.utils.Request
+import com.jaqxues.sniptools.utils.getBoolean
 import com.jaqxues.sniptools.viewmodel.SettingsViewModel
 
 /**
@@ -21,23 +29,89 @@ import com.jaqxues.sniptools.viewmodel.SettingsViewModel
  */
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel) {
-    Column(
-        Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val ctx = ContextAmbient.current
+    ScrollableColumn(Modifier.padding(16.dp)) {
+        val prefs = ContextAmbient.current.getSharedPreferences("main", Context.MODE_PRIVATE)
 
+        Category(title = "Updates") {
+            UpdateSettings(settingsViewModel)
+        }
 
-        TextButton(
-            onClick = {
-                settingsViewModel.downloadApk(ctx)
-            },
-            border = ButtonConstants.defaultOutlinedBorder
-        ) {
-            Text("Download Latest Apk", modifier = Modifier.padding(8.dp))
+        Category(title = "Root Options") {
+            RootSettings(prefs)
         }
     }
+
     HandleDownloadEvent(settingsViewModel)
+}
+
+@Composable
+private fun UpdateSettings(settingsViewModel: SettingsViewModel) {
+    val ctx = ContextAmbient.current
+
+    PrefButton(onClick = { settingsViewModel.downloadApk(ctx) }) {
+        Text("Download Latest Apk")
+    }
+}
+
+@Composable
+private fun RootSettings(prefs: SharedPreferences) {
+    PrefSwitch(prefs, PrefEntries.shouldKillSc) {
+        Text("Kill Snapchat after Preference Changes")
+    }
+}
+
+@Composable
+private fun Category(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Text(
+        title,
+        style = MaterialTheme.typography.h6,
+        fontWeight = FontWeight.Normal,
+        modifier = Modifier.padding(horizontal = 8.dp)
+    )
+    Divider(color = MaterialTheme.colors.primary, modifier = Modifier.padding(top = 8.dp))
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.padding(vertical = 12.dp))
+        content()
+        Spacer(modifier = Modifier.padding(vertical = 12.dp))
+    }
+}
+
+@Composable
+private fun PrefButton(onClick: () -> Unit, content: @Composable () -> Unit) {
+    TextButton(
+        onClick = onClick,
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        border = ButtonConstants.defaultOutlinedBorder
+    ) {
+        Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) { content() }
+    }
+}
+
+@Composable
+fun PrefSwitch(
+    prefs: SharedPreferences,
+    pref: PrefEntry<Boolean>,
+    content: @Composable () -> Unit
+) {
+    var enabled by remember {
+        mutableStateOf(prefs.getBoolean(pref))
+    }
+    val setNew: (Boolean) -> Unit = {
+        enabled = it
+        prefs.edit { putBoolean(pref.key, it) }
+    }
+    Row(
+        Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .toggleable(value = enabled, onValueChange = setNew)
+            .padding(vertical = 16.dp, horizontal = 16.dp)
+    ) {
+        Box(Modifier.weight(1f)) {
+            content()
+        }
+        Switch(checked = enabled, onCheckedChange = setNew)
+    }
 }
 
 
@@ -46,7 +120,8 @@ fun HandleDownloadEvent(settingsViewModel: SettingsViewModel) {
     val evtState = settingsViewModel.downloadEvents.collectAsState(null)
     when (val evt = evtState.value) {
         null,
-        is Request.Loading -> {}
+        is Request.Loading -> {
+        }
         is Request.Success -> {
             if (evt.data == null) {
                 Toast.makeText(
