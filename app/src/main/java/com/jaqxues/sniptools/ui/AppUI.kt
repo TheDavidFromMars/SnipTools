@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -231,6 +230,14 @@ fun Routing(
                     knownBugsViewModel
                 )
             }
+
+            composable("${LocalScreen.PackHistory}/{sc_version}",
+                listOf(navArgument("sc_version") {})
+            ) {
+                PackHistoryScreen(
+                    it.arguments!!.getString("sc_version")!!
+                )
+            }
             composable(
                 "pack/{pack_name}/{pack_screen}",
                 arguments = listOf(
@@ -286,12 +293,13 @@ fun DrawerContent(
         val (pack, route) = navController.currentBackStackEntryAsState().value.routeInfo
 
         LocalScreen.topLevelScreens.forEach {
+            val selected = pack == null && it.route == route
             DrawerButton(
                 label = it.screenName,
                 icon = it.icon,
-                isSelected = it.route == route,
+                isSelected = selected,
                 action = {
-                    if (it.route != route) {
+                    if (!selected) {
                         navController.popBackStack(navController.graph.startDestination, false)
                         navController.navigate(it.route)
                     }
@@ -318,12 +326,14 @@ fun DrawerContent(
                 } else {
                     known.icon to stringResource(known.stringRes)
                 }
+                val selected = packName == pack && destination.route == route
+
                 DrawerButton(
                     icon = icon,
                     label = label,
-                    isSelected = packName == pack && destination.route == route,
+                    isSelected = selected,
                     action = {
-                        if (destination.route != route) {
+                        if (!selected) {
                             navController.popBackStack(navController.graph.startDestination, false)
                             navController.navigate("pack/$packName/${destination.route}")
                         }

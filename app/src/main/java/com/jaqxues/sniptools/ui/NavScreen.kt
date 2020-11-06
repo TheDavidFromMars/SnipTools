@@ -25,6 +25,9 @@ sealed class LocalScreen(override val route: String, @StringRes val stringRes: I
     object KnownBugs : LocalScreen("known_bugs", R.string.menu_bugs, Unit) {
         override val isTopLevelScreen = false
     }
+    object PackHistory: LocalScreen("pack_history", R.string.menu_pack_history, Unit) {
+        override val isTopLevelScreen = false
+    }
 
     object Settings : LocalScreen("settings", R.string.menu_settings, Icons.Default.Settings)
     object Faqs : LocalScreen("faqs", R.string.menu_faqs, R.drawable.ic_question_answer_black_48dp)
@@ -49,7 +52,7 @@ sealed class LocalScreen(override val route: String, @StringRes val stringRes: I
 
         val allScreens
             get() = arrayOf(
-                Home, PackManager, KnownBugs, Settings, Faqs, Support,
+                Home, PackManager, KnownBugs, PackHistory, Settings, Faqs, Support,
                 AboutUs, Shop, Features, Legal
             )
     }

@@ -62,8 +62,15 @@ fun PackManagerScreen(
         var selectedPackState = selectedPack
         Crossfade(current = currentTab) {
             when (it) {
-                PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(navController, packViewModel, selectedPackState)
-                PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(navController, serverPackViewModel)
+                PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(
+                    navController,
+                    packViewModel,
+                    selectedPackState
+                )
+                PackManagerTabs.PACK_DOWNLOADER -> PackDownloaderTab(
+                    navController,
+                    serverPackViewModel
+                )
             }
             selectedPackState = null
         }
