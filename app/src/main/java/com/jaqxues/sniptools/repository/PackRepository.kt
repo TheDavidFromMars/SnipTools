@@ -45,7 +45,7 @@ class PackRepository @Inject constructor(
     // Exposed public LiveData
     val localPacks: LiveData<List<String>> = _localPacks
     val lastChecked: LiveData<Long> = _lastChecked
-    val serverPacks = packDao.getAllPacks()
+    val serverPacks = packDao.getLatestServerPacks()
 
     val packLoadChanges = packLoadManager.packLoadChanges
 
