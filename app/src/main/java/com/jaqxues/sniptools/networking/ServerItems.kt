@@ -46,12 +46,16 @@ data class ServerApk(
 )
 
 data class PackHistory(
+    @SerializedName("name")
+    val name: String,
+
+    val devPack: Boolean = false,
     @SerializedName("pack_version")
     val packVersion: String,
     @SerializedName("pack_v_code")
     val packVersionCode: Int,
-    @SerializedName("name")
-    val name: String,
+    @SerializedName("min_apk_v_code")
+    val minApkVersionCode: Int,
     @SerializedName("created_at")
     val createdAt: Long
 )

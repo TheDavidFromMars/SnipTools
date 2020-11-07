@@ -24,6 +24,7 @@ import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.utils.Request
 import com.jaqxues.sniptools.utils.formatRelativeAbbrev
 import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
+import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -35,11 +36,17 @@ fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackVie
     onActive { packViewModel.refreshServerPacks() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        ServerPackContent(packViewModel, Modifier.weight(1f))
+        Box(Modifier.weight(1f)) {
+            ServerPackContent(navController, packViewModel)
+        }
         PackDownloaderFooter(packViewModel)
     }
 
-    val downloadEvents = packViewModel.downloadEvents.collectAsState(null)
+}
+
+@Composable
+fun HandlePackDownloadEvents(downloadFlow: Flow<Request<String>>, navController: NavController) {
+    val downloadEvents = downloadFlow.collectAsState(null)
     downloadEvents.value?.let { evt ->
         when (evt) {
             is Request.Loading -> {
@@ -52,6 +59,7 @@ fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackVie
                 ).show()
             }
             is Request.Success -> {
+                navController.popBackStack(navController.graph.startDestination, false)
                 navController.navigate(
                     "%s?tab=%s?pack_name=%s"
                         .format(
@@ -66,13 +74,13 @@ fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackVie
 }
 
 @Composable
-fun ServerPackContent(packViewModel: ServerPackViewModel, modifier: Modifier = Modifier) {
+fun ServerPackContent(navController: NavController, packViewModel: ServerPackViewModel) {
     val serverPacks = packViewModel.serverPacks.observeAsState().value
 
     if (serverPacks.isNullOrEmpty()) {
-        EmptyScreenMessage("No Packs available", modifier)
+        EmptyScreenMessage("No Packs available")
     } else {
-        LazyColumnFor(items = serverPacks, modifier) { pack ->
+        LazyColumnFor(items = serverPacks) { pack ->
             ExpandablePackLayout(packName = pack.name) {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
@@ -81,7 +89,8 @@ fun ServerPackContent(packViewModel: ServerPackViewModel, modifier: Modifier = M
                         onDownload = {
                             packViewModel.downloadPack(pack.name)
                         }, onShowHistory = {
-
+                            navController.navigate(
+                                "${LocalScreen.PackHistory.route}/${pack.scVersion}")
                         }, onShowChangeLog = {
 
                         })

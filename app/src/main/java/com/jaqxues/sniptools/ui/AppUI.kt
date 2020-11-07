@@ -231,11 +231,13 @@ fun Routing(
                 )
             }
 
-            composable("${LocalScreen.PackHistory}/{sc_version}",
+            composable("${LocalScreen.PackHistory.route}/{sc_version}",
                 listOf(navArgument("sc_version") {})
             ) {
                 PackHistoryScreen(
-                    it.arguments!!.getString("sc_version")!!
+                    navController,
+                    it.arguments!!.getString("sc_version")!!,
+                    serverPackViewModel
                 )
             }
             composable(

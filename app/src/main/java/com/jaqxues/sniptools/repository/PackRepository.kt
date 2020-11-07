@@ -8,18 +8,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.prefs.edit
 import com.jaqxues.akrolyb.prefs.getPref
-import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
-import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.db.PackDao
 import com.jaqxues.sniptools.db.ServerPackEntity
 import com.jaqxues.sniptools.networking.GitHubApiService
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.pack.PackLoadManager
+import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.utils.PathProvider
+import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.io.File
 import java.security.cert.X509Certificate
+import java.util.*
 import javax.inject.Inject
 
 
@@ -147,7 +148,7 @@ class PackRepository @Inject constructor(
             packDao.updateAll(*retrofit.getServerPacks().map {
                 ServerPackEntity(
                     it.scVersion, it.name, it.devPack,
-                    it.packVersion, it.packVersionCode, it.minApkVersionCode, 0
+                    it.packVersion, it.packVersionCode, it.minApkVersionCode, null, 0
                 )
             }.toTypedArray())
 
@@ -168,5 +169,17 @@ class PackRepository @Inject constructor(
         return packName
     }
 
-    suspend fun getPackHistory(scVersion: String) = retrofit.getHistoryFor(scVersion)
+    suspend fun refreshPackHistory(scVersion: String) {
+        try {
+            packDao.updateAllFor(scVersion, *retrofit.getHistoryFor(scVersion).map {
+                ServerPackEntity(scVersion, it.name, it.devPack, it.packVersion,
+                    it.packVersionCode, it.minApkVersionCode, Date(it.createdAt), 0)
+            }.toTypedArray())
+        } catch (t: Throwable) {
+            Timber.e(t, "Failed to refresh Pack History")
+            throw t
+        }
+    }
+
+    fun getPackHistory(scVersion: String) = packDao.getPackHistory(scVersion)
 }

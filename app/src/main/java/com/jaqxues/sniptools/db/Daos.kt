@@ -10,8 +10,11 @@ import androidx.room.*
  */
 @Dao
 interface PackDao {
-    @Query("SELECT * FROM ServerPackEntity")
+    @Query("SELECT * FROM ServerPackEntity ORDER BY pack_v_code DESC")
     fun getAllPacks(): LiveData<List<ServerPackEntity>>
+
+    @Query("SELECT * FROM ServerPackEntity WHERE sc_version=:scVersion ORDER BY pack_v_code DESC, created_at DESC")
+    fun getPackHistory(scVersion: String): LiveData<List<ServerPackEntity>>
 
     @Insert
     fun insertAll(vararg packs: ServerPackEntity)
@@ -19,9 +22,18 @@ interface PackDao {
     @Query("DELETE FROM ServerPackEntity")
     fun deleteAllPacks()
 
+    @Query("DELETE FROM ServerPackEntity WHERE sc_version=:scVersion")
+    fun deleteAllPacksFor(scVersion: String)
+
     @Transaction
     fun updateAll(vararg packs: ServerPackEntity) {
         deleteAllPacks()
+        insertAll(*packs)
+    }
+
+    @Transaction
+    fun updateAllFor(scVersion: String, vararg packs: ServerPackEntity) {
+        deleteAllPacksFor(scVersion)
         insertAll(*packs)
     }
 }
