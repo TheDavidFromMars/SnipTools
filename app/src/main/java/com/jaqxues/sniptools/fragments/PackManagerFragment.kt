@@ -131,7 +131,6 @@ fun ExpandablePackLayout(
 fun ListCardElement(onClick: (() -> Unit)? = null, content: @Composable () -> Unit) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
             .padding(4.dp)
             .clip(RoundedCornerShape(8.dp))
             .run { onClick?.let { clickable(onClick = it) } ?: this }

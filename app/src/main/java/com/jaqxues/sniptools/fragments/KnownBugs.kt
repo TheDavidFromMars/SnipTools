@@ -38,7 +38,7 @@ fun BugsContent(bugs: List<KnownBugEntity>?) {
         return
     }
 
-    LazyColumnFor(bugs.groupBy { it.category }.toList(), Modifier.padding(vertical = 16.dp)) { (category, bugs) ->
+    LazyColumnFor(bugs.groupBy { it.category }.toList(), Modifier.padding(16.dp)) { (category, bugs) ->
         ListCardElement {
             Column(Modifier.padding(16.dp)) {
                 Text(category)

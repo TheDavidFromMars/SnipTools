@@ -44,7 +44,7 @@ fun PackSelectorTab(navController: NavController, packViewModel: PackViewModel, 
     if (localPacksCaptured.isNullOrEmpty()) {
         EmptyScreenMessage("No Packs found")
     } else {
-        LazyColumnFor(localPacksCaptured) {
+        LazyColumnFor(localPacksCaptured, Modifier.padding(horizontal = 16.dp)) {
             val packData by packViewModel.getStateDataForPack(it).run {
                 observeAsState(value!!)
             }

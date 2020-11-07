@@ -80,7 +80,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
     if (serverPacks.isNullOrEmpty()) {
         EmptyScreenMessage("No Packs available")
     } else {
-        LazyColumnFor(items = serverPacks) { pack ->
+        LazyColumnFor(items = serverPacks, modifier = Modifier.padding(horizontal = 16.dp)) { pack ->
             ExpandablePackLayout(packName = pack.name) {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
