@@ -1,13 +1,10 @@
 package com.jaqxues.sniptools.fragments
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AmbientEmphasisLevels
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideEmphasis
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
@@ -72,7 +69,7 @@ fun AnnotatedString.Builder.highlight(action: @Composable AnnotatedString.Builde
 
 @Composable
 fun HomeFooter() {
-    ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
         Text(annotatedString {
             append("Author: ")
             highlight { append("jaqxues") }

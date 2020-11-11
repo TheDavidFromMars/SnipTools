@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -136,7 +135,7 @@ fun <T> DropdownPreference(
 fun TitleAndDescription(title: String, description: String) {
     Column {
         Text(title, Modifier.padding(bottom = 2.dp))
-        ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
             Text(description, fontSize = 12.sp)
         }
     }

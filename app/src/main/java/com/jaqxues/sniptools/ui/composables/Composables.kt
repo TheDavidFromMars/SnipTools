@@ -1,11 +1,12 @@
 package com.jaqxues.sniptools.ui.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AmbientEmphasisLevels
-import androidx.compose.material.ProvideEmphasis
+import androidx.compose.material.AmbientContentAlpha
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.imageResource
@@ -26,7 +27,7 @@ fun EmptyScreenMessage(message: String, modifier: Modifier = Modifier) {
     ) {
         Image(asset = imageResource(id = R.drawable.sniptools_logo), Modifier.preferredSize(50.dp))
 
-        ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
             Text(
                 message,
                 Modifier.padding(horizontal = 32.dp, vertical = 16.dp),

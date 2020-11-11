@@ -1,6 +1,9 @@
 package com.jaqxues.sniptools.ui
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -104,7 +107,7 @@ fun AppUi() {
 
                                 // SubTitle if data is available for current screen
                                 currentScreen?.let { screen ->
-                                    ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+                                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                                         Text(
                                             screen.screenName,
                                             fontWeight = FontWeight.Normal, fontSize = 12.sp
@@ -281,10 +284,10 @@ fun DrawerContent(
                 Modifier.padding(8.dp)
             )
             Column(Modifier.padding(16.dp)) {
-                ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.high) {
+                Providers(AmbientContentAlpha provides ContentAlpha.high) {
                     Text("SnipTools")
                 }
-                ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                     Text("I hope you're happy now", fontSize = 12.sp)
                 }
             }
@@ -311,7 +314,7 @@ fun DrawerContent(
         }
         loadedPackDestinations.forEach { (packName, destinations) ->
             Divider(Modifier.padding(horizontal = 16.dp))
-            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                 Text(
                     packName,
                     modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),

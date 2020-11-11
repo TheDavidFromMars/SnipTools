@@ -2,7 +2,6 @@ package com.jaqxues.sniptools.fragments
 
 import android.text.format.DateFormat
 import android.widget.Toast
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -74,7 +74,7 @@ fun PackHistoryContent(packHistory: List<ServerPackEntity>, onDownload: (String)
                 }
                 Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
 
-                ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                     val dateTxt = if (pack.createdAt == null) "No date available" else
                         DateFormat.getLongDateFormat(ContextAmbient.current).format(pack.createdAt)
 

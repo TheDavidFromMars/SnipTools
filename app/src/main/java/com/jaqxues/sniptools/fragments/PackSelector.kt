@@ -2,11 +2,11 @@ package com.jaqxues.sniptools.fragments
 
 import androidx.compose.animation.animate
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.onActive
@@ -171,7 +171,7 @@ fun LocalActionRow(
 
 @Composable
 fun PackMetadataLayout(metadata: PackMetadata) {
-    ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
         Text("Pack Type: ${if (metadata.devPack) "Developer" else "User"}", fontSize = 12.sp)
         Text("Snapchat Version: ${metadata.scVersion}", fontSize = 12.sp)
         Text("Pack Version: ${metadata.packVersion}", fontSize = 12.sp)

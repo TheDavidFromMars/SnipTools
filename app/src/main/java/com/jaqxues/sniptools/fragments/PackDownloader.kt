@@ -1,7 +1,6 @@
 package com.jaqxues.sniptools.fragments
 
 import android.widget.Toast
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
@@ -119,7 +118,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                     Divider(Modifier.padding(horizontal = 80.dp))
 
                     Spacer(Modifier.padding(8.dp))
-                    ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                         Text(
                             "Pack Type: ${if (pack.devPack) "Developer" else "User"}",
                             fontSize = 12.sp
@@ -137,7 +136,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
 @Composable
 fun PackDownloaderFooter(packViewModel: ServerPackViewModel) {
     val time = packViewModel.lastChecked.observeAsState().value ?: -1
-    ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
         Text(annotatedString {
             append("Last Checked: ")
             highlight {

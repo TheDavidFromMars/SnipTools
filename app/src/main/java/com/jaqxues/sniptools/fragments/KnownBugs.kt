@@ -1,15 +1,12 @@
 package com.jaqxues.sniptools.fragments
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.material.AmbientEmphasisLevels
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideEmphasis
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -44,7 +41,7 @@ fun BugsContent(bugs: List<KnownBugEntity>?) {
                 Text(category)
                 Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
 
-                ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                     for (bug in bugs) {
                         Row(Modifier.padding(vertical = 4.dp, horizontal = 8.dp)) {
                             Text("\u2022", modifier = Modifier.padding(end = 16.dp), fontSize = 14.sp)
