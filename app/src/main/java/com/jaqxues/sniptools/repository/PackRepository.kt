@@ -148,7 +148,7 @@ class PackRepository @Inject constructor(
             packDao.updateAll(*retrofit.getServerPacks().map {
                 ServerPackEntity(
                     it.scVersion, it.name, it.devPack,
-                    it.packVersion, it.packVersionCode, it.minApkVersionCode, null, 0
+                    it.packVersion, it.packVersionCode, it.minApkVersionCode, null, it.changelog, 0
                 )
             }.toTypedArray())
 
@@ -173,7 +173,7 @@ class PackRepository @Inject constructor(
         try {
             packDao.updateAllFor(scVersion, *retrofit.getHistoryFor(scVersion).map {
                 ServerPackEntity(scVersion, it.name, it.devPack, it.packVersion,
-                    it.packVersionCode, it.minApkVersionCode, Date(it.createdAt), 0)
+                    it.packVersionCode, it.minApkVersionCode, Date(it.createdAt), null, 0)
             }.toTypedArray())
         } catch (t: Throwable) {
             Timber.e(t, "Failed to refresh Pack History")

@@ -5,10 +5,8 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
@@ -42,6 +40,7 @@ fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackVie
         PackDownloaderFooter(packViewModel)
     }
 
+    HandlePackDownloadEvents(packViewModel.downloadEvents, navController)
 }
 
 @Composable
@@ -85,6 +84,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
+                    var showChangelog by remember { mutableStateOf(false) }
                     RemoteActionRow(
                         onDownload = {
                             packViewModel.downloadPack(pack.name)
@@ -92,8 +92,29 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                             navController.navigate(
                                 "${LocalScreen.PackHistory.route}/${pack.scVersion}")
                         }, onShowChangeLog = {
-
+                            showChangelog = true
                         })
+
+                    if (showChangelog) {
+                        if (pack.changelog == null) {
+                            Toast.makeText(ContextAmbient.current, "Pack Changelog not available", Toast.LENGTH_SHORT).show()
+                        } else {
+                            AlertDialog(
+                                modifier = Modifier.fillMaxWidth(),
+                                onDismissRequest = { showChangelog = false },
+                                title = {
+                                    Column {
+                                        Text("Pack Changelog", style = MaterialTheme.typography.h5)
+                                        Text(pack.name, style = MaterialTheme.typography.subtitle2)
+                                        Divider(Modifier.padding(top = 16.dp, end = 32.dp), color = MaterialTheme.colors.primary)
+                                    }
+                                },
+                                text = {
+                                    Text(pack.changelog)
+                                },
+                                buttons = {})
+                        }
+                    }
 
                     Divider(Modifier.padding(horizontal = 80.dp))
 

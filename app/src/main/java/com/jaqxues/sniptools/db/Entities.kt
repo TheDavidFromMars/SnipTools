@@ -17,6 +17,7 @@ data class ServerPackEntity(
     @ColumnInfo(name = "pack_v_code") val packVersionCode: Int,
     @ColumnInfo(name = "min_apk_v_code") val minApkVersionCode: Int,
     @ColumnInfo(name = "created_at") val createdAt: Date? = null,
+    @ColumnInfo(name = "changelog") val changelog: String? = null,
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "pack_id") val id: Long

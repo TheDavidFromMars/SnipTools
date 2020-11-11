@@ -20,7 +20,9 @@ data class ServerPack(
     @SerializedName("pack_v_code")
     val packVersionCode: Int,
     @SerializedName("min_apk_v_code")
-    val minApkVersionCode: Int
+    val minApkVersionCode: Int,
+    @SerializedName("changelog")
+    val changelog: String
 )
 
 data class KnownBug(
