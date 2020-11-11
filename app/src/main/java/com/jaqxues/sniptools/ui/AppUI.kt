@@ -5,10 +5,8 @@ import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -174,9 +172,10 @@ val NavBackStackEntry?.routeInfo: RouteInfo
             if (it.startsWith("pack/")) {
                 RouteInfo(arguments?.getString("pack_name"), arguments?.getString("pack_screen"))
             } else {
-                RouteInfo(null, it
-                    .replaceAfter('/', "").replace("/", "")
-                    .replaceAfter('?', "").replace("?", "")
+                RouteInfo(
+                    null, it
+                        .replaceAfter('/', "").replace("/", "")
+                        .replaceAfter('?', "").replace("?", "")
                 )
             }
         } ?: RouteInfo()
@@ -191,80 +190,75 @@ fun Routing(
     val knownBugsViewModel = viewModel<KnownBugsViewModel>()
     val settingsViewModel = viewModel<SettingsViewModel>()
 
-    val builder: NavGraphBuilder.() -> Unit = remember {
-        {
-            composable(LocalScreen.Home.route) { HomeScreen() }
-            composable(
-                "${LocalScreen.PackManager.route}?tab={tab}?pack_name={pack_name}",
-                listOf(
-                    navArgument("tab") {
-                        nullable = true
-                    },
-                    navArgument("pack_name") {
-                        nullable = true
-                    }
-                )
-            ) {
-                PackManagerScreen(
-                    navController,
-                    packViewModel,
-                    serverPackViewModel,
-                    it.arguments?.getString("tab")?.let { PackManagerTabs.valueOf(it) },
-                    it.arguments?.getString("pack_name")
-                )
-            }
-            composable(LocalScreen.Settings.route) { SettingsScreen(settingsViewModel) }
-            composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
-            composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
-            composable(LocalScreen.AboutUs.route) { EmptyScreenMessage("Screen not available") }
-            composable(LocalScreen.Shop.route) { EmptyScreenMessage("Screen not available") }
-            composable(LocalScreen.Features.route) { EmptyScreenMessage("Screen not available") }
-            composable(LocalScreen.Legal.route) { EmptyScreenMessage("Screen not available") }
-
-            composable(
-                "${LocalScreen.KnownBugs.route}/{sc_version}/{pack_version}", listOf(
-                    navArgument("sc_version") {},
-                    navArgument("pack_version") {}
-                )
-            ) {
-                KnownBugsScreen(
-                    it.arguments!!.getString("sc_version")!!,
-                    it.arguments!!.getString("pack_version")!!,
-                    knownBugsViewModel
-                )
-            }
-
-            composable("${LocalScreen.PackHistory.route}/{sc_version}",
-                listOf(navArgument("sc_version") {})
-            ) {
-                PackHistoryScreen(
-                    navController,
-                    it.arguments!!.getString("sc_version")!!,
-                    serverPackViewModel
-                )
-            }
-            composable(
-                "pack/{pack_name}/{pack_screen}",
-                arguments = listOf(
-                    navArgument("pack_name") {
-                        type = NavType.StringType
-                        nullable = false
-                    },
-                    navArgument("pack_screen") {
-                        type = NavType.StringType
-                        nullable = false
-                    }
-                )
-            ) {
-                openPackScreen(
-                    it.arguments!!.getString("pack_name")!!,
-                    it.arguments!!.getString("pack_screen")!!
-                )
-            }
+    NavHost(navController, LocalScreen.Home.route) {
+        composable(LocalScreen.Home.route) { HomeScreen() }
+        composable(
+            "${LocalScreen.PackManager.route}?tab={tab}?pack_name={pack_name}",
+            listOf(
+                navArgument("tab") {
+                    nullable = true
+                },
+                navArgument("pack_name") {
+                    nullable = true
+                }
+            )
+        ) {
+            PackManagerScreen(
+                navController,
+                packViewModel,
+                serverPackViewModel,
+                it.arguments?.getString("tab")?.let { PackManagerTabs.valueOf(it) },
+                it.arguments?.getString("pack_name")
+            )
         }
-    }
-    NavHost(navController, startDestination = LocalScreen.Home.route) {
-        builder()
+        composable(LocalScreen.Settings.route) { SettingsScreen(settingsViewModel) }
+        composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.AboutUs.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Shop.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Features.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Legal.route) { EmptyScreenMessage("Screen not available") }
+
+        composable(
+            "${LocalScreen.KnownBugs.route}/{sc_version}/{pack_version}", listOf(
+                navArgument("sc_version") {},
+                navArgument("pack_version") {}
+            )
+        ) {
+            KnownBugsScreen(
+                it.arguments!!.getString("sc_version")!!,
+                it.arguments!!.getString("pack_version")!!,
+                knownBugsViewModel
+            )
+        }
+
+        composable("${LocalScreen.PackHistory.route}/{sc_version}",
+            listOf(navArgument("sc_version") {})
+        ) {
+            PackHistoryScreen(
+                navController,
+                it.arguments!!.getString("sc_version")!!,
+                serverPackViewModel
+            )
+        }
+        composable(
+            "pack/{pack_name}/{pack_screen}",
+            arguments = listOf(
+                navArgument("pack_name") {
+                    type = NavType.StringType
+                    nullable = false
+                },
+                navArgument("pack_screen") {
+                    type = NavType.StringType
+                    nullable = false
+                }
+            )
+        ) {
+            openPackScreen(
+                it.arguments!!.getString("pack_name")!!,
+                it.arguments!!.getString("pack_screen")!!
+            )
+        }
     }
 }
 
