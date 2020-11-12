@@ -5,11 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -81,7 +78,8 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, 
                 }
             )
 
-            ExpandablePackLayout(packName = packData.packMetadata.name, color = color, initiallyExpanded = initiallyExpanded) {
+            // fixme Wait for Slottable fix from Google's side (unreproducible bug)
+            ExpandablePackLayout(packName = packData.packMetadata.name, color = color, initiallyExpanded = true) {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
