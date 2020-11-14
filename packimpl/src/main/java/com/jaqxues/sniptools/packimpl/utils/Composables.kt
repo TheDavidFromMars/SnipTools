@@ -2,7 +2,6 @@ package com.jaqxues.sniptools.packimpl.utils
 
 import android.app.Activity
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
@@ -21,10 +20,6 @@ import com.jaqxues.akrolyb.prefs.putPref
 import com.jaqxues.sniptools.utils.PrefEntries
 import com.jaqxues.sniptools.utils.SuUtils
 import com.jaqxues.sniptools.utils.getBoolean
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 /**
@@ -83,16 +78,7 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         if ((ctx as Activity).getSharedPreferences("main", Context.MODE_PRIVATE)
                 .getBoolean(PrefEntries.shouldKillSc)
         ) {
-            GlobalScope.launch {
-                val result = SuUtils.runSuCommands("am force-stop com.snapchat.android")
-
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        ctx, if (result.isSuccess) "Killed Snapchat" else "Failed to kill Snapchat",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+            SuUtils.killScAndShow(ctx)
         }
     }, text = text)
 }
