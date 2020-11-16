@@ -54,12 +54,12 @@ dependencies {
 packCompiler {
     attributes = [
             Flavor           : "prod",
-            Development      : false,
-            PackVersion      : "0.0.03",
-            PackVersionCode  : 2,
+            Development      : true,
+            PackVersion      : "0.0.01",
+            PackVersionCode  : 1,
             MinApkVersionCode: 1,
             PackImplClass    : "com.jaqxues.sniptools.packimpl.PackImpl",
-            ScVersion        : "11.4.5.73",
+            ScVersion        : "11.5.0.69",
     ]
     getJarName = { attributes ->
         return "Pack_${attributes["PackVersion"]}_${attributes["ScVersion"]}".toString()
