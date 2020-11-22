@@ -60,7 +60,7 @@ private fun RootSettings(prefs: SharedPreferences) {
 }
 
 @Composable
-private fun Category(title: String, content: @Composable ColumnScope.() -> Unit) {
+fun Category(title: String, content: @Composable ColumnScope.() -> Unit) {
     Text(
         title,
         style = MaterialTheme.typography.h6,

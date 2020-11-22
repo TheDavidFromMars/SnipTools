@@ -213,7 +213,7 @@ fun Routing(
         }
         composable(LocalScreen.Settings.route) { SettingsScreen(settingsViewModel) }
         composable(LocalScreen.Faqs.route) { EmptyScreenMessage("Screen not available") }
-        composable(LocalScreen.Support.route) { EmptyScreenMessage("Screen not available") }
+        composable(LocalScreen.Support.route) { SupportScreen() }
         composable(LocalScreen.AboutUs.route) { EmptyScreenMessage("Screen not available") }
         composable(LocalScreen.Shop.route) { EmptyScreenMessage("Screen not available") }
         composable(LocalScreen.Features.route) { EmptyScreenMessage("Screen not available") }

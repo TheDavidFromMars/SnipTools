@@ -79,7 +79,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
         EmptyScreenMessage("No Packs available")
     } else {
         LazyColumnFor(items = serverPacks, modifier = Modifier.padding(horizontal = 16.dp)) { pack ->
-            ExpandablePackLayout(packName = pack.name) {
+            ExpandablePackLayout(packName = "Pack v${pack.scVersion}") {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
@@ -104,6 +104,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                                 title = {
                                     Column {
                                         Text("Pack Changelog", style = MaterialTheme.typography.h5)
+                                        Spacer(Modifier.padding(4.dp))
                                         Text(pack.name, style = MaterialTheme.typography.subtitle2)
                                         Divider(Modifier.padding(top = 16.dp, end = 32.dp), color = MaterialTheme.colors.primary)
                                     }
