@@ -12,7 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
@@ -29,7 +29,7 @@ import com.jaqxues.sniptools.viewmodel.SettingsViewModel
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel) {
     ScrollableColumn(Modifier.padding(16.dp)) {
-        val prefs = ContextAmbient.current.getSharedPreferences("main", Context.MODE_PRIVATE)
+        val prefs = AmbientContext.current.getSharedPreferences("main", Context.MODE_PRIVATE)
 
         Category(title = "Updates") {
             UpdateSettings(settingsViewModel)
@@ -45,7 +45,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
 
 @Composable
 private fun UpdateSettings(settingsViewModel: SettingsViewModel) {
-    val ctx = ContextAmbient.current
+    val ctx = AmbientContext.current
 
     PrefButton(onClick = { settingsViewModel.downloadApk(ctx) }) {
         Text("Download Latest Apk")
@@ -124,7 +124,7 @@ fun HandleDownloadEvent(settingsViewModel: SettingsViewModel) {
         is Request.Success -> {
             if (evt.data == null) {
                 Toast.makeText(
-                    ContextAmbient.current,
+                    AmbientContext.current,
                     "Already on latest Apk",
                     Toast.LENGTH_LONG
                 ).show()
@@ -134,7 +134,7 @@ fun HandleDownloadEvent(settingsViewModel: SettingsViewModel) {
         }
         is Request.Error -> {
             Toast.makeText(
-                ContextAmbient.current,
+                AmbientContext.current,
                 "Could not download apk (${evt.t.message}",
                 Toast.LENGTH_LONG
             ).show()

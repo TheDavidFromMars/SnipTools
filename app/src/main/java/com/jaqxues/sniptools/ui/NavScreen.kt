@@ -8,7 +8,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.jaqxues.sniptools.R
@@ -58,25 +58,25 @@ sealed class LocalScreen(override val route: String, @StringRes val stringRes: I
     }
 }
 
-abstract class CheckIconTypes(val _icon: Any) {
+abstract class CheckIconTypes(private val _icon: Any) {
     init {
         checkType(_icon)
     }
 
     @Composable
-    val icon: VectorAsset
+    val icon: ImageVector
         get() = getFor(_icon = _icon)
 
     companion object {
         fun checkType(_icon: Any) {
-            check(_icon is Unit || _icon is VectorAsset || _icon is @DrawableRes Int) {
+            check(_icon is Unit || _icon is ImageVector || _icon is @DrawableRes Int) {
                 "Unknown Type for Icon ('${_icon.javaClass.name}' - '${_icon}')"
             }
         }
 
         @Composable
         fun getFor(_icon: Any) = when (_icon) {
-            is VectorAsset -> _icon
+            is ImageVector -> _icon
             is @DrawableRes Int -> vectorResource(_icon)
             is Unit -> error("Icon was not specified (Unit)")
             else -> error("Unknown Type for Icon")
@@ -90,7 +90,7 @@ interface NavScreen {
     val screenName: String
 
     @Composable
-    val icon: VectorAsset?
+    val icon: ImageVector?
 
     val isTopLevelScreen: Boolean get() = true
 }

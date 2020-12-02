@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -76,15 +76,15 @@ fun HomeFooter() {
         }, fontSize = 12.sp)
 
         Text(annotatedString {
-            append(ContextAmbient.current.getString(R.string.footer_app_version))
+            append(AmbientContext.current.getString(R.string.footer_app_version))
             append(": ")
             highlight { append(BuildConfig.VERSION_NAME) }
         }, fontSize = 12.sp)
 
         Text(annotatedString {
-            append(ContextAmbient.current.getString(R.string.footer_snapchat_version))
+            append(AmbientContext.current.getString(R.string.footer_snapchat_version))
             append(": ")
-            highlight { append(ContextAmbient.current.installedScVersion ?: "Unknown") }
+            highlight { append(AmbientContext.current.installedScVersion ?: "Unknown") }
         }, fontSize = 12.sp)
     }
     Spacer(Modifier.height(16.dp))

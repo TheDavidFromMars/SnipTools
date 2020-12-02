@@ -25,7 +25,7 @@ fun EmptyScreenMessage(message: String, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(asset = imageResource(id = R.drawable.sniptools_logo), Modifier.preferredSize(50.dp))
+        Image(imageResource(id = R.drawable.sniptools_logo), Modifier.preferredSize(50.dp))
 
         Providers(AmbientContentAlpha provides ContentAlpha.medium) {
             Text(

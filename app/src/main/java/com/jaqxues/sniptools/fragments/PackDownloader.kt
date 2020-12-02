@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.annotatedString
 import androidx.compose.ui.unit.dp
@@ -51,7 +51,7 @@ fun HandlePackDownloadEvents(downloadFlow: Flow<Request<String>>, navController:
             }
             is Request.Error -> {
                 Toast.makeText(
-                    ContextAmbient.current,
+                    AmbientContext.current,
                     "Could not download Pack (${evt.t.message})",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -96,7 +96,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
 
                     if (showChangelog) {
                         if (pack.changelog == null) {
-                            Toast.makeText(ContextAmbient.current, "Pack Changelog not available", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(AmbientContext.current, "Pack Changelog not available", Toast.LENGTH_SHORT).show()
                         } else {
                             AlertDialog(
                                 modifier = Modifier.fillMaxWidth(),

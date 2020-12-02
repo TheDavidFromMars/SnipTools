@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.ui.CheckIconTypes
@@ -32,7 +32,7 @@ enum class KnownExternalDestinations(
     }
 
     @Composable
-    override val icon: VectorAsset
+    override val icon: ImageVector
         get() = CheckIconTypes.getFor(_icon)
 
     @Composable

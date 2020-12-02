@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -348,7 +348,7 @@ fun DrawerContent(
 @Composable
 private fun DrawerButton(
     label: String,
-    icon: VectorAsset? = null,
+    icon: ImageVector? = null,
     isSelected: Boolean,
     action: () -> Unit
 ) {
@@ -377,7 +377,7 @@ private fun DrawerButton(
             ) {
                 if (icon != null)
                     Image(
-                        asset = icon,
+                        imageVector = icon,
                         colorFilter = ColorFilter.tint(textIconColor),
                         alpha = imageAlpha,
                         modifier = Modifier.size(24.dp)

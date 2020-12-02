@@ -10,7 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,7 +69,7 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         mutableStateOf(pref.getPref())
     }
 
-    val ctx = ContextAmbient.current
+    val ctx = AmbientContext.current
 
     SwitchCard(toggled = toggled, onToggle = {
         toggled = it

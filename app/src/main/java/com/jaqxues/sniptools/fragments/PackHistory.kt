@@ -14,7 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,7 +37,7 @@ fun PackHistoryScreen(navController: NavController, scVersion: String, serverPac
             when (request) {
                 is Request.Error -> {
                     Toast.makeText(
-                        ContextAmbient.current,
+                        AmbientContext.current,
                         "Could not refresh Pack History", Toast.LENGTH_LONG
                     ).show()
                 }
@@ -76,7 +76,7 @@ fun PackHistoryContent(packHistory: List<ServerPackEntity>, onDownload: (String)
 
                 Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                     val dateTxt = if (pack.createdAt == null) "No date available" else
-                        DateFormat.getLongDateFormat(ContextAmbient.current).format(pack.createdAt)
+                        DateFormat.getLongDateFormat(AmbientContext.current).format(pack.createdAt)
 
                     when {
                         pack.minApkVersionCode == BuildConfig.VERSION_CODE ->

@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,7 +32,7 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
 
 @Composable
 fun PackSelectorTab(navController: NavController, packViewModel: PackViewModel, selectedPack: String? = null) {
-    ContextAmbient.current.let { ctx ->
+    AmbientContext.current.let { ctx ->
         onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
     }
     val localPacks = packViewModel.localPacks.observeAsState()
@@ -78,12 +78,11 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, 
                 }
             )
 
-            // fixme Wait for Slottable fix from Google's side (unreproducible bug)
-            ExpandablePackLayout(packName = packData.packMetadata.name, color = color, initiallyExpanded = true) {
+            ExpandablePackLayout(packName = packData.packMetadata.name, color = color, initiallyExpanded) {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
-                    val context = ContextAmbient.current
+                    val context = AmbientContext.current
 
                     LocalActionRow(packData, onChangelog = {
                         navController.navigate("%s/%s/%s".format(
