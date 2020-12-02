@@ -62,7 +62,8 @@ android {
     dynamicFeatures = [":packimpl"]
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.0.0-alpha07"
+        kotlinCompilerExtensionVersion "1.0.0-alpha08"
+        kotlinCompilerVersion "1.4.20"
     }
 }
 
@@ -76,11 +77,11 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.2.0'
     api 'com.google.android.material:material:1.2.1'
     api 'androidx.core:core-ktx:1.3.2'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
 
     // ViewModel and LiveData
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -105,11 +106,11 @@ dependencies {
 
     api('com.github.jaqxues:Akrolyb:327b707afd')
 
-    def compose_version = '1.0.0-alpha07'
-    def nav_compose_version = "1.0.0-alpha02"
+    def compose_version = '1.0.0-alpha08'
+    def nav_compose_version = "1.0.0-alpha03"
     api "androidx.compose.ui:ui:$compose_version"
     api "androidx.compose.material:material:$compose_version"
-    api "androidx.ui:ui-tooling:$compose_version"
+    api "androidx.compose.ui:ui-tooling:$compose_version"
     api "androidx.compose.runtime:runtime-livedata:$compose_version"
 //    api "androidx.compose.material:material-icons-extended:$compose_version"
     api "androidx.navigation:navigation-compose:$nav_compose_version"
