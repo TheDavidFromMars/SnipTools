@@ -11,11 +11,8 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.annotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.BuildConfig
@@ -63,28 +60,28 @@ fun HomeContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AnnotatedString.Builder.highlight(action: @Composable AnnotatedString.Builder.() -> Unit) {
+fun AnnotatedString.Builder.Highlight(action: @Composable AnnotatedString.Builder.() -> Unit) {
     withStyle(SpanStyle(colorResource(R.color.colorPrimaryLight))) { action() }
 }
 
 @Composable
 fun HomeFooter() {
     Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-        Text(annotatedString {
+        Text(buildAnnotatedString {
             append("Author: ")
-            highlight { append("jaqxues") }
+            Highlight { append("jaqxues") }
         }, fontSize = 12.sp)
 
-        Text(annotatedString {
+        Text(buildAnnotatedString {
             append(AmbientContext.current.getString(R.string.footer_app_version))
             append(": ")
-            highlight { append(BuildConfig.VERSION_NAME) }
+            Highlight { append(BuildConfig.VERSION_NAME) }
         }, fontSize = 12.sp)
 
-        Text(annotatedString {
+        Text(buildAnnotatedString {
             append(AmbientContext.current.getString(R.string.footer_snapchat_version))
             append(": ")
-            highlight { append(AmbientContext.current.installedScVersion ?: "Unknown") }
+            Highlight { append(AmbientContext.current.installedScVersion ?: "Unknown") }
         }, fontSize = 12.sp)
     }
     Spacer(Modifier.height(16.dp))

@@ -3,7 +3,7 @@ package com.jaqxues.sniptools.fragments
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -35,17 +35,23 @@ fun BugsContent(bugs: List<KnownBugEntity>?) {
         return
     }
 
-    LazyColumnFor(bugs.groupBy { it.category }.toList(), Modifier.padding(16.dp)) { (category, bugs) ->
-        ListCardElement {
-            Column(Modifier.padding(16.dp)) {
-                Text(category)
-                Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
+    LazyColumn(Modifier.padding(16.dp)) {
+        items(bugs.groupBy { it.category }.toList()) { (category, bugs) ->
+            ListCardElement {
+                Column(Modifier.padding(16.dp)) {
+                    Text(category)
+                    Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
 
-                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                    for (bug in bugs) {
-                        Row(Modifier.padding(vertical = 4.dp, horizontal = 8.dp)) {
-                            Text("\u2022", modifier = Modifier.padding(end = 16.dp), fontSize = 14.sp)
-                            Text(bug.description, fontSize = 14.sp)
+                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                        for (bug in bugs) {
+                            Row(Modifier.padding(vertical = 4.dp, horizontal = 8.dp)) {
+                                Text(
+                                    "\u2022",
+                                    modifier = Modifier.padding(end = 16.dp),
+                                    fontSize = 14.sp
+                                )
+                                Text(bug.description, fontSize = 14.sp)
+                            }
                         }
                     }
                 }

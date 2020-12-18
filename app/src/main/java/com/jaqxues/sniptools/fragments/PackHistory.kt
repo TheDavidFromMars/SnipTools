@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -31,7 +31,11 @@ import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
  * Date: 06.11.20 - Time 21:52.
  */
 @Composable
-fun PackHistoryScreen(navController: NavController, scVersion: String, serverPackViewModel: ServerPackViewModel) {
+fun PackHistoryScreen(
+    navController: NavController,
+    scVersion: String,
+    serverPackViewModel: ServerPackViewModel
+) {
     remember { serverPackViewModel.refreshPackHistory(scVersion) }
         .observeAsState().value?.let { request ->
             when (request) {
@@ -41,7 +45,8 @@ fun PackHistoryScreen(navController: NavController, scVersion: String, serverPac
                         "Could not refresh Pack History", Toast.LENGTH_LONG
                     ).show()
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
     val packHistory = serverPackViewModel.getPackHistory(scVersion).observeAsState().value
@@ -58,46 +63,49 @@ fun PackHistoryScreen(navController: NavController, scVersion: String, serverPac
 
 @Composable
 fun PackHistoryContent(packHistory: List<ServerPackEntity>, onDownload: (String) -> Unit) {
-    LazyColumnFor(packHistory, Modifier.padding(16.dp)) { pack ->
-        ListCardElement {
-            Column(Modifier.padding(16.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(pack.name, Modifier.weight(1f).padding(end = 16.dp))
-                    IconButton(onClick = {
-                        onDownload(pack.name)
-                    }) {
-                        Icon(
-                            vectorResource(R.drawable.ic_baseline_cloud_download_48),
-                            modifier = Modifier.size(24.dp)
+    LazyColumn(Modifier.padding(16.dp)) {
+        items(packHistory) { pack ->
+            ListCardElement {
+                Column(Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(pack.name, Modifier.weight(1f).padding(end = 16.dp))
+                        IconButton(onClick = {
+                            onDownload(pack.name)
+                        }) {
+                            Icon(
+                                vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+                    Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
+
+                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                        val dateTxt = if (pack.createdAt == null) "No date available" else
+                            DateFormat.getLongDateFormat(AmbientContext.current)
+                                .format(pack.createdAt)
+
+                        when {
+                            pack.minApkVersionCode == BuildConfig.VERSION_CODE ->
+                                Text("Compatible with your Apk", fontSize = 14.sp)
+                            pack.minApkVersionCode <= BuildConfig.VERSION_CODE ->
+                                Text("Probably compatible with your Apk", fontSize = 14.sp)
+                            else -> Text(
+                                "Likely incompatible with your Apk", fontSize = 14.sp,
+                                color = MaterialTheme.colors.error
+                            )
+                        }
+
+                        Text(
+                            "Released on: $dateTxt",
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                        Text(
+                            "Pack Version: ${pack.packVersion} (Version Code: ${pack.packVersionCode})",
+                            fontSize = 12.sp
                         )
                     }
-                }
-                Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
-
-                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                    val dateTxt = if (pack.createdAt == null) "No date available" else
-                        DateFormat.getLongDateFormat(AmbientContext.current).format(pack.createdAt)
-
-                    when {
-                        pack.minApkVersionCode == BuildConfig.VERSION_CODE ->
-                            Text("Compatible with your Apk", fontSize = 14.sp)
-                        pack.minApkVersionCode <= BuildConfig.VERSION_CODE ->
-                            Text("Probably compatible with your Apk", fontSize = 14.sp)
-                        else -> Text(
-                            "Likely incompatible with your Apk", fontSize = 14.sp,
-                            color = MaterialTheme.colors.error
-                        )
-                    }
-
-                    Text(
-                        "Released on: $dateTxt",
-                        fontSize = 14.sp,
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-                    Text(
-                        "Pack Version: ${pack.packVersion} (Version Code: ${pack.packVersionCode})",
-                        fontSize = 12.sp
-                    )
                 }
             }
         }

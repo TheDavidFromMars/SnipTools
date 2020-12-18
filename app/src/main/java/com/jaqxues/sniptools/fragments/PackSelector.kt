@@ -3,10 +3,13 @@ package com.jaqxues.sniptools.fragments
 import androidx.compose.animation.animate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +34,11 @@ import com.jaqxues.sniptools.viewmodel.PackViewModel
  */
 
 @Composable
-fun PackSelectorTab(navController: NavController, packViewModel: PackViewModel, selectedPack: String? = null) {
+fun PackSelectorTab(
+    navController: NavController,
+    packViewModel: PackViewModel,
+    selectedPack: String? = null
+) {
     AmbientContext.current.let { ctx ->
         onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
     }
@@ -41,19 +48,26 @@ fun PackSelectorTab(navController: NavController, packViewModel: PackViewModel, 
     if (localPacksCaptured.isNullOrEmpty()) {
         EmptyScreenMessage("No Packs found")
     } else {
-        LazyColumnFor(localPacksCaptured, Modifier.padding(horizontal = 16.dp)) {
-            val packData by packViewModel.getStateDataForPack(it).run {
-                observeAsState(value!!)
+        LazyColumn(Modifier.padding(horizontal = 16.dp)) {
+            items(localPacksCaptured) {
+                val packData by packViewModel.getStateDataForPack(it).run {
+                    observeAsState(value!!)
+                }
+                val initiallyExpanded = selectedPack != null
+                        && selectedPack == runCatching { packData.packMetadata.name }.getOrNull()
+                PackElementLayout(packData, packViewModel, initiallyExpanded, navController)
             }
-            val initiallyExpanded = selectedPack != null
-                    && selectedPack == runCatching { packData.packMetadata.name }.getOrNull()
-            PackElementLayout(packData, packViewModel,  initiallyExpanded, navController)
         }
     }
 }
 
 @Composable
-fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, initiallyExpanded: Boolean, navController: NavController) {
+fun PackElementLayout(
+    packData: StatefulPackData,
+    packViewModel: PackViewModel,
+    initiallyExpanded: Boolean,
+    navController: NavController
+) {
     when (packData) {
         is StatefulPackData.CorruptedPack -> ExpandablePackLayout(
             packName = packData.packFile.name,
@@ -78,18 +92,24 @@ fun PackElementLayout(packData: StatefulPackData, packViewModel: PackViewModel, 
                 }
             )
 
-            ExpandablePackLayout(packName = packData.packMetadata.name, color = color, initiallyExpanded) {
+            ExpandablePackLayout(
+                packName = packData.packMetadata.name,
+                color = color,
+                initiallyExpanded
+            ) {
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
                     val context = AmbientContext.current
 
                     LocalActionRow(packData, onChangelog = {
-                        navController.navigate("%s/%s/%s".format(
-                            LocalScreen.KnownBugs.route,
-                            packData.packMetadata.scVersion,
-                            packData.packMetadata.packVersion
-                        ))
+                        navController.navigate(
+                            "%s/%s/%s".format(
+                                LocalScreen.KnownBugs.route,
+                                packData.packMetadata.scVersion,
+                                packData.packMetadata.packVersion
+                            )
+                        )
                     }, onChangeActive = {
                         if (it) {
                             packViewModel.activatePack(
@@ -149,7 +169,7 @@ fun LocalActionRow(
         Switch(
             packData.isActive,
             onCheckedChange = onChangeActive,
-            colors = SwitchConstants.defaultColors(
+            colors = SwitchDefaults.colors(
                 checkedThumbColor = if (packData !is StatefulPackData.PackLoadError)
                     Color(0xFF00AA00) else Color.Red
             ),

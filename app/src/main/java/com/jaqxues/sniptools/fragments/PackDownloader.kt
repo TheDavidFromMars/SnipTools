@@ -2,7 +2,7 @@ package com.jaqxues.sniptools.fragments
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.annotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -78,56 +78,72 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
     if (serverPacks.isNullOrEmpty()) {
         EmptyScreenMessage("No Packs available")
     } else {
-        LazyColumnFor(items = serverPacks, modifier = Modifier.padding(horizontal = 16.dp)) { pack ->
-            ExpandablePackLayout(packName = "Pack v${pack.scVersion}") {
-                Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
-                    Divider(Modifier.padding(horizontal = 20.dp))
+        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+            items(serverPacks) { pack ->
+                ExpandablePackLayout(packName = "Pack v${pack.scVersion}") {
+                    Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
+                        Divider(Modifier.padding(horizontal = 20.dp))
 
-                    var showChangelog by remember { mutableStateOf(false) }
-                    RemoteActionRow(
-                        onDownload = {
-                            packViewModel.downloadPack(pack.name)
-                        }, onShowHistory = {
-                            navController.navigate(
-                                "${LocalScreen.PackHistory.route}/${pack.scVersion}")
-                        }, onShowChangeLog = {
-                            showChangelog = true
-                        })
+                        var showChangelog by remember { mutableStateOf(false) }
+                        RemoteActionRow(
+                            onDownload = {
+                                packViewModel.downloadPack(pack.name)
+                            }, onShowHistory = {
+                                navController.navigate(
+                                    "${LocalScreen.PackHistory.route}/${pack.scVersion}"
+                                )
+                            }, onShowChangeLog = {
+                                showChangelog = true
+                            })
 
-                    if (showChangelog) {
-                        if (pack.changelog == null) {
-                            Toast.makeText(AmbientContext.current, "Pack Changelog not available", Toast.LENGTH_SHORT).show()
-                        } else {
-                            AlertDialog(
-                                modifier = Modifier.fillMaxWidth(),
-                                onDismissRequest = { showChangelog = false },
-                                title = {
-                                    Column {
-                                        Text("Pack Changelog", style = MaterialTheme.typography.h5)
-                                        Spacer(Modifier.padding(4.dp))
-                                        Text(pack.name, style = MaterialTheme.typography.subtitle2)
-                                        Divider(Modifier.padding(top = 16.dp, end = 32.dp), color = MaterialTheme.colors.primary)
-                                    }
-                                },
-                                text = {
-                                    Text(pack.changelog)
-                                },
-                                buttons = {})
+                        if (showChangelog) {
+                            if (pack.changelog == null) {
+                                Toast.makeText(
+                                    AmbientContext.current,
+                                    "Pack Changelog not available",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                AlertDialog(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onDismissRequest = { showChangelog = false },
+                                    title = {
+                                        Column {
+                                            Text(
+                                                "Pack Changelog",
+                                                style = MaterialTheme.typography.h5
+                                            )
+                                            Spacer(Modifier.padding(4.dp))
+                                            Text(
+                                                pack.name,
+                                                style = MaterialTheme.typography.subtitle2
+                                            )
+                                            Divider(
+                                                Modifier.padding(top = 16.dp, end = 32.dp),
+                                                color = MaterialTheme.colors.primary
+                                            )
+                                        }
+                                    },
+                                    text = {
+                                        Text(pack.changelog)
+                                    },
+                                    buttons = {})
+                            }
                         }
-                    }
 
-                    Divider(Modifier.padding(horizontal = 80.dp))
+                        Divider(Modifier.padding(horizontal = 80.dp))
 
-                    Spacer(Modifier.padding(8.dp))
-                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                        Text(
-                            "Pack Type: ${if (pack.devPack) "Developer" else "User"}",
-                            fontSize = 12.sp
-                        )
-                        Text("Snapchat Version: ${pack.scVersion}", fontSize = 12.sp)
-                        Text("Pack Version: ${pack.packVersion}", fontSize = 12.sp)
+                        Spacer(Modifier.padding(8.dp))
+                        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                            Text(
+                                "Pack Type: ${if (pack.devPack) "Developer" else "User"}",
+                                fontSize = 12.sp
+                            )
+                            Text("Snapchat Version: ${pack.scVersion}", fontSize = 12.sp)
+                            Text("Pack Version: ${pack.packVersion}", fontSize = 12.sp)
+                        }
+                        Spacer(Modifier.padding(8.dp))
                     }
-                    Spacer(Modifier.padding(8.dp))
                 }
             }
         }
@@ -138,9 +154,9 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
 fun PackDownloaderFooter(packViewModel: ServerPackViewModel) {
     val time = packViewModel.lastChecked.observeAsState().value ?: -1
     Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-        Text(annotatedString {
+        Text(buildAnnotatedString {
             append("Last Checked: ")
-            highlight {
+            Highlight {
                 append(time.formatRelativeAbbrev)
             }
         }, fontSize = 12.sp)

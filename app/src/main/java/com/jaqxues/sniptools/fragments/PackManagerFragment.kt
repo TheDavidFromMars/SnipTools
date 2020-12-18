@@ -8,7 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.TabConstants.defaultTabIndicatorOffset
+import androidx.compose.material.TabDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,8 +41,8 @@ fun PackManagerScreen(
         TabRow(
             selectedTabIndex = currentTab.ordinal,
             indicator = {
-                TabConstants.DefaultIndicator(
-                    modifier = Modifier.defaultTabIndicatorOffset(
+                TabDefaults.Indicator(
+                    modifier = Modifier.tabIndicatorOffset(
                         it[currentTab.ordinal]
                     ), color = MaterialTheme.colors.primary
                 )

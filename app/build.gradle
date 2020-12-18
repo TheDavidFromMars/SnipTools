@@ -62,14 +62,12 @@ android {
     dynamicFeatures = [":packimpl"]
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.0.0-alpha08"
-        kotlinCompilerVersion "1.4.20"
+        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerVersion kotlin_version
     }
 }
 
 dependencies {
-    // Dependency Versions
-    def lifecycle_version = '2.2.0'
 
 
     api fileTree(dir: 'libs', include: ['*.jar'])
@@ -95,7 +93,6 @@ dependencies {
     api 'com.google.code.gson:gson:2.8.6'
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    def room_version = "2.2.5"
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     api "androidx.room:room-ktx:$room_version"
@@ -106,8 +103,6 @@ dependencies {
 
     api('com.github.jaqxues:Akrolyb:327b707afd')
 
-    def compose_version = '1.0.0-alpha08'
-    def nav_compose_version = "1.0.0-alpha03"
     api "androidx.compose.ui:ui:$compose_version"
     api "androidx.compose.material:material:$compose_version"
     api "androidx.compose.ui:ui-tooling:$compose_version"
@@ -115,13 +110,12 @@ dependencies {
 //    api "androidx.compose.material:material-icons-extended:$compose_version"
     api "androidx.navigation:navigation-compose:$nav_compose_version"
 
-    api "com.google.dagger:hilt-android:2.29.1-alpha"
-    api 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
-    kapt "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+    api "com.google.dagger:hilt-android:$dagger_version"
+    kapt "com.google.dagger:hilt-android-compiler:$dagger_version"
+    api "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_version"
 
-    def libsuVersion = '3.0.2'
-    api "com.github.topjohnwu.libsu:core:${libsuVersion}"
+    api "com.github.topjohnwu.libsu:core:$libsuVersion"
 
     // debugApi 'com.amitshekhar.android:debug-db:1.0.6'
     // Files built by fork to allow for 2 different Contexts (+ AndroidX support)

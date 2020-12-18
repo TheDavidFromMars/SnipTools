@@ -81,7 +81,7 @@ private fun PrefButton(onClick: () -> Unit, content: @Composable () -> Unit) {
     TextButton(
         onClick = onClick,
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-        border = ButtonConstants.defaultOutlinedBorder
+        border = ButtonDefaults.outlinedBorder
     ) {
         Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) { content() }
     }
