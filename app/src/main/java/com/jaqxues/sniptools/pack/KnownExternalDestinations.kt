@@ -31,11 +31,11 @@ enum class KnownExternalDestinations(
         CheckIconTypes.checkType(_icon)
     }
 
-    @Composable
+    @get:Composable
     override val icon: ImageVector
         get() = CheckIconTypes.getFor(_icon)
 
-    @Composable
+    @get:Composable
     override val screenName get() = stringResource(stringRes)
 
     companion object {

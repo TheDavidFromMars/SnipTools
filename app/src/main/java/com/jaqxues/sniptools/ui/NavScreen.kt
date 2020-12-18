@@ -39,7 +39,7 @@ sealed class LocalScreen(override val route: String, @StringRes val stringRes: I
     object Features : LocalScreen("features", R.string.menu_features, Icons.Default.List)
     object Legal : LocalScreen("legal", R.string.menu_legal, Icons.Default.Info)
 
-    @Composable
+    @get:Composable
     override val screenName get() = stringResource(stringRes)
 
     companion object {
@@ -63,7 +63,7 @@ abstract class CheckIconTypes(private val _icon: Any) {
         checkType(_icon)
     }
 
-    @Composable
+    @get:Composable
     val icon: ImageVector
         get() = getFor(_icon = _icon)
 
@@ -86,10 +86,10 @@ abstract class CheckIconTypes(private val _icon: Any) {
 
 interface NavScreen {
     val route: String
-    @Composable
+    @get:Composable
     val screenName: String
 
-    @Composable
+    @get:Composable
     val icon: ImageVector?
 
     val isTopLevelScreen: Boolean get() = true

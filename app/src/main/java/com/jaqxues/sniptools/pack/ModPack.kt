@@ -53,11 +53,11 @@ data class ExternalDestination(
     val screenComposable: @Composable () -> Unit
 ): NavScreen {
 
-    @Composable
+    @get:Composable
     override val screenName: String
         get() = defaultName
 
-    @Composable
+    @get:Composable
     override val icon: ImageVector?
         get() = null
 }
