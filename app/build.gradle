@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'androidx.navigation.safeargs'
 
@@ -80,6 +81,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+//    api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     // ViewModel and LiveData
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -88,10 +90,9 @@ dependencies {
 
     api 'com.jakewharton.timber:timber:4.7.1'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
-//    api 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
-//    api 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0'
-    api 'com.google.code.gson:gson:2.8.6'
-    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+    api "com.squareup.okhttp3:okhttp:4.9.0"
+    api 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+    api 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1'
 
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

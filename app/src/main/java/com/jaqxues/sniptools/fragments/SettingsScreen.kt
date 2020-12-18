@@ -93,9 +93,7 @@ fun PrefSwitch(
     pref: PrefEntry<Boolean>,
     content: @Composable () -> Unit
 ) {
-    var enabled by remember {
-        mutableStateOf(prefs.getBoolean(pref))
-    }
+    var enabled by remember { mutableStateOf(prefs.getBoolean(pref)) }
     val setNew: (Boolean) -> Unit = {
         enabled = it
         prefs.edit { putBoolean(pref.key, it) }

@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.networking
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 
 /**
@@ -8,57 +9,61 @@ import com.google.gson.annotations.SerializedName
  * Date: 27.05.20 - Time 08:54.
  * Moved to SnipTools on Date: 03.06.20 - Time 17:45.
  */
+@Serializable
 data class ServerPack(
-    @SerializedName("sc_version")
+    @SerialName("sc_version")
     val scVersion: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
 
     val devPack: Boolean = false,
-    @SerializedName("pack_version")
+    @SerialName("pack_version")
     val packVersion: String,
-    @SerializedName("pack_v_code")
+    @SerialName("pack_v_code")
     val packVersionCode: Int,
-    @SerializedName("min_apk_v_code")
+    @SerialName("min_apk_v_code")
     val minApkVersionCode: Int,
-    @SerializedName("changelog")
+    @SerialName("changelog")
     val changelog: String
 )
 
+@Serializable
 data class KnownBug(
-    @SerializedName("category")
+    @SerialName("category")
     val category: String,
-    @SerializedName("description")
+    @SerialName("description")
     val description: String,
-    @SerializedName("filed_on")
+    @SerialName("filed_on")
     val filedOn: Long,
-    @SerializedName("fixed_on")
+    @SerialName("fixed_on")
     val fixedOn: Long? = null
 )
 
+@Serializable
 data class ServerApk(
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("apk_v_code")
+    @SerialName("apk_v_code")
     val versionCode: Int,
-    @SerializedName("apk_v_name")
+    @SerialName("apk_v_name")
     val versionName: String,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: Long
 )
 
+@Serializable
 data class PackHistory(
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
 
     val devPack: Boolean = false,
-    @SerializedName("pack_version")
+    @SerialName("pack_version")
     val packVersion: String,
-    @SerializedName("pack_v_code")
+    @SerialName("pack_v_code")
     val packVersionCode: Int,
-    @SerializedName("min_apk_v_code")
+    @SerialName("min_apk_v_code")
     val minApkVersionCode: Int,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: Long
 )
 
