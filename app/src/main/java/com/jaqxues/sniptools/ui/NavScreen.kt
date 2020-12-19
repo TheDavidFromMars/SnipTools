@@ -43,15 +43,12 @@ sealed class LocalScreen(override val route: String, @StringRes val stringRes: I
     override val screenName get() = stringResource(stringRes)
 
     companion object {
-        val topLevelScreens
-            // fixme Bug where array is modified and Home set to null. Used a getter to fix issue.
-            get() = arrayOf(
+        val topLevelScreens = arrayOf(
                 Home, PackManager, Settings, Faqs,
                 Support, AboutUs, Shop, Features, Legal
             )
 
-        val allScreens
-            get() = arrayOf(
+        val allScreens = arrayOf(
                 Home, PackManager, KnownBugs, PackHistory, Settings, Faqs, Support,
                 AboutUs, Shop, Features, Legal
             )
