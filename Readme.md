@@ -4,6 +4,20 @@ SnipTools uses the MVVM pattern, together with the latest Architecture Component
 Database Library. It also uses Jetpack Compose, a declarative UI Framework that is sill in alpha.
 Hence SnipTools needs to be compiled with the ***latest Android Studio Canary***.
 
+## Related Projects
+* [PackCompiler](https://github.com/jaqxues/PackCompiler) - Gradle Plugin to generate Packs in .jar
+  format.
+* [GraphGuard](https://github.com/jaqxues/GraphGuard) - Python Scripts / Jupyter Notebook to
+  try to automate the update process.
+* [SnipTools DataProvider](https://github.com/jaqxues/SnipTools_DataProvider/) - Serverless Backend
+  handling Pack Downloads and Network Requests (Pre-generated and hosted on Github as raw files)
+* [Akrolyb](https://github.com/jaqxues/Akrolyb) - Abstracting Xposed Code, Pack-Loading 
+  Capabilities, Preference System etc.
+
+
+ToDo-List and a lot of related information about this/these Project(s) can be found on the
+[Coda Document](https://coda.io/d/SnipTools-Project_dT_brBat2h0).
+
 ## Build Instructions and Gradle Tasks
 
 SnipTools uses a [Gradle Plugin](https://github.com/jaqxues/PackCompiler) to compile ModulePacks.
