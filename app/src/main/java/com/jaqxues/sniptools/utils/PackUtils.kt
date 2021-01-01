@@ -21,6 +21,7 @@ fun Attributes.buildMetadata(file: File): PackMetadata {
         packVersion = getOrThrow("PackVersion"),
         packVersionCode = getOrThrow("PackVersionCode").toInt(),
         packImplClass = getOrThrow("PackImplClass"),
-        minApkVersionCode = getOrThrow("MinApkVersionCode").toInt()
+        minApkVersionCode = getOrThrow("MinApkVersionCode").toInt(),
+        isEncrypted = getValue("Encrypted")?.toBoolean() == true
     )
 }
