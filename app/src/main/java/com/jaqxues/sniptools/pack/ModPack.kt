@@ -68,9 +68,6 @@ class PackFactory(private val checkScVersion: Boolean): PackFactoryBase<PackMeta
     override fun buildMeta(attributes: Attributes, context: Context, file: File) =
         attributes.buildMetadata(file)
 
-    override fun getEncryptionKey(packMetadata: PackMetadata, context: Context, file: File) =
-        "ADBN850BN815bBfi".toByteArray()
-
     override fun performChecks(packMetadata: PackMetadata, context: Context, file: File) {
         super.performChecks(packMetadata, context, file)
 
