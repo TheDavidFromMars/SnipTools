@@ -103,7 +103,7 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
 
-    api('com.github.jaqxues:Akrolyb:327b707afd')
+    api('com.github.jaqxues:Akrolyb:ea27a4f2c6')
 
     api "androidx.compose.ui:ui:$compose_version"
     api "androidx.compose.material:material:$compose_version"

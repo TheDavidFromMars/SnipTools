@@ -9,7 +9,7 @@ include ':packimpl'
 /*
 include ':akrolyb'
 project(':akrolyb').projectDir = file('../Akrolyb/akrolyb/')
- */
+*/
 
 /** in app/build.gradle as dependency: */
 //    api(project(':akrolyb'))
