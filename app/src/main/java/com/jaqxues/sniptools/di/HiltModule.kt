@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.jaqxues.sniptools.db.AppDatabase
-import com.jaqxues.sniptools.networking.GitHubApiService
+import com.jaqxues.sniptools.networking.*
 import com.jaqxues.sniptools.pack.PackLoadManager
 import dagger.Module
 import dagger.Provides
@@ -13,6 +13,9 @@ import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
+import kotlinx.serialization.modules.plus
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -31,7 +34,14 @@ object DataModule {
     fun provideRetrofitService(): GitHubApiService =
         Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com/jaqxues/SnipTools_DataProvider/master/")
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(Json {
+                serializersModule += SerializersModule {
+                    contextual(ServerPack.serializer())
+                    contextual(KnownBug.serializer())
+                    contextual(ServerApk.serializer())
+                    contextual(PackHistory.serializer())
+                }
+            }.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(GitHubApiService::class.java)
 
