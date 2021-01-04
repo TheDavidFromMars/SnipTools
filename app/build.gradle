@@ -125,9 +125,3 @@ dependencies {
     debugApi files('libs/debug-db-debug.aar')
     debugApi files('libs/debug-db-base-debug.aar')
 }
-
-configurations.all {
-    resolutionStrategy {
-        cacheChangingModulesFor 0, 'seconds'
-    }
-}
