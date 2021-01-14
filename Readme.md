@@ -35,6 +35,9 @@ carefully and configure it for your needs.
 #### Important Tasks:
 * `packimpl:applyPackChangesDebug` - Compiles, pushes, activates the Pack and restarts Snapchat
 * `packimpl:openPackChangesDebug` - Compiles, pushes, activates the Pack and restarts SnipTools
+* To use Android Studio's "app" run configuration, please make sure you do not deploy `packimpl`
+  as a dynamic feature, otherwise Akrolyb's environment checks will fail (detecting code from 
+  the packimpl module in the main ClassLoader). Edit configuration to prevent this.
 
 
 Use the typical `app:installDebug` task to install the application via Gradle.

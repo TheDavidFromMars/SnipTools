@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.fragments
 
-import androidx.compose.animation.animate
+import androidx.compose.animation.animateAsState
+import androidx.compose.animation.core.animate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -80,7 +81,7 @@ fun PackElementLayout(
             )
         }
         else -> {
-            val color = animate(
+            val color by animateAsState(
                 when (packData) {
                     is StatefulPackData.AvailablePack ->
                         Color.White
