@@ -2,6 +2,7 @@ package com.jaqxues.sniptools.ui
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -265,78 +266,82 @@ fun DrawerContent(
     loadedPackDestinations: Map<String, Array<ExternalDestination>>,
     closeDrawer: () -> Unit
 ) {
-    ScrollableColumn(Modifier.fillMaxWidth()) {
-        Row(
-            Modifier.padding(16.dp).fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                imageResource(R.drawable.sniptools_logo),
-                "App Logo",
-                Modifier.padding(8.dp)
-            )
-            Column(Modifier.padding(16.dp)) {
-                Providers(AmbientContentAlpha provides ContentAlpha.high) {
-                    Text("SnipTools")
-                }
-                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                    Text("I hope you're happy now", fontSize = 12.sp)
-                }
-            }
-        }
-
-        HomeDivider()
-
-        val (pack, route) = navController.currentBackStackEntryAsState().value.routeInfo
-
-        LocalScreen.topLevelScreens.forEach {
-            val selected = pack == null && it.route == route
-            DrawerButton(
-                label = it.screenName,
-                icon = it.icon,
-                isSelected = selected,
-                action = {
-                    if (!selected) {
-                        navController.popBackStack(navController.graph.startDestination, false)
-                        navController.navigate(it.route)
-                    }
-                    closeDrawer()
-                }
-            )
-        }
-        loadedPackDestinations.forEach { (packName, destinations) ->
-            Divider(Modifier.padding(horizontal = 16.dp))
-            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                Text(
-                    packName,
-                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 14.sp
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        // use `item` for separate elements like headers
+        // and `items` for lists of identical elements
+        item {
+            Row(
+                    Modifier.padding(16.dp).fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                        imageResource(R.drawable.sniptools_logo),
+                        "App Logo",
+                        Modifier.padding(8.dp)
                 )
+                Column(Modifier.padding(16.dp)) {
+                    Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                        Text("SnipTools")
+                    }
+                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                        Text("I hope you're happy now", fontSize = 12.sp)
+                    }
+                }
             }
 
-            for (destination in destinations) {
-                val known = KnownExternalDestinations.byRoute[destination.route]
+            HomeDivider()
 
-                val (icon, label) = if (known == null) {
-                    null to destination.defaultName
-                } else {
-                    known.icon to stringResource(known.stringRes)
-                }
-                val selected = packName == pack && destination.route == route
+            val (pack, route) = navController.currentBackStackEntryAsState().value.routeInfo
 
+            LocalScreen.topLevelScreens.forEach {
+                val selected = pack == null && it.route == route
                 DrawerButton(
-                    icon = icon,
-                    label = label,
-                    isSelected = selected,
-                    action = {
-                        if (!selected) {
-                            navController.popBackStack(navController.graph.startDestination, false)
-                            navController.navigate("pack/$packName/${destination.route}")
+                        label = it.screenName,
+                        icon = it.icon,
+                        isSelected = selected,
+                        action = {
+                            if (!selected) {
+                                navController.popBackStack(navController.graph.startDestination, false)
+                                navController.navigate(it.route)
+                            }
+                            closeDrawer()
                         }
-                        closeDrawer()
-                    }
                 )
+            }
+            loadedPackDestinations.forEach { (packName, destinations) ->
+                Divider(Modifier.padding(horizontal = 16.dp))
+                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                    Text(
+                            packName,
+                            modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),
+                            overflow = TextOverflow.Ellipsis,
+                            fontSize = 14.sp
+                    )
+                }
+
+                for (destination in destinations) {
+                    val known = KnownExternalDestinations.byRoute[destination.route]
+
+                    val (icon, label) = if (known == null) {
+                        null to destination.defaultName
+                    } else {
+                        known.icon to stringResource(known.stringRes)
+                    }
+                    val selected = packName == pack && destination.route == route
+
+                    DrawerButton(
+                            icon = icon,
+                            label = label,
+                            isSelected = selected,
+                            action = {
+                                if (!selected) {
+                                    navController.popBackStack(navController.graph.startDestination, false)
+                                    navController.navigate("pack/$packName/${destination.route}")
+                                }
+                                closeDrawer()
+                            }
+                    )
+                }
             }
         }
     }

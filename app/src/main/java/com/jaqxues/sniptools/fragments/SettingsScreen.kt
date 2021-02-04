@@ -3,8 +3,8 @@ package com.jaqxues.sniptools.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -28,15 +28,19 @@ import com.jaqxues.sniptools.viewmodel.SettingsViewModel
  */
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel) {
-    ScrollableColumn(Modifier.padding(16.dp)) {
-        val prefs = AmbientContext.current.getSharedPreferences("main", Context.MODE_PRIVATE)
+    LazyColumn(modifier = Modifier.padding(16.dp)) {
+        // use `item` for separate elements like headers
+        // and `items` for lists of identical elements
+        item {
+            val prefs = AmbientContext.current.getSharedPreferences("main", Context.MODE_PRIVATE)
 
-        Category(title = "Updates") {
-            UpdateSettings(settingsViewModel)
-        }
+            Category(title = "Updates") {
+                UpdateSettings(settingsViewModel)
+            }
 
-        Category(title = "Root Options") {
-            RootSettings(prefs)
+            Category(title = "Root Options") {
+                RootSettings(prefs)
+            }
         }
     }
 

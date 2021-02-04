@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.Flow
  */
 @Composable
 fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackViewModel) {
-    onActive { packViewModel.refreshServerPacks() }
+    LaunchedEffect(Unit) { packViewModel.refreshServerPacks() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(Modifier.weight(1f)) {

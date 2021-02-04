@@ -13,10 +13,12 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.BuildConfig
 import com.jaqxues.sniptools.R
+import com.jaqxues.sniptools.ui.theme.DarkTheme
 import com.jaqxues.sniptools.utils.installedScVersion
 
 @Composable
@@ -48,7 +50,9 @@ fun HomeContent(modifier: Modifier = Modifier) {
         Image(
             imageResource(R.drawable.sniptools_logo),
             "Home Logo",
-            Modifier.padding(32.dp).preferredHeight(72.dp)
+                Modifier
+                        .padding(32.dp)
+                        .preferredHeight(72.dp)
         )
         HomeDivider()
         Text(
@@ -86,4 +90,14 @@ fun HomeFooter() {
         }, fontSize = 12.sp)
     }
     Spacer(Modifier.height(16.dp))
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    DarkTheme {
+        Surface {
+            HomeScreen()
+        }
+    }
 }

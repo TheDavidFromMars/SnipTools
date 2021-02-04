@@ -1,16 +1,13 @@
 package com.jaqxues.sniptools.fragments
 
-import androidx.compose.animation.animateAsState
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +38,9 @@ fun PackSelectorTab(
     selectedPack: String? = null
 ) {
     AmbientContext.current.let { ctx ->
-        onActive { packViewModel.refreshLocalPacks(ctx, null, PackFactory(false)) }
+        LaunchedEffect(Unit) {
+            packViewModel.refreshLocalPacks(ctx, null, PackFactory(false))
+        }
     }
     val localPacks = packViewModel.localPacks.observeAsState()
     val localPacksCaptured = localPacks.value
@@ -81,16 +80,15 @@ fun PackElementLayout(
             )
         }
         else -> {
-            val color by animateAsState(
-                when (packData) {
-                    is StatefulPackData.AvailablePack ->
-                        Color.White
-                    is StatefulPackData.LoadedPack ->
-                        Color(0xFF00AA00)
-                    is StatefulPackData.PackLoadError ->
-                        Color.Red
-                    else -> error("Illegal PackLoad State")
-                }
+            val color by animateColorAsState(when (packData) {
+                is StatefulPackData.AvailablePack ->
+                    Color.White
+                is StatefulPackData.LoadedPack ->
+                    Color(0xFF00AA00)
+                is StatefulPackData.PackLoadError ->
+                    Color.Red
+                else -> error("Illegal PackLoad State")
+            }
             )
 
             ExpandablePackLayout(

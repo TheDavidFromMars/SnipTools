@@ -3,7 +3,7 @@ package com.jaqxues.sniptools.fragments
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.animateAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -91,7 +91,7 @@ fun ExpandablePackLayout(
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
-                val rotation by animateAsState(if (extended) 0f else 180f)
+                val rotation by animateFloatAsState(if (extended) 0f else 180f)
 
                 Icon(
                     vectorResource(id = R.drawable.ic_pack),
