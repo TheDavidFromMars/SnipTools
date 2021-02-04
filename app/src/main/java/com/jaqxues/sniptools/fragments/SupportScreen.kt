@@ -2,11 +2,14 @@ package com.jaqxues.sniptools.fragments
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jaqxues.sniptools.ui.theme.DarkTheme
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
@@ -31,6 +34,16 @@ fun SupportScreen() {
             Category("Twitter") {
                 Text(loremIpsum, textAlign = TextAlign.Center)
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun SupportScreenPreview() {
+    DarkTheme {
+        Surface {
+            SupportScreen()
         }
     }
 }

@@ -120,7 +120,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                                                 style = MaterialTheme.typography.subtitle2
                                             )
                                             Divider(
-                                                Modifier.padding(top = 16.dp, end = 32.dp),
+                                                Modifier.padding(top = 8.dp, bottom = 8.dp, end = 32.dp),
                                                 color = MaterialTheme.colors.primary
                                             )
                                         }
