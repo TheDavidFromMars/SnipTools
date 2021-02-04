@@ -1,10 +1,10 @@
 package com.jaqxues.sniptools.fragments
 
 import androidx.compose.animation.animateAsState
-import androidx.compose.animation.core.animate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -162,6 +162,7 @@ fun LocalActionRow(
         IconButton(onClick = onChangelog) {
             Image(
                 vectorResource(id = R.drawable.ic_baseline_bug_report_48),
+                "Known Bugs",
                 colorFilter = ColorFilter.tint(Color.White),
                 modifier = Modifier.preferredHeight(24.dp)
             )
@@ -180,6 +181,7 @@ fun LocalActionRow(
         IconButton(onClick = onDelete) {
             Image(
                 vectorResource(id = R.drawable.ic_baseline_remove_circle_outline_48),
+                "Remove Pack",
                 colorFilter = ColorFilter.tint(Color.White),
                 modifier = Modifier.preferredHeight(24.dp)
             )

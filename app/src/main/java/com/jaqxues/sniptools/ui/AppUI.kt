@@ -1,9 +1,6 @@
 package com.jaqxues.sniptools.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -117,11 +114,11 @@ fun AppUi() {
                         navigationIcon = {
                             if (currentScreen?.isTopLevelScreen == true) {
                                 IconButton(onClick = { scaffoldState.drawerState.open() }) {
-                                    Icon(Icons.Default.Menu)
+                                    Icon(Icons.Default.Menu, "Open Menu")
                                 }
                             } else {
                                 IconButton(onClick = { navController.popBackStack() }) {
-                                    Icon(Icons.Default.ArrowBack)
+                                    Icon(Icons.Default.ArrowBack, "Go Back")
                                 }
                             }
                         }
@@ -143,7 +140,7 @@ fun AppUi() {
             drawerElevation = 2.dp,
             drawerContent = {
                 // Stop Drawer from closing when touching on non-clickable elements
-                Box(Modifier.fillMaxSize().clickable(onClick = {}, indication = null)) {
+                Box(Modifier.fillMaxSize()) {
                     DrawerContent(
                         navController,
                         packDestinations
@@ -275,6 +272,7 @@ fun DrawerContent(
         ) {
             Image(
                 imageResource(R.drawable.sniptools_logo),
+                "App Logo",
                 Modifier.padding(8.dp)
             )
             Column(Modifier.padding(16.dp)) {
@@ -378,6 +376,7 @@ private fun DrawerButton(
                 if (icon != null)
                     Image(
                         imageVector = icon,
+                        null,
                         colorFilter = ColorFilter.tint(textIconColor),
                         alpha = imageAlpha,
                         modifier = Modifier.size(24.dp)

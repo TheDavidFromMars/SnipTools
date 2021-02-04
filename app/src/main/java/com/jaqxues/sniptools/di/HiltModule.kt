@@ -1,6 +1,7 @@
 package com.jaqxues.sniptools.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.jaqxues.sniptools.db.AppDatabase
@@ -9,8 +10,8 @@ import com.jaqxues.sniptools.pack.PackLoadManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -25,7 +26,7 @@ import javax.inject.Singleton
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 05.06.20 - Time 19:38.
  */
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object DataModule {
     @OptIn(ExperimentalSerializationApi::class)
@@ -50,7 +51,7 @@ object DataModule {
     fun providePackLoadManager() = PackLoadManager()
 
     @Provides
-    fun provideSharedPrefs(@ApplicationContext context: Context) =
+    fun provideSharedPrefs(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences("main", Context.MODE_PRIVATE)
 
     @Singleton

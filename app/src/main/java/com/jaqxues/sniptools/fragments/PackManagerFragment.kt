@@ -95,6 +95,7 @@ fun ExpandablePackLayout(
 
                 Icon(
                     vectorResource(id = R.drawable.ic_pack),
+                    "Pack Icon",
                     Modifier
                         .padding(horizontal = 4.dp)
                         .align(Alignment.CenterVertically)
@@ -108,6 +109,7 @@ fun ExpandablePackLayout(
 
                 Icon(
                     vectorResource(id = R.drawable.ic_pack),
+                    "Pack Logo",
                     Modifier
                         .padding(horizontal = 16.dp)
                         .preferredHeight(24.dp),

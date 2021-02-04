@@ -100,6 +100,7 @@ fun <T> DropdownPreference(
                 Text(values[current] ?: "Unknown")
                 Image(
                     imageResource(id = android.R.drawable.arrow_down_float),
+                    "Arrow Down",
                     Modifier.padding(horizontal = 8.dp).size(8.dp)
                 )
             }

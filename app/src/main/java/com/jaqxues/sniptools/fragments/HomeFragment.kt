@@ -47,6 +47,7 @@ fun HomeContent(modifier: Modifier = Modifier) {
     ) {
         Image(
             imageResource(R.drawable.sniptools_logo),
+            "Home Logo",
             Modifier.padding(32.dp).preferredHeight(72.dp)
         )
         HomeDivider()

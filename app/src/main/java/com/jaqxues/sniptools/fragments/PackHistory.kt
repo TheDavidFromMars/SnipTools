@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -74,6 +75,7 @@ fun PackHistoryContent(packHistory: List<ServerPackEntity>, onDownload: (String)
                         }) {
                             Icon(
                                 vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                                "Pack Download",
                                 modifier = Modifier.size(24.dp)
                             )
                         }

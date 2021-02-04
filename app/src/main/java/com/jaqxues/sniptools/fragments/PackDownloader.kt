@@ -3,6 +3,7 @@ package com.jaqxues.sniptools.fragments
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -178,18 +179,21 @@ fun RemoteActionRow(
         IconButton(onClick = onShowHistory) {
             Icon(
                 vectorResource(R.drawable.ic_baseline_history_48),
+                "Pack History",
                 modifier = Modifier.preferredHeight(24.dp)
             )
         }
         IconButton(onClick = onDownload, Modifier.padding(horizontal = 16.dp)) {
             Icon(
                 vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                "Pack Download",
                 modifier = Modifier.preferredHeight(28.dp)
             )
         }
         IconButton(onClick = onShowChangeLog) {
             Icon(
                 vectorResource(R.drawable.ic_baseline_library_books_48),
+                "Pack Release Notes",
                 modifier = Modifier.preferredHeight(24.dp)
             )
         }
