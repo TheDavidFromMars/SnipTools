@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.*
-import com.jaqxues.akrolyb.utils.XposedChecks
+import com.jaqxues.akrolyb.utils.XposedUtils
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.fragments.*
 import com.jaqxues.sniptools.pack.ExternalDestination
@@ -124,7 +124,7 @@ fun AppUi() {
                             }
                         }
                     )
-                    if (!XposedChecks.isModuleActive()) {
+                    if (!XposedUtils.isHooked) {
                         Text(
                             text = "Xposed Module not active",
                             color = MaterialTheme.colors.onError,

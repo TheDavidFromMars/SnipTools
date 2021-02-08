@@ -1,23 +1,25 @@
 package com.jaqxues.sniptools.viewmodel
 
 import android.content.Context
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.repository.PackRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 import java.security.cert.X509Certificate
+import javax.inject.Inject
 
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>
  * Date: 05.06.20 - Time 19:41.
  */
-class PackViewModel @ViewModelInject constructor(private val packRepo: PackRepository) : ViewModel() {
+@HiltViewModel
+class PackViewModel @Inject constructor(private val packRepo: PackRepository) : ViewModel() {
     val localPacks: LiveData<List<String>> = packRepo.localPacks
     val packLoadChanges = packRepo.packLoadChanges
 
