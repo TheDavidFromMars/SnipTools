@@ -14,7 +14,7 @@ import com.jaqxues.akrolyb.utils.XposedUtils
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.PackFactory
 import com.jaqxues.sniptools.utils.CommonSetup
-import com.jaqxues.sniptools.utils.ContextContainer
+import com.jaqxues.sniptools.utils.ContextHolder
 import com.jaqxues.sniptools.utils.PathProvider
 import com.jaqxues.sniptools.utils.Preferences.SELECTED_PACKS
 import de.robv.android.xposed.IXposedHookLoadPackage
@@ -62,8 +62,8 @@ class HookManager : IXposedHookLoadPackage {
 
                     val snapContext = param.args[0] as Context
                     val snapApp = param.thisObject as Application
-                    val moduleContext = ContextContainer.createModuleContext(snapApp)
-                    ContextContainer.setModuleContext(moduleContext)
+                    val moduleContext = ContextHolder.createModuleContext(snapApp)
+                    ContextHolder.setModuleContext(moduleContext)
 
                     for (selectedPack in SELECTED_PACKS.getPref()) {
                         val pack: ModPack = ModPackBase.buildPack(
@@ -86,7 +86,7 @@ class HookManager : IXposedHookLoadPackage {
                             "onCreate",
                             Bundle::class.java,
                             after { param ->
-                                ContextContainer.setActivity(param.thisObject as Activity)
+                                ContextHolder.activity = param.thisObject as Activity
                                 Timber.d("Invoked LandingPageActivity#onCreate(Bundle), invoking lateInit")
 
                                 featureManager.lateInitAll(
@@ -102,7 +102,7 @@ class HookManager : IXposedHookLoadPackage {
                     }
                 } catch (t: Throwable) {
                     val message = ModPack.getPackErrorMessage(t)
-                    ContextContainer.getModuleContext()?.let { ctx ->
+                    ContextHolder.getModuleContext()?.let { ctx ->
                         Toast.makeText(ctx, message, Toast.LENGTH_LONG).show()
                     }
                     Timber.e(t, message)

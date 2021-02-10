@@ -2,6 +2,8 @@ package com.jaqxues.sniptools.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import com.jaqxues.akrolyb.utils.ContextHolderBase
+import com.jaqxues.sniptools.CustomApplication
 import timber.log.Timber
 
 
@@ -23,3 +25,7 @@ val Context.installedScVersion: String?
             Timber.e(t, "Unknown error during attempt to get installed package version")
             null
         }
+
+object ContextHolder: ContextHolderBase() {
+    override val packageName get() = CustomApplication.PACKAGE_NAME
+}

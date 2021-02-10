@@ -1,7 +1,7 @@
 package com.jaqxues.sniptools.packimpl.utils
 
 import android.app.AlertDialog
-import com.jaqxues.sniptools.utils.ContextContainer
+import com.jaqxues.sniptools.utils.ContextHolder
 
 
 /**
@@ -10,5 +10,5 @@ import com.jaqxues.sniptools.utils.ContextContainer
  */
 inline fun createDialog(config: AlertDialog.Builder.() -> Unit): AlertDialog =
     AlertDialog.Builder(
-        ContextContainer.getActivity() ?: error("Activity must be not-null to show Dialog!")
+        ContextHolder.activity ?: error("Activity must be not-null to show Dialog!")
     ).apply(config).create()

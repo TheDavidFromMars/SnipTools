@@ -9,7 +9,7 @@ import com.jaqxues.sniptools.pack.ExternalDestination
 import com.jaqxues.sniptools.pack.IFeature
 import com.jaqxues.sniptools.packimpl.DebugMemberDeclarations.ON_CREATE_PROVIDER
 import com.jaqxues.sniptools.packimpl.DebugPreferences.DB_DEBUG_SERVER
-import com.jaqxues.sniptools.utils.ContextContainer
+import com.jaqxues.sniptools.utils.ContextHolder
 
 
 /**
@@ -27,7 +27,7 @@ class DebugFeature : IFeature() {
 
             hookMethod(ON_CREATE_PROVIDER, after {
                 DebugDB.initialize(
-                    ContextContainer.getModuleContextNotNull(context),
+                    ContextHolder.getModuleContextNotNull(context),
                     context,
                     DebugDBFactory()
                 )
