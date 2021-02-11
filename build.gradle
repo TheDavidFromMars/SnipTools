@@ -3,11 +3,11 @@
 buildscript {
     ext {
         // Dependency Versions
-        kotlin_version = '1.4.21-2'
+        kotlin_version = '1.4.30'
         libsuVersion = '3.0.2'
         lifecycle_version = '2.2.0'
-        compose_version = '1.0.0-alpha11'
-        nav_compose_version = '1.0.0-alpha06'
+        compose_version = '1.0.0-alpha12'
+        nav_compose_version = '1.0.0-alpha07'
         room_version = '2.2.6'
         hilt_version = '1.0.0-alpha03'
         dagger_version = '2.31.2-alpha'
@@ -20,7 +20,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha05'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha06'
         classpath 'com.android.tools:r8:2.1.75'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
