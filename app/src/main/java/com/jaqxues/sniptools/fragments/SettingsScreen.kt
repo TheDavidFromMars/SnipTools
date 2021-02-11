@@ -12,7 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
@@ -32,7 +32,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
         // use `item` for separate elements like headers
         // and `items` for lists of identical elements
         item {
-            val prefs = AmbientContext.current.getSharedPreferences("main", Context.MODE_PRIVATE)
+            val prefs = LocalContext.current.getSharedPreferences("main", Context.MODE_PRIVATE)
 
             Category(title = "Updates") {
                 UpdateSettings(settingsViewModel)
@@ -49,7 +49,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel) {
 
 @Composable
 private fun UpdateSettings(settingsViewModel: SettingsViewModel) {
-    val ctx = AmbientContext.current
+    val ctx = LocalContext.current
 
     PrefButton(onClick = { settingsViewModel.downloadApk(ctx) }) {
         Text("Download Latest Apk")
@@ -126,7 +126,7 @@ fun HandleDownloadEvent(settingsViewModel: SettingsViewModel) {
         is Request.Success -> {
             if (evt.data == null) {
                 Toast.makeText(
-                    AmbientContext.current,
+                    LocalContext.current,
                     "Already on latest Apk",
                     Toast.LENGTH_LONG
                 ).show()
@@ -136,7 +136,7 @@ fun HandleDownloadEvent(settingsViewModel: SettingsViewModel) {
         }
         is Request.Error -> {
             Toast.makeText(
-                AmbientContext.current,
+                LocalContext.current,
                 "Could not download apk (${evt.t.message}",
                 Toast.LENGTH_LONG
             ).show()

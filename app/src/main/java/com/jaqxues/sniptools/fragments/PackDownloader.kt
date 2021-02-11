@@ -9,8 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,7 +52,7 @@ fun HandlePackDownloadEvents(downloadFlow: Flow<Request<String>>, navController:
             }
             is Request.Error -> {
                 Toast.makeText(
-                    AmbientContext.current,
+                    LocalContext.current,
                     "Could not download Pack (${evt.t.message})",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -100,7 +100,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                         if (showChangelog) {
                             if (pack.changelog == null) {
                                 Toast.makeText(
-                                    AmbientContext.current,
+                                    LocalContext.current,
                                     "Pack Changelog not available",
                                     Toast.LENGTH_SHORT
                                 ).show()
@@ -135,7 +135,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                         Divider(Modifier.padding(horizontal = 80.dp))
 
                         Spacer(Modifier.padding(8.dp))
-                        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                        Providers(LocalContentAlpha provides ContentAlpha.medium) {
                             Text(
                                 "Pack Type: ${if (pack.devPack) "Developer" else "User"}",
                                 fontSize = 12.sp
@@ -154,7 +154,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
 @Composable
 fun PackDownloaderFooter(packViewModel: ServerPackViewModel) {
     val time = packViewModel.lastChecked.observeAsState().value ?: -1
-    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+    Providers(LocalContentAlpha provides ContentAlpha.medium) {
         Text(buildAnnotatedString {
             append("Last Checked: ")
             Highlight {
@@ -178,21 +178,21 @@ fun RemoteActionRow(
     ) {
         IconButton(onClick = onShowHistory) {
             Icon(
-                vectorResource(R.drawable.ic_baseline_history_48),
+                painterResource(R.drawable.ic_baseline_history_48),
                 "Pack History",
                 modifier = Modifier.preferredHeight(24.dp)
             )
         }
         IconButton(onClick = onDownload, Modifier.padding(horizontal = 16.dp)) {
             Icon(
-                vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                painterResource(R.drawable.ic_baseline_cloud_download_48),
                 "Pack Download",
                 modifier = Modifier.preferredHeight(28.dp)
             )
         }
         IconButton(onClick = onShowChangeLog) {
             Icon(
-                vectorResource(R.drawable.ic_baseline_library_books_48),
+                painterResource(R.drawable.ic_baseline_library_books_48),
                 "Pack Release Notes",
                 modifier = Modifier.preferredHeight(24.dp)
             )

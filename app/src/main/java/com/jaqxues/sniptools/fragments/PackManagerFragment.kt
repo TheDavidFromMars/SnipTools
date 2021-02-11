@@ -8,7 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.TabDefaults.tabIndicatorOffset
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -41,7 +41,7 @@ fun PackManagerScreen(
         TabRow(
             selectedTabIndex = currentTab.ordinal,
             indicator = {
-                TabDefaults.Indicator(
+                TabRowDefaults.Indicator(
                     modifier = Modifier.tabIndicatorOffset(
                         it[currentTab.ordinal]
                     ), color = MaterialTheme.colors.primary
@@ -58,7 +58,7 @@ fun PackManagerScreen(
 
         // For resetting the selectedPack after switching Tabs
         var selectedPackState = selectedPack
-        Crossfade(current = currentTab) {
+        Crossfade(targetState = currentTab) {
             when (it) {
                 PackManagerTabs.PACK_SELECTOR -> PackSelectorTab(
                     navController,
@@ -79,7 +79,7 @@ fun PackManagerScreen(
 @Composable
 fun ExpandablePackLayout(
     packName: String,
-    color: Color = AmbientContentColor.current,
+    color: Color = LocalContentColor.current,
     initiallyExpanded: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -94,7 +94,7 @@ fun ExpandablePackLayout(
                 val rotation by animateFloatAsState(if (extended) 0f else 180f)
 
                 Icon(
-                    vectorResource(id = R.drawable.ic_pack),
+                    painterResource(id = R.drawable.ic_pack),
                     "Pack Icon",
                     Modifier
                         .padding(horizontal = 4.dp)
@@ -108,7 +108,7 @@ fun ExpandablePackLayout(
                 )
 
                 Icon(
-                    vectorResource(id = R.drawable.ic_pack),
+                    painterResource(id = R.drawable.ic_pack),
                     "Pack Logo",
                     Modifier
                         .padding(horizontal = 16.dp)

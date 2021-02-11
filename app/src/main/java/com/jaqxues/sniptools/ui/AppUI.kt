@@ -16,14 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.*
 import com.jaqxues.akrolyb.utils.XposedUtils
@@ -103,7 +103,7 @@ fun AppUi() {
 
                                 // SubTitle if data is available for current screen
                                 currentScreen?.let { screen ->
-                                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                                    Providers(LocalContentAlpha provides ContentAlpha.medium) {
                                         Text(
                                             screen.screenName,
                                             fontWeight = FontWeight.Normal, fontSize = 12.sp
@@ -130,7 +130,7 @@ fun AppUi() {
                             color = MaterialTheme.colors.onError,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
-                                .clip(RoundedCornerShape(bottomLeft = 8.dp, bottomRight = 8.dp))
+                                .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
                                 .background(MaterialTheme.colors.error)
                                 .padding(8.dp).fillMaxWidth(),
                             style = MaterialTheme.typography.body1
@@ -275,15 +275,15 @@ fun DrawerContent(
                     verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                        imageResource(R.drawable.sniptools_logo),
+                        painterResource(R.drawable.sniptools_logo),
                         "App Logo",
                         Modifier.padding(8.dp)
                 )
                 Column(Modifier.padding(16.dp)) {
-                    Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                    Providers(LocalContentAlpha provides ContentAlpha.high) {
                         Text("SnipTools")
                     }
-                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                    Providers(LocalContentAlpha provides ContentAlpha.medium) {
                         Text("I hope you're happy now", fontSize = 12.sp)
                     }
                 }
@@ -310,7 +310,7 @@ fun DrawerContent(
             }
             loadedPackDestinations.forEach { (packName, destinations) ->
                 Divider(Modifier.padding(horizontal = 16.dp))
-                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                Providers(LocalContentAlpha provides ContentAlpha.medium) {
                     Text(
                             packName,
                             modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),

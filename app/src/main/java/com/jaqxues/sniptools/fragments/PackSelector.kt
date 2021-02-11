@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.AmbientContext
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -37,7 +37,7 @@ fun PackSelectorTab(
     packViewModel: PackViewModel,
     selectedPack: String? = null
 ) {
-    AmbientContext.current.let { ctx ->
+    LocalContext.current.let { ctx ->
         LaunchedEffect(Unit) {
             packViewModel.refreshLocalPacks(ctx, null, PackFactory(false))
         }
@@ -99,7 +99,7 @@ fun PackElementLayout(
                 Column(Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
                     Divider(Modifier.padding(horizontal = 20.dp))
 
-                    val context = AmbientContext.current
+                    val context = LocalContext.current
 
                     LocalActionRow(packData, onChangelog = {
                         navController.navigate(
@@ -159,7 +159,7 @@ fun LocalActionRow(
     ) {
         IconButton(onClick = onChangelog) {
             Image(
-                vectorResource(id = R.drawable.ic_baseline_bug_report_48),
+                painterResource(id = R.drawable.ic_baseline_bug_report_48),
                 "Known Bugs",
                 colorFilter = ColorFilter.tint(Color.White),
                 modifier = Modifier.preferredHeight(24.dp)
@@ -178,7 +178,7 @@ fun LocalActionRow(
 
         IconButton(onClick = onDelete) {
             Image(
-                vectorResource(id = R.drawable.ic_baseline_remove_circle_outline_48),
+                painterResource(id = R.drawable.ic_baseline_remove_circle_outline_48),
                 "Remove Pack",
                 colorFilter = ColorFilter.tint(Color.White),
                 modifier = Modifier.preferredHeight(24.dp)
@@ -189,7 +189,7 @@ fun LocalActionRow(
 
 @Composable
 fun PackMetadataLayout(metadata: PackMetadata) {
-    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+    Providers(LocalContentAlpha provides ContentAlpha.medium) {
         Text("Pack Type: ${if (metadata.devPack) "Developer" else "User"}", fontSize = 12.sp)
         Text("Snapchat Version: ${metadata.scVersion}", fontSize = 12.sp)
         Text("Pack Version: ${metadata.packVersion}", fontSize = 12.sp)

@@ -10,8 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.akrolyb.prefs.Preference
@@ -69,7 +69,7 @@ fun SwitchPreference(pref: Preference<Boolean>, text: @Composable () -> Unit) {
         mutableStateOf(pref.getPref())
     }
 
-    val ctx = AmbientContext.current
+    val ctx = LocalContext.current
 
     SwitchCard(toggled = toggled, onToggle = {
         toggled = it
@@ -92,20 +92,21 @@ fun <T> DropdownPreference(
     var expanded by remember { mutableStateOf(false) }
     var current by remember { mutableStateOf(pref.getPref()) }
 
-    DropdownMenu(toggle = {
-        SplitCard(
+
+    SplitCard(
             Modifier.toggleable(value = expanded, onValueChange = { expanded = !expanded }),
             left = title,
             right = {
                 Text(values[current] ?: "Unknown")
                 Image(
-                    imageResource(id = android.R.drawable.arrow_down_float),
-                    "Arrow Down",
-                    Modifier.padding(horizontal = 8.dp).size(8.dp)
+                        painterResource(id = android.R.drawable.arrow_down_float),
+                        "Arrow Down",
+                        Modifier.padding(horizontal = 8.dp).size(8.dp)
                 )
             }
-        )
-    }, expanded = expanded, onDismissRequest = { expanded = false }) {
+    )
+
+    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
         values.forEach { (k, v) ->
             DropdownMenuItem(onClick = {
                 pref.putPref(k)
@@ -122,7 +123,7 @@ fun <T> DropdownPreference(
 fun TitleAndDescription(title: String, description: String) {
     Column {
         Text(title, Modifier.padding(bottom = 2.dp))
-        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+        Providers(LocalContentAlpha provides ContentAlpha.medium) {
             Text(description, fontSize = 12.sp)
         }
     }

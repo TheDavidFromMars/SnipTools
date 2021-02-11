@@ -43,7 +43,7 @@ fun BugsContent(bugs: List<KnownBugEntity>?) {
                     Text(category)
                     Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
 
-                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                    Providers(LocalContentAlpha provides ContentAlpha.medium) {
                         for (bug in bugs) {
                             Row(Modifier.padding(vertical = 4.dp, horizontal = 8.dp)) {
                                 Text(

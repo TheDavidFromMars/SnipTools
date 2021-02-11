@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.jaqxues.akrolyb.prefs.edit
 import com.jaqxues.akrolyb.prefs.getPref
@@ -40,7 +40,7 @@ fun GeneralScreen() {
             val featureKey =
                 FeatureSet.optionalFeatures.entries.find { (_, v) -> v == k }?.key
                     ?: error("Feature Key cannot be null")
-            val ctx = AmbientContext.current
+            val ctx = LocalContext.current
             CheckboxCard(
                 toggled = featureKey !in disabledFeatures,
                 onToggle = { enabled ->

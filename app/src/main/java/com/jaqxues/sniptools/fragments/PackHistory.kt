@@ -15,8 +15,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -42,7 +42,7 @@ fun PackHistoryScreen(
             when (request) {
                 is Request.Error -> {
                     Toast.makeText(
-                        AmbientContext.current,
+                        LocalContext.current,
                         "Could not refresh Pack History", Toast.LENGTH_LONG
                     ).show()
                 }
@@ -74,7 +74,7 @@ fun PackHistoryContent(packHistory: List<ServerPackEntity>, onDownload: (String)
                             onDownload(pack.name)
                         }) {
                             Icon(
-                                vectorResource(R.drawable.ic_baseline_cloud_download_48),
+                                painterResource(R.drawable.ic_baseline_cloud_download_48),
                                 "Pack Download",
                                 modifier = Modifier.size(24.dp)
                             )
@@ -82,9 +82,9 @@ fun PackHistoryContent(packHistory: List<ServerPackEntity>, onDownload: (String)
                     }
                     Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
 
-                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                    Providers(LocalContentAlpha provides ContentAlpha.medium) {
                         val dateTxt = if (pack.createdAt == null) "No date available" else
-                            DateFormat.getLongDateFormat(AmbientContext.current)
+                            DateFormat.getLongDateFormat(LocalContext.current)
                                 .format(pack.createdAt)
 
                         when {

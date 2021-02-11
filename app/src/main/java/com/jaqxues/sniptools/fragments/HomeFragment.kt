@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
@@ -48,7 +48,7 @@ fun HomeContent(modifier: Modifier = Modifier) {
         horizontalAlignment = CenterHorizontally
     ) {
         Image(
-            imageResource(R.drawable.sniptools_logo),
+            painterResource(R.drawable.sniptools_logo),
             "Home Logo",
                 Modifier
                         .padding(32.dp)
@@ -71,22 +71,22 @@ fun AnnotatedString.Builder.Highlight(action: @Composable AnnotatedString.Builde
 
 @Composable
 fun HomeFooter() {
-    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+    Providers(LocalContentAlpha provides ContentAlpha.medium) {
         Text(buildAnnotatedString {
             append("Author: ")
             Highlight { append("jaqxues") }
         }, fontSize = 12.sp)
 
         Text(buildAnnotatedString {
-            append(AmbientContext.current.getString(R.string.footer_app_version))
+            append(LocalContext.current.getString(R.string.footer_app_version))
             append(": ")
             Highlight { append(BuildConfig.VERSION_NAME) }
         }, fontSize = 12.sp)
 
         Text(buildAnnotatedString {
-            append(AmbientContext.current.getString(R.string.footer_snapchat_version))
+            append(LocalContext.current.getString(R.string.footer_snapchat_version))
             append(": ")
-            Highlight { append(AmbientContext.current.installedScVersion ?: "Unknown") }
+            Highlight { append(LocalContext.current.installedScVersion ?: "Unknown") }
         }, fontSize = 12.sp)
     }
     Spacer(Modifier.height(16.dp))
