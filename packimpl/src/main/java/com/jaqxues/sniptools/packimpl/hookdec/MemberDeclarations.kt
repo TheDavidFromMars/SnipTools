@@ -16,15 +16,15 @@ object MemberDeclarations {
         "a",
         arrayOf(ScreenshotBypass::class.java),
 
-        SCREENSHOT_DETECTOR, "Yf6"
+        SCREENSHOT_DETECTOR, "Eq6"
     )
 
     val MARK_STORY_AS_VIEWED = MethodDec(
         STORY_VIEWED_PLUGIN,
-        "Z",
+        "a0",
         arrayOf(StealthViewing::class.java),
 
-        "Ikf", "Haf"
+        "aIf", "byf"
     )
 
     val SNAP_MODEL_CONSTRUCTOR = ConstructorDec(
@@ -32,7 +32,7 @@ object MemberDeclarations {
         arrayOf(UnlimitedViewing::class.java),
 
         String::class.java, Boolean::class.java, String::class.java, String::class.java,
-        String::class.java, Long::class.javaObjectType, "j46", Long::class.java,
+        String::class.java, Long::class.javaObjectType, "Fe6", Long::class.java,
         Boolean::class.java, Long::class.javaObjectType, Long::class.java
     )
 
@@ -41,12 +41,12 @@ object MemberDeclarations {
         "f",
         arrayOf(MiscFeatures::class.java),
 
-        "Su5"
+        "sF5"
     )
 
     val DECRYPT_MEDIA_STREAM = MethodDec(
         CBC_ENCRYPTION_ALGORITHM,
-        "n0",
+        "L0",
         arrayOf(SavingFeature::class.java),
 
         InputStream::class.java

@@ -5,7 +5,7 @@ buildscript {
         // Dependency Versions
         kotlin_version = '1.4.30'
         libsuVersion = '3.0.2'
-        lifecycle_version = '2.2.0'
+        lifecycle_version = '2.3.0'
         compose_version = '1.0.0-alpha12'
         nav_compose_version = '1.0.0-alpha07'
         room_version = '2.2.6'

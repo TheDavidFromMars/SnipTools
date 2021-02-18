@@ -37,8 +37,8 @@ private fun SplitCard(
     left: @Composable () -> Unit,
     right: @Composable () -> Unit
 ) {
-    CustomCard(modifier) {
-        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+    CustomCard {
+        Row(modifier.then(Modifier.padding(16.dp)), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.weight(1f)) { left() }
             right()
         }
