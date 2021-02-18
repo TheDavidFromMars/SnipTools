@@ -78,7 +78,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
-    api 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1'
+    api 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0-RC'
     debugApi "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 //    api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
@@ -103,7 +103,7 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
 
-    api('com.github.jaqxues:Akrolyb:332ff125f3')
+    api('com.github.jaqxues:Akrolyb:4a20a054fc')
 
     api "androidx.compose.ui:ui:$compose_version"
     api "androidx.compose.material:material:$compose_version"
