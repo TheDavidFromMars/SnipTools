@@ -57,7 +57,7 @@ packCompiler {
                 Development      : buildType != 'release',
                 PackVersion      : "0.0.01",
                 PackVersionCode  : 1,
-                MinApkVersionCode: 1,
+                MinApkVersionCode: 2,
                 PackImplClass    : "com.jaqxues.sniptools.packimpl.PackImpl",
                 ScVersion        : "11.15.1.34"
         ]
