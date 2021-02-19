@@ -60,24 +60,21 @@ fun AppUi() {
         val packViewModel = viewModel<PackViewModel>()
         val loadedPacks = remember { mutableStateMapOf<String, ModPack>() }
 
-        val coroutineScope = rememberCoroutineScope()
-        remember {
-            coroutineScope.launch {
-                packViewModel.packLoadChanges.collect { (packName, state) ->
-                    when (state) {
-                        is StatefulPackData.LoadedPack -> {
-                            loadedPacks[packName] = state.pack
-                        }
-                        else -> {
-                            loadedPacks -= packName
-                        }
+        LaunchedEffect(packViewModel) {
+            packViewModel.packLoadChanges.collect { (packName, state) ->
+                when (state) {
+                    is StatefulPackData.LoadedPack -> {
+                        loadedPacks[packName] = state.pack
+                    }
+                    else -> {
+                        loadedPacks -= packName
                     }
                 }
             }
         }
 
         val packDestinations = loadedPacks.mapValues { (_, pack) ->
-            pack.disabledFeatures.observeAsState().value
+            pack.disabledFeatures.observeAsState()
             pack.staticFragments + pack.featureManager.getActiveFeatures().flatMap {
                 it.getDestinations().toList()
             }
@@ -86,13 +83,15 @@ fun AppUi() {
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                val (pack, currentRoute) = currentBackStackEntry.routeInfo
+                val (pack, currentRoute) = remember(currentBackStackEntry) { currentBackStackEntry.routeInfo }
 
-                val currentScreen = if (pack == null) {
-                    allLocalRoutes[currentRoute]
-                } else {
-                    KnownExternalDestinations.byRoute[currentRoute]
-                        ?: packDestinations[pack]?.find { it.route == currentRoute }
+                val currentScreen = remember(pack, currentRoute) {
+                    if (pack == null) {
+                        allLocalRoutes[currentRoute]
+                    } else {
+                        KnownExternalDestinations.byRoute[currentRoute]
+                            ?: packDestinations[pack]?.find { it.route == currentRoute }
+                    }
                 }
 
                 Column {
@@ -153,10 +152,11 @@ fun AppUi() {
                 navController,
                 packViewModel
             ) { packName, packScreen ->
-                packDestinations[packName]
-                    ?.find { it.route == packScreen }
-                    ?.screenComposable
-                    ?.invoke()
+                remember(packName, packScreen) {
+                    packDestinations[packName]
+                        ?.find { it.route == packScreen }
+                        ?.screenComposable
+                }?.invoke()
             }
         }
     }
@@ -230,7 +230,8 @@ fun Routing(
             )
         }
 
-        composable("${LocalScreen.PackHistory.route}/{sc_version}",
+        composable(
+            "${LocalScreen.PackHistory.route}/{sc_version}",
             listOf(navArgument("sc_version") {})
         ) {
             PackHistoryScreen(
@@ -271,13 +272,13 @@ fun DrawerContent(
         // and `items` for lists of identical elements
         item {
             Row(
-                    Modifier.padding(16.dp).fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                Modifier.padding(16.dp).fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                        painterResource(R.drawable.sniptools_logo),
-                        "App Logo",
-                        Modifier.padding(8.dp)
+                    painterResource(R.drawable.sniptools_logo),
+                    "App Logo",
+                    Modifier.padding(8.dp)
                 )
                 Column(Modifier.padding(16.dp)) {
                     Providers(LocalContentAlpha provides ContentAlpha.high) {
@@ -296,26 +297,26 @@ fun DrawerContent(
             LocalScreen.topLevelScreens.forEach {
                 val selected = pack == null && it.route == route
                 DrawerButton(
-                        label = it.screenName,
-                        icon = it.icon,
-                        isSelected = selected,
-                        action = {
-                            if (!selected) {
-                                navController.popBackStack(navController.graph.startDestination, false)
-                                navController.navigate(it.route)
-                            }
-                            closeDrawer()
+                    label = it.screenName,
+                    icon = it.icon,
+                    isSelected = selected,
+                    action = {
+                        if (!selected) {
+                            navController.popBackStack(navController.graph.startDestination, false)
+                            navController.navigate(it.route)
                         }
+                        closeDrawer()
+                    }
                 )
             }
             loadedPackDestinations.forEach { (packName, destinations) ->
                 Divider(Modifier.padding(horizontal = 16.dp))
                 Providers(LocalContentAlpha provides ContentAlpha.medium) {
                     Text(
-                            packName,
-                            modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 14.sp
+                        packName,
+                        modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 14.sp
                     )
                 }
 
@@ -330,16 +331,19 @@ fun DrawerContent(
                     val selected = packName == pack && destination.route == route
 
                     DrawerButton(
-                            icon = icon,
-                            label = label,
-                            isSelected = selected,
-                            action = {
-                                if (!selected) {
-                                    navController.popBackStack(navController.graph.startDestination, false)
-                                    navController.navigate("pack/$packName/${destination.route}")
-                                }
-                                closeDrawer()
+                        icon = icon,
+                        label = label,
+                        isSelected = selected,
+                        action = {
+                            if (!selected) {
+                                navController.popBackStack(
+                                    navController.graph.startDestination,
+                                    false
+                                )
+                                navController.navigate("pack/$packName/${destination.route}")
                             }
+                            closeDrawer()
+                        }
                     )
                 }
             }
