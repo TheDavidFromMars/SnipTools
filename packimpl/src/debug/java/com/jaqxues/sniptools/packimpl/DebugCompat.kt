@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
  * Date: 04.07.20 - Time 17:08.
  */
 object DebugCompat : IDebugCompat {
-    override val debugFeature get() = DebugFeature::class
-    override val debugPrefsClass get() = DebugPreferences::class
-    override val debugHookDecs get() = DebugMemberDeclarations
+    override val debugFeature: KClass<out IFeature>? get() = DebugFeature::class
+    override val debugPrefsClass: KClass<*>? get() = DebugPreferences::class
+    override val debugHookDecs: Any? get() = DebugMemberDeclarations
 }

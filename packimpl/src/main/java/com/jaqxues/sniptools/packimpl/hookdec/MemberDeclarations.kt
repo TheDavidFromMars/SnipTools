@@ -3,7 +3,6 @@ package com.jaqxues.sniptools.packimpl.hookdec
 import com.jaqxues.akrolyb.genhook.decs.MemberDec.ConstructorDec
 import com.jaqxues.akrolyb.genhook.decs.MemberDec.MethodDec
 import com.jaqxues.sniptools.packimpl.features.*
-import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.APP_START_EXPERIMENT_MANAGER
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.CBC_ENCRYPTION_ALGORITHM
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.SCREENSHOT_DETECTOR
 import com.jaqxues.sniptools.packimpl.hookdec.ClassDeclarations.SNAP_MODEL
@@ -34,14 +33,6 @@ object MemberDeclarations {
         String::class.java, Boolean::class.java, String::class.java, String::class.java,
         String::class.java, Long::class.javaObjectType, "Fe6", Long::class.java,
         Boolean::class.java, Long::class.javaObjectType, Long::class.java
-    )
-
-    val FORCE_APP_DECK = MethodDec(
-        APP_START_EXPERIMENT_MANAGER,
-        "f",
-        arrayOf(MiscFeatures::class.java),
-
-        "sF5"
     )
 
     val DECRYPT_MEDIA_STREAM = MethodDec(
