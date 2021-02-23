@@ -14,8 +14,6 @@ object PackPreferences {
 
     val STORY_STEALTH_ENABLED = Preference("story_stealth_enabled", true)
 
-    val FORCE_SC_APP_DECK_MODE = Preference("force_sc_app_deck_mode", true)
-
     val SNAP_VIDEO_LOOPING = Preference("snap_video_looping", true)
 
     val SNAP_IMAGE_UNLIMITED = Preference("snap_image_unlimited", true)
