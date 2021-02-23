@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.fragments
+package com.jaqxues.sniptools.ui.screens
 
 import android.text.format.DateFormat
 import android.widget.Toast
@@ -25,7 +25,7 @@ import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.db.ServerPackEntity
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.utils.Request
-import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
+import com.jaqxues.sniptools.ui.viewmodel.ServerPackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>

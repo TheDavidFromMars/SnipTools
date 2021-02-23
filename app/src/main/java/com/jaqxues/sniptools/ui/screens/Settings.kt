@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.fragments
+package com.jaqxues.sniptools.ui.screens
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -20,7 +20,7 @@ import com.jaqxues.sniptools.utils.PrefEntries
 import com.jaqxues.sniptools.utils.PrefEntry
 import com.jaqxues.sniptools.utils.Request
 import com.jaqxues.sniptools.utils.getBoolean
-import com.jaqxues.sniptools.viewmodel.SettingsViewModel
+import com.jaqxues.sniptools.ui.viewmodel.SettingsViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>

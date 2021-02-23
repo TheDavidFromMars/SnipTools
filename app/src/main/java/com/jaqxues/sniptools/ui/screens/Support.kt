@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.fragments
+package com.jaqxues.sniptools.ui.screens
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn

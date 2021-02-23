@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.viewmodel
+package com.jaqxues.sniptools.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

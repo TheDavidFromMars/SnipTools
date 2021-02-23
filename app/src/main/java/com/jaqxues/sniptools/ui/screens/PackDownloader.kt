@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.fragments
+package com.jaqxues.sniptools.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -21,7 +21,7 @@ import com.jaqxues.sniptools.ui.LocalScreen
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.utils.Request
 import com.jaqxues.sniptools.utils.formatRelativeAbbrev
-import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
+import com.jaqxues.sniptools.ui.viewmodel.ServerPackViewModel
 import kotlinx.coroutines.flow.Flow
 
 

@@ -28,19 +28,18 @@ import androidx.navigation.*
 import androidx.navigation.compose.*
 import com.jaqxues.akrolyb.utils.XposedUtils
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.fragments.*
+import com.jaqxues.sniptools.ui.screens.*
 import com.jaqxues.sniptools.pack.ExternalDestination
 import com.jaqxues.sniptools.pack.KnownExternalDestinations
 import com.jaqxues.sniptools.pack.ModPack
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.ui.theme.DarkTheme
-import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
-import com.jaqxues.sniptools.viewmodel.PackViewModel
-import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
-import com.jaqxues.sniptools.viewmodel.SettingsViewModel
+import com.jaqxues.sniptools.ui.viewmodel.KnownBugsViewModel
+import com.jaqxues.sniptools.ui.viewmodel.PackViewModel
+import com.jaqxues.sniptools.ui.viewmodel.ServerPackViewModel
+import com.jaqxues.sniptools.ui.viewmodel.SettingsViewModel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 /**

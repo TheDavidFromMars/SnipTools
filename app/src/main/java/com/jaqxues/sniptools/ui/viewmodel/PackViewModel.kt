@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.viewmodel
+package com.jaqxues.sniptools.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData

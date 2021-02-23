@@ -10,14 +10,16 @@ import androidx.room.*
  */
 @Dao
 interface PackDao {
-    @Query("""
+    @Query(
+        """
         SELECT SPE1.* FROM ServerPackEntity AS SPE1 WHERE pack_id IN (
             SELECT SPE2.pack_id FROM ServerPackEntity AS SPE2
             WHERE SPE1.sc_version = SPE2.sc_version
             ORDER BY SPE2.pack_v_code DESC, SPE2.created_at DESC
             LIMIT 1
         )
-    """)
+    """
+    )
     fun getLatestServerPacks(): LiveData<List<ServerPackEntity>>
 
     @Query("SELECT * FROM ServerPackEntity WHERE sc_version=:scVersion ORDER BY pack_v_code DESC, created_at DESC")

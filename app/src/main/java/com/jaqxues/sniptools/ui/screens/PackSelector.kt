@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.fragments
+package com.jaqxues.sniptools.ui.screens
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
@@ -24,7 +24,7 @@ import com.jaqxues.sniptools.pack.PackMetadata
 import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.LocalScreen
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
-import com.jaqxues.sniptools.viewmodel.PackViewModel
+import com.jaqxues.sniptools.ui.viewmodel.PackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>

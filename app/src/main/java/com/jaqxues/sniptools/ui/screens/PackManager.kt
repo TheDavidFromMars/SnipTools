@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.fragments
+package com.jaqxues.sniptools.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -21,8 +21,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jaqxues.sniptools.R
-import com.jaqxues.sniptools.viewmodel.PackViewModel
-import com.jaqxues.sniptools.viewmodel.ServerPackViewModel
+import com.jaqxues.sniptools.ui.viewmodel.PackViewModel
+import com.jaqxues.sniptools.ui.viewmodel.ServerPackViewModel
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnipTools.<br>

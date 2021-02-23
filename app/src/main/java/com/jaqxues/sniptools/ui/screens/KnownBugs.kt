@@ -1,4 +1,4 @@
-package com.jaqxues.sniptools.fragments
+package com.jaqxues.sniptools.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaqxues.sniptools.db.KnownBugEntity
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
-import com.jaqxues.sniptools.viewmodel.KnownBugsViewModel
+import com.jaqxues.sniptools.ui.viewmodel.KnownBugsViewModel
 
 
 /**
