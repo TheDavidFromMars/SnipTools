@@ -7,7 +7,7 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,10 +31,10 @@ fun EmptyScreenMessage(message: String, modifier: Modifier = Modifier) {
         Image(
             painterResource(id = R.drawable.sniptools_logo),
             "App Logo",
-            Modifier.preferredSize(50.dp)
+            Modifier.size(50.dp)
         )
 
-        Providers(LocalContentAlpha provides ContentAlpha.medium) {
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
                 message,
                 Modifier.padding(horizontal = 32.dp, vertical = 16.dp),

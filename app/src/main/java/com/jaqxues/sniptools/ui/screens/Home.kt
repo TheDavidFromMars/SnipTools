@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -52,7 +52,7 @@ fun HomeContent(modifier: Modifier = Modifier) {
             "Home Logo",
                 Modifier
                         .padding(32.dp)
-                        .preferredHeight(72.dp)
+                        .height(72.dp)
         )
         HomeDivider()
         Text(
@@ -71,7 +71,7 @@ fun AnnotatedString.Builder.Highlight(action: @Composable AnnotatedString.Builde
 
 @Composable
 fun HomeFooter() {
-    Providers(LocalContentAlpha provides ContentAlpha.medium) {
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
         Text(buildAnnotatedString {
             append("Author: ")
             Highlight { append("jaqxues") }

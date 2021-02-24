@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -82,7 +82,7 @@ fun PackHistoryContent(packHistory: List<ServerPackEntity>, onDownload: (String)
                     }
                     Divider(Modifier.padding(vertical = 8.dp), color = MaterialTheme.colors.primary)
 
-                    Providers(LocalContentAlpha provides ContentAlpha.medium) {
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         val dateTxt = if (pack.createdAt == null) "No date available" else
                             DateFormat.getLongDateFormat(LocalContext.current)
                                 .format(pack.createdAt)

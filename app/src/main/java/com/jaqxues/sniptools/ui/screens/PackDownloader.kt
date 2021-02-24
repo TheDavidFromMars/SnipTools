@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.Flow
  */
 @Composable
 fun PackDownloaderTab(navController: NavController, packViewModel: ServerPackViewModel) {
-    LaunchedEffect(Unit) { packViewModel.refreshServerPacks() }
+    LaunchedEffect(null) { packViewModel.refreshServerPacks() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(Modifier.weight(1f)) {
@@ -135,7 +135,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
                         Divider(Modifier.padding(horizontal = 80.dp))
 
                         Spacer(Modifier.padding(8.dp))
-                        Providers(LocalContentAlpha provides ContentAlpha.medium) {
+                        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                             Text(
                                 "Pack Type: ${if (pack.devPack) "Developer" else "User"}",
                                 fontSize = 12.sp
@@ -154,7 +154,7 @@ fun ServerPackContent(navController: NavController, packViewModel: ServerPackVie
 @Composable
 fun PackDownloaderFooter(packViewModel: ServerPackViewModel) {
     val time = packViewModel.lastChecked.observeAsState().value ?: -1
-    Providers(LocalContentAlpha provides ContentAlpha.medium) {
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
         Text(buildAnnotatedString {
             append("Last Checked: ")
             Highlight {
@@ -180,21 +180,21 @@ fun RemoteActionRow(
             Icon(
                 painterResource(R.drawable.ic_baseline_history_48),
                 "Pack History",
-                modifier = Modifier.preferredHeight(24.dp)
+                modifier = Modifier.height(24.dp)
             )
         }
         IconButton(onClick = onDownload, Modifier.padding(horizontal = 16.dp)) {
             Icon(
                 painterResource(R.drawable.ic_baseline_cloud_download_48),
                 "Pack Download",
-                modifier = Modifier.preferredHeight(28.dp)
+                modifier = Modifier.height(28.dp)
             )
         }
         IconButton(onClick = onShowChangeLog) {
             Icon(
                 painterResource(R.drawable.ic_baseline_library_books_48),
                 "Pack Release Notes",
-                modifier = Modifier.preferredHeight(24.dp)
+                modifier = Modifier.height(24.dp)
             )
         }
     }

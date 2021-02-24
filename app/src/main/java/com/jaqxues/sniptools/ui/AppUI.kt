@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,18 +29,17 @@ import androidx.navigation.*
 import androidx.navigation.compose.*
 import com.jaqxues.akrolyb.utils.XposedUtils
 import com.jaqxues.sniptools.R
+import com.jaqxues.sniptools.pack.*
 import com.jaqxues.sniptools.ui.screens.*
-import com.jaqxues.sniptools.pack.ExternalDestination
-import com.jaqxues.sniptools.pack.KnownExternalDestinations
-import com.jaqxues.sniptools.pack.ModPack
-import com.jaqxues.sniptools.pack.StatefulPackData
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
 import com.jaqxues.sniptools.ui.theme.DarkTheme
 import com.jaqxues.sniptools.ui.viewmodel.KnownBugsViewModel
 import com.jaqxues.sniptools.ui.viewmodel.PackViewModel
 import com.jaqxues.sniptools.ui.viewmodel.ServerPackViewModel
 import com.jaqxues.sniptools.ui.viewmodel.SettingsViewModel
+import com.jaqxues.sniptools.utils.Either
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 /**
@@ -101,7 +101,7 @@ fun AppUi() {
 
                                 // SubTitle if data is available for current screen
                                 currentScreen?.let { screen ->
-                                    Providers(LocalContentAlpha provides ContentAlpha.medium) {
+                                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                                         Text(
                                             screen.screenName,
                                             fontWeight = FontWeight.Normal, fontSize = 12.sp
@@ -112,7 +112,12 @@ fun AppUi() {
                         },
                         navigationIcon = {
                             if (currentScreen?.isTopLevelScreen == true) {
-                                IconButton(onClick = { scaffoldState.drawerState.open() }) {
+                                val scope = rememberCoroutineScope()
+                                IconButton(onClick = {
+                                    scope.launch {
+                                        scaffoldState.drawerState.open()
+                                    }
+                                }) {
                                     Icon(Icons.Default.Menu, "Open Menu")
                                 }
                             } else {
@@ -130,7 +135,8 @@ fun AppUi() {
                             modifier = Modifier
                                 .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
                                 .background(MaterialTheme.colors.error)
-                                .padding(8.dp).fillMaxWidth(),
+                                .padding(8.dp)
+                                .fillMaxWidth(),
                             style = MaterialTheme.typography.body1
                         )
                     }
@@ -140,10 +146,15 @@ fun AppUi() {
             drawerContent = {
                 // Stop Drawer from closing when touching on non-clickable elements
                 Box(Modifier.fillMaxSize()) {
+                    val scope = rememberCoroutineScope()
                     DrawerContent(
                         navController,
                         packDestinations
-                    ) { scaffoldState.drawerState.close() }
+                    ) {
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                    }
                 }
             }
         ) {
@@ -271,7 +282,9 @@ fun DrawerContent(
         // and `items` for lists of identical elements
         item {
             Row(
-                Modifier.padding(16.dp).fillMaxWidth(),
+                Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -280,10 +293,10 @@ fun DrawerContent(
                     Modifier.padding(8.dp)
                 )
                 Column(Modifier.padding(16.dp)) {
-                    Providers(LocalContentAlpha provides ContentAlpha.high) {
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                         Text("SnipTools")
                     }
-                    Providers(LocalContentAlpha provides ContentAlpha.medium) {
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Text("I hope you're happy now", fontSize = 12.sp)
                     }
                 }
@@ -310,7 +323,7 @@ fun DrawerContent(
             }
             loadedPackDestinations.forEach { (packName, destinations) ->
                 Divider(Modifier.padding(horizontal = 16.dp))
-                Providers(LocalContentAlpha provides ContentAlpha.medium) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                     Text(
                         packName,
                         modifier = Modifier.padding(vertical = 16.dp, horizontal = 32.dp),
@@ -354,7 +367,7 @@ fun DrawerContent(
 @Composable
 private fun DrawerButton(
     label: String,
-    icon: ImageVector? = null,
+    icon: DestinationIcon? = null,
     isSelected: Boolean,
     action: () -> Unit
 ) {
@@ -368,7 +381,9 @@ private fun DrawerButton(
         }
 
     Surface(
-        modifier = Modifier.padding(start = 8.dp, top = 8.dp, end = 8.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(start = 8.dp, top = 8.dp, end = 8.dp)
+            .fillMaxWidth(),
         color = backgroundColor,
         shape = MaterialTheme.shapes.small
     ) {
@@ -379,25 +394,49 @@ private fun DrawerButton(
             Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .fillMaxWidth()
             ) {
                 if (icon != null)
-                    Image(
-                        imageVector = icon,
-                        null,
-                        colorFilter = ColorFilter.tint(textIconColor),
-                        alpha = imageAlpha,
-                        modifier = Modifier.size(24.dp)
+                    ImageFromEither(
+                        either = icon,
+                        textIconColor = textIconColor,
+                        imageAlpha = imageAlpha
                     )
                 else
                     Spacer(Modifier.size(24.dp))
-                Spacer(Modifier.preferredWidth(16.dp))
+                Spacer(Modifier.width(16.dp))
                 Text(
                     text = label,
                     style = MaterialTheme.typography.body2,
                     color = textIconColor
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ImageFromEither(either: DestinationIcon, textIconColor: Color, imageAlpha: Float) {
+    when (either) {
+        is Either.Left -> {
+            Image(
+                painter = either.value,
+                null,
+                colorFilter = ColorFilter.tint(textIconColor),
+                alpha = imageAlpha,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        is Either.Right -> {
+            Image(
+                imageVector = either.value,
+                null,
+                colorFilter = ColorFilter.tint(textIconColor),
+                alpha = imageAlpha,
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }

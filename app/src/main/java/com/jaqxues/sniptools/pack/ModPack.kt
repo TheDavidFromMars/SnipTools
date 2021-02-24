@@ -2,7 +2,6 @@ package com.jaqxues.sniptools.pack
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.LiveData
 import com.jaqxues.akrolyb.genhook.FeatureHelper
 import com.jaqxues.akrolyb.genhook.FeatureManager
@@ -58,7 +57,7 @@ data class ExternalDestination(
         get() = defaultName
 
     @get:Composable
-    override val icon: ImageVector?
+    override val icon: DestinationIcon?
         get() = null
 }
 

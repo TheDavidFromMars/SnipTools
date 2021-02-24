@@ -123,7 +123,7 @@ fun <T> DropdownPreference(
 fun TitleAndDescription(title: String, description: String) {
     Column {
         Text(title, Modifier.padding(bottom = 2.dp))
-        Providers(LocalContentAlpha provides ContentAlpha.medium) {
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(description, fontSize = 12.sp)
         }
     }

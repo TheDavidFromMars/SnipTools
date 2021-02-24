@@ -99,7 +99,7 @@ fun ExpandablePackLayout(
                     Modifier
                         .padding(horizontal = 4.dp)
                         .align(Alignment.CenterVertically)
-                        .preferredHeight(8.dp)
+                        .height(8.dp)
                         .drawWithContent {
                             rotate(rotation) {
                                 this@drawWithContent.drawContent()
@@ -112,7 +112,7 @@ fun ExpandablePackLayout(
                     "Pack Logo",
                     Modifier
                         .padding(horizontal = 16.dp)
-                        .preferredHeight(24.dp),
+                        .height(24.dp),
                     tint = color
                 )
                 Text(

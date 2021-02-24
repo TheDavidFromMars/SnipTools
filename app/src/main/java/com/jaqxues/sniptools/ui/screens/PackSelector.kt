@@ -38,7 +38,7 @@ fun PackSelectorTab(
     selectedPack: String? = null
 ) {
     LocalContext.current.let { ctx ->
-        LaunchedEffect(Unit) {
+        LaunchedEffect(null) {
             packViewModel.refreshLocalPacks(ctx, null, PackFactory(false))
         }
     }
@@ -162,7 +162,7 @@ fun LocalActionRow(
                 painterResource(id = R.drawable.ic_baseline_bug_report_48),
                 "Known Bugs",
                 colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier.preferredHeight(24.dp)
+                modifier = Modifier.height(24.dp)
             )
         }
 
@@ -181,7 +181,7 @@ fun LocalActionRow(
                 painterResource(id = R.drawable.ic_baseline_remove_circle_outline_48),
                 "Remove Pack",
                 colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier.preferredHeight(24.dp)
+                modifier = Modifier.height(24.dp)
             )
         }
     }
@@ -189,7 +189,7 @@ fun LocalActionRow(
 
 @Composable
 fun PackMetadataLayout(metadata: PackMetadata) {
-    Providers(LocalContentAlpha provides ContentAlpha.medium) {
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
         Text("Pack Type: ${if (metadata.devPack) "Developer" else "User"}", fontSize = 12.sp)
         Text("Snapchat Version: ${metadata.scVersion}", fontSize = 12.sp)
         Text("Pack Version: ${metadata.packVersion}", fontSize = 12.sp)
