@@ -29,7 +29,7 @@ abstract class ModPack(metadata: PackMetadata) : ModPackBase<PackMetadata>(metad
             is PackNotFoundException -> "Activated Pack could not be found"
             is PackEnvironmentException -> {
                 val cause = t.cause
-                if (cause is UnsupportedScVersion) {
+                if (cause != null) {
                     cause.message
                 } else t.message
             }
