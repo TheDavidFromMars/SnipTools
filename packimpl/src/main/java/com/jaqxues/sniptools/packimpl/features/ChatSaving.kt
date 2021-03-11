@@ -1,7 +1,6 @@
 package com.jaqxues.sniptools.packimpl.features
 
 import android.content.Context
-import com.jaqxues.akrolyb.genhook.decs.after
 import com.jaqxues.sniptools.pack.ExternalDestination
 import com.jaqxues.sniptools.pack.IFeature
 

@@ -11,17 +11,6 @@ import androidx.core.view.size
  * Date: 08.10.20 - Time 17:02.
  */
 
-@OptIn(ExperimentalStdlibApi::class)
-val Menu.items: List<MenuItem>
-    get() {
-        if (isEmpty())
-            return emptyList()
-        return buildList {
-            for (x in 0 until this@items.size)
-                add(getItem(x))
-        }
-    }
-
 val Long.formatRelativeAbbrev: String
     get() {
         return if (this < 0)
