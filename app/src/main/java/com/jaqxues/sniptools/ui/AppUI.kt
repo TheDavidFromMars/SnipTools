@@ -174,7 +174,7 @@ data class RouteInfo(val packRoute: String? = null, val screenRoute: String? = n
 
 val NavBackStackEntry?.routeInfo: RouteInfo
     get() =
-        this?.arguments?.getString(KEY_ROUTE)?.let {
+        this?.destination?.route?.let {
             if (it.startsWith("pack/")) {
                 RouteInfo(arguments?.getString("pack_name"), arguments?.getString("pack_screen"))
             } else {
@@ -312,7 +312,7 @@ fun DrawerContent(
                     isSelected = selected,
                     action = {
                         if (!selected) {
-                            navController.popBackStack(navController.graph.startDestination, false)
+                            navController.popBackStack(navController.graph.startDestinationId, false)
                             navController.navigate(it.route)
                         }
                         closeDrawer()
@@ -347,7 +347,7 @@ fun DrawerContent(
                         action = {
                             if (!selected) {
                                 navController.popBackStack(
-                                    navController.graph.startDestination,
+                                    navController.graph.startDestinationId,
                                     false
                                 )
                                 navController.navigate("pack/$packName/${destination.route}")

@@ -3,15 +3,16 @@
 buildscript {
     ext {
         // Dependency Versions
-        kotlin_version = '1.4.31'
-        libsuVersion = '3.1.1'
-        lifecycle_version = '2.3.0'
-        compose_version = '1.0.0-beta02'
-        nav_compose_version = '1.0.0-alpha09'
-        room_version = '2.3.0-beta03'
-        hilt_version = '1.0.0-beta01'
-        hilt_navigation_compose_version = '1.0.0-alpha01'
-        dagger_version = '2.33-beta'
+        kotlin_version = '1.5.21'
+        libsuVersion = '3.1.2'
+        lifecycle_version = '2.3.1'
+        compose_version = '1.0.1'
+        nav_compose_version = '2.4.0-alpha06'
+        room_version = '2.3.0'
+        hilt_version = '1.0.0'
+        hilt_navigation_compose_version = '1.0.0-alpha03'
+        dagger_version = '2.38.1'
+        // https://github.com/google/dagger/issues/2337#issuecomment-846507939
     }
     repositories {
         google()
@@ -22,13 +23,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha09'
+        classpath 'com.android.tools.build:gradle:7.0.0'
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.3'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5'
         classpath "gradle.plugin.com.jaqxues:PackCompiler:0.0.6.8"
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.32-alpha'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

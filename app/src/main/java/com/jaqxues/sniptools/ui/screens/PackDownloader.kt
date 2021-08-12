@@ -15,7 +15,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.jaqxues.sniptools.R
 import com.jaqxues.sniptools.ui.LocalScreen
 import com.jaqxues.sniptools.ui.composables.EmptyScreenMessage
@@ -58,7 +57,7 @@ fun HandlePackDownloadEvents(downloadFlow: Flow<Request<String>>, navController:
                 ).show()
             }
             is Request.Success -> {
-                navController.popBackStack(navController.graph.startDestination, false)
+                navController.popBackStack(navController.graph.startDestinationId, false)
                 navController.navigate(
                     "%s?tab=%s?pack_name=%s"
                         .format(
